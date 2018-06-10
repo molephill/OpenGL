@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include <glad/glad.h>
+#include <glm.hpp>
 
 #include <string>
 #include <fstream>
@@ -30,9 +31,27 @@ private:
     
 public:
     void Use();
-    void SetBool(const std::string& name, bool value) const;
-    void SetInt(const std::string& name, int value) const;
-    void SetFloat(const std::string& name, float value) const;
+    // ------------------------------------------------------------------------
+    void SetBool(const std::string&, bool value) const;
+    // ------------------------------------------------------------------------
+    void SetInt(const std::string&, int value) const;
+    // ------------------------------------------------------------------------
+    void SetFloat(const std::string&, float value) const;
+    // ------------------------------------------------------------------------
+    void SetVec2(const std::string&, const glm::vec2&) const;
+    void SetVec2(const std::string&, float, float) const;
+    // ------------------------------------------------------------------------
+    void SetVec3(const std::string&, const glm::vec3&) const;
+    void SetVec3(const std::string&, float, float, float) const;
+    // ------------------------------------------------------------------------
+    void SetVec4(const std::string&, const glm::vec4&) const;
+    void SetVec4(const std::string&, float, float, float, float) const;
+    // ------------------------------------------------------------------------
+    void SetMat2(const std::string&, const glm::mat2&) const;
+    // ------------------------------------------------------------------------
+    void SetMat3(const std::string&, const glm::mat3&) const;
+    // ------------------------------------------------------------------------
+    void SetMat4(const std::string&, const glm::mat4&) const;
     
 private:
     void CheckCompileErrors(unsigned int, ShaderType);

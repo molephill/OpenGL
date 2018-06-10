@@ -32,6 +32,6 @@ void RenderMgr::Render()
 #ifdef RENDER_MOD_LINE
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+//    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
