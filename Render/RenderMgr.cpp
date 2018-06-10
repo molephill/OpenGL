@@ -11,27 +11,29 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-RenderMgr::~RenderMgr()
+namespace Liar
 {
-    delete m_render;
-}
-
-void RenderMgr::Init()
-{
-    m_render = new RenderItem();
-    m_render->Init();
-}
-
-void RenderMgr::Render()
-{
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    RenderMgr::~RenderMgr()
+    {
+        delete m_render;
+    }
     
-    m_render->Draw();
+    void RenderMgr::Init()
+    {
+        m_render = new RenderItem();
+        m_render->Init();
+    }
     
+    void RenderMgr::Render()
+    {
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
 #ifdef RENDER_MOD_LINE
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        
+        m_render->Draw();
+        
+    }
 }

@@ -13,17 +13,20 @@
 
 #include "RenderItem.hpp"
 
-class RenderMgr
+namespace Liar
 {
-public:
-    ~RenderMgr();
-    
-public:
-    void Init();
-    void Render();
-    
-private:
-    RenderItem* m_render;
-};
+    class RenderMgr
+    {
+    public:
+        ~RenderMgr();
+        
+    public:
+        void Init();
+        void Render();
+        
+    private:
+        RenderItem* m_render;
+    };
+}
 
 #endif /* RenderMgr_hpp */

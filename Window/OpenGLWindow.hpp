@@ -19,17 +19,21 @@
 #include "RenderMgr.hpp"
 
 using namespace std;
+using namespace Liar;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
-class OpenGLWindow
+namespace Liar
 {
-public:
-    int InitGLFW(uint w = WINDOW_W, uint h = WINDOW_H);
-    
-private:
-    RenderMgr* m_renderMgr;
-};
+    class OpenGLWindow
+    {
+    public:
+        int InitGLFW(uint w = WINDOW_W, uint h = WINDOW_H);
+        
+    private:
+        RenderMgr* m_renderMgr;
+    };
+}
 
 #endif /* OpenGLWindow_hpp */

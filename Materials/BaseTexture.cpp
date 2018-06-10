@@ -10,23 +10,27 @@
 
 using namespace std::placeholders;
 
-BaseTexture::~BaseTexture()
+namespace Liar
 {
     
-}
-
-void BaseTexture::Init(std::string path, int rgb_mod)
-{
-    TDCallFun fun = std::bind(&BaseTexture::ParseData, this, _1);
-    TextureDataMgr::GetInstance().LoadTextureData(path, fun, rgb_mod);
-}
-
-void BaseTexture::ParseData(TextureData *data)
-{
+    BaseTexture::~BaseTexture()
+    {
+        
+    }
     
-}
-
-void BaseTexture::Use(int index)
-{
+    void BaseTexture::Init(std::string path, int rgb_mod)
+    {
+        TDCallFun fun = std::bind(&BaseTexture::ParseData, this, _1);
+        TextureDataMgr::GetInstance().LoadTextureData(path, fun, rgb_mod);
+    }
     
+    void BaseTexture::ParseData(TextureData *data)
+    {
+        
+    }
+    
+    void BaseTexture::Use(int index)
+    {
+        
+    }
 }

@@ -8,27 +8,30 @@
 
 #include "TextureData.hpp"
 
-TextureData::TextureData(std::string& path, int rgb_type):m_rgb_mod(rgb_type)
+namespace Liar
 {
-    m_path = path;
-    Load();
-}
-
-TextureData::~TextureData()
-{
-    stbi_image_free(m_data);
-}
-
-bool TextureData::Load()
-{
-    m_data = stbi_load(m_path.c_str(), &m_width, &m_height, &m_nrChannels, 0);
-    if(m_data)
+    TextureData::TextureData(std::string& path, int rgb_type):m_rgb_mod(rgb_type)
     {
-        return true;
+        m_path = path;
+        Load();
     }
-    else
+    
+    TextureData::~TextureData()
     {
-        std::cout << "Failed to load texture" << m_path << std::endl;
-        return false;
+        stbi_image_free(m_data);
+    }
+    
+    bool TextureData::Load()
+    {
+        m_data = stbi_load(m_path.c_str(), &m_width, &m_height, &m_nrChannels, 0);
+        if(m_data)
+        {
+            return true;
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << m_path << std::endl;
+            return false;
+        }
     }
 }

@@ -18,29 +18,32 @@
 
 using namespace std;
 
-// 定义回调函数
-typedef std::function<void(TextureData*)> TDCallFun;
-
-class TextureDataMgr
+namespace Liar
 {
-public:
-    static TextureDataMgr& GetInstance()
+    // 定义回调函数
+    typedef std::function<void(TextureData*)> TDCallFun;
+    
+    class TextureDataMgr
     {
-        static TextureDataMgr m_instance;
-        return m_instance;
-    }
-    
-private:
-    TextureDataMgr();
-    ~TextureDataMgr();
-    
-private:
-    std::vector<TextureData*>* m_datas;
-    
-public:
-    void LoadTextureData(string&, TDCallFun, int rgb_mod = GL_RGB);
-    void ReleaseData(string&);
-    TextureData* GetTextureData(string&) const;
-};
+    public:
+        static TextureDataMgr& GetInstance()
+        {
+            static TextureDataMgr m_instance;
+            return m_instance;
+        }
+        
+    private:
+        TextureDataMgr();
+        ~TextureDataMgr();
+        
+    private:
+        std::vector<TextureData*>* m_datas;
+        
+    public:
+        void LoadTextureData(string&, TDCallFun, int rgb_mod = GL_RGB);
+        void ReleaseData(string&);
+        TextureData* GetTextureData(string&) const;
+    };
+}
 
 #endif /* TextureDataMgr_hpp */

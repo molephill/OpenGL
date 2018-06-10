@@ -19,26 +19,29 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class RenderItem
+namespace Liar
 {
-public:
-    ~RenderItem();
-    
-private:
-    unsigned int m_VBO;
-    unsigned int m_VAO;
-    unsigned int m_EBO;
-    
-    Shader* m_shader;
-    BaseTexture* m_texture1;
-    BaseTexture* m_texture2;
-    
-private:
-    void InitBase();
-    
-public:
-    void Init();
-    void Draw();
-};
+    class RenderItem
+    {
+    public:
+        ~RenderItem();
+        
+    private:
+        unsigned int m_VBO;
+        unsigned int m_VAO;
+        unsigned int m_EBO;
+        
+        Shader* m_shader;
+        BaseTexture* m_texture1;
+        BaseTexture* m_texture2;
+        
+    private:
+        void InitBase();
+        
+    public:
+        void Init();
+        void Draw();
+    };
+}
 
 #endif /* RenderItem_hpp */

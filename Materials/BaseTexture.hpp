@@ -15,24 +15,27 @@
 
 #include "TextureDataMgr.hpp"
 
-class BaseTexture
+namespace Liar
 {
-public:
-    virtual ~BaseTexture();
-    
-protected:
-    unsigned int m_ID;
-    
-public:
-    unsigned int GetID() { return m_ID; };
-    
-    virtual void Use(int index = GL_TEXTURE0);
-    
-protected:
-    virtual void ParseData(TextureData* data);
-    
-    void Init(std::string, int rgb_mod = GL_RGB);
-};
+    class BaseTexture
+    {
+    public:
+        virtual ~BaseTexture();
+        
+    protected:
+        unsigned int m_ID;
+        
+    public:
+        unsigned int GetID() { return m_ID; };
+        
+        virtual void Use(int index = GL_TEXTURE0);
+        
+    protected:
+        virtual void ParseData(TextureData* data);
+        
+        void Init(std::string, int rgb_mod = GL_RGB);
+    };
+}
 
 
 #endif /* BaseTexture_hpp */
