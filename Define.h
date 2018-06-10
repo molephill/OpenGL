@@ -9,7 +9,7 @@
 #ifndef Define_h
 #define Define_h
 
-#include "iostream"
+#include <string>
 
 // buffsize
 const static int DEFAULT_BUFF_SIZE = 512;

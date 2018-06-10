@@ -12,7 +12,9 @@
 #include <stdio.h>
 
 #include "Shader.hpp"
-#include "BaseTexture.hpp"
+#include "TextureDataMgr.hpp"
+
+#include "Texture2D.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -28,7 +30,8 @@ private:
     unsigned int m_EBO;
     
     Shader* m_shader;
-    BaseTexture* m_texture;
+    BaseTexture* m_texture1;
+    BaseTexture* m_texture2;
     
 private:
     void InitBase();

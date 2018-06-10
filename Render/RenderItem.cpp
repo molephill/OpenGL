@@ -16,17 +16,22 @@ RenderItem::~RenderItem()
     glDeleteBuffers(1, &m_EBO);
     
     delete m_shader;
-    delete m_texture;
+    delete m_texture1;
+    delete m_texture2;
 }
 
 void RenderItem::InitBase()
 {
     float vertices[] = {
         // positions          // colors           // texture coords
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   2.0f, 2.0f, // top right
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   2.0f, 0.0f, // bottom right
         -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 2.0f  // top left
+//        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.55f, 0.55f, // top right
+//        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   0.55f, 0.45f, // bottom right
+//        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.45f, 0.45f, // bottom left
+//        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.45f, 0.55f  // top left
     };
 
     unsigned int indices[] = {  // note that we start from 0!
@@ -67,12 +72,18 @@ void RenderItem::Init()
     InitBase();
     m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.vs",
                           "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.fs");
-    m_texture = new BaseTexture("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
+    m_texture1 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
+    m_texture2 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+    
+    m_shader->Use();
+    m_shader->SetInt("texture1", 0);
+    m_shader->SetInt("texture2", 1);
 }
 
 void RenderItem::Draw()
 {
-    m_texture->Use();
+    m_texture1->Use(GL_TEXTURE0);
+    m_texture2->Use(GL_TEXTURE1);
     m_shader->Use();
 //    m_shader->SetFloat("xOffset", 0.5f);
     float timeValue = glfwGetTime();
