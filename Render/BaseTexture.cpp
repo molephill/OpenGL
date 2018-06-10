@@ -8,6 +8,11 @@
 
 #include "BaseTexture.hpp"
 
+//BaseTexture::~BaseTexture()
+//{
+////    glDeleteTextures(1, m_texture);
+//}
+
 BaseTexture::BaseTexture(std::string path):m_width(0),m_height(0),m_nrChannels(0)
 {
     m_path = path;

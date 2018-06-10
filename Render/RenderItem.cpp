@@ -16,6 +16,7 @@ RenderItem::~RenderItem()
     glDeleteBuffers(1, &m_EBO);
     
     delete m_shader;
+    delete m_texture;
 }
 
 void RenderItem::InitBase()

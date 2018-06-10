@@ -21,6 +21,7 @@ class BaseTexture
 {
 public:
     BaseTexture(std::string);
+//    ~BaseTexture();
     
 private:
     bool Load();
