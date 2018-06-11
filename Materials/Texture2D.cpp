@@ -8,8 +8,6 @@
 
 #include "Texture2D.hpp"
 
-using namespace std::placeholders;
-
 namespace Liar
 {
     Texture2D::Texture2D(std::string path, int rgb_mod, int wrap_mod, int lev_mod)
