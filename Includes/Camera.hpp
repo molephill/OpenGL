@@ -50,6 +50,20 @@ namespace Liar
 		void Camera::SetViewParams(float n, float f, float fov = CAMERA_FOV, CAMERA_TYPE type = CAMERA_TYPE::PERPECTIVE);
 
 	public:
+		// ===================================================
+		BaseComponent* GetPosition() { return m_position; };
+		BaseComponent* GetRotation() { return m_rotation; };
+
+		float GetX() { return m_position->GetX(); };
+		float GetY() { return m_position->GetY(); };
+		float GetZ() { return m_position->GetZ(); };
+
+		float GetRX() { return m_rotation->GetX(); };
+		float GetRY() { return m_rotation->GetY(); };
+		float GetRZ() { return m_rotation->GetZ(); };
+		// ===================================================
+		// ===================================================
+		// ===================================================
 		ViewPort* GetViewPort() { return m_viewPort; };
 		glm::mat4& GetMatrix() { return m_mixMatrix; };
 
