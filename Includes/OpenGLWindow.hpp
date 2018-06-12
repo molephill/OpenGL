@@ -29,10 +29,10 @@ namespace Liar
     class OpenGLWindow
     {
     public:
-        int InitGLFW(uint w = WINDOW_W, uint h = WINDOW_H);
+        int InitGLFW(unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
         
-    private:
-        RenderMgr* m_renderMgr;
+    public:
+        static RenderMgr* renderMgr;
     };
 }
 

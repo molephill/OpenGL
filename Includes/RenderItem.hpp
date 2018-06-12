@@ -15,9 +15,10 @@
 #include "TextureDataMgr.hpp"
 
 #include "Texture2D.hpp"
+#include "Camera.hpp"
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+//#include <glad/glad.h>
+//#include <GLFW/glfw3.h>
 
 namespace Liar
 {
@@ -40,7 +41,7 @@ namespace Liar
         
     public:
         void Init();
-        void Draw();
+        void Draw(Camera*);
     };
 }
 

@@ -18,9 +18,15 @@ void CLog::GetLogFilePath(char* szPath)
 
 string CLog::GetSystemTime()
 {
-    time_t tNowTime;
-    time(&tNowTime);
-    tm* tLocalTime = localtime(&tNowTime);
+#ifndef __APPLE__
+	time_t tNowTime = time(0);
+	tm* tLocalTime = nullptr;
+	localtime_s(tLocalTime, &tNowTime);
+#else
+	time_t tNowTime;
+	time(&tNowTime);
+	tm* tLocalTime = localtime(&tNowTime);
+#endif // WIN_PLAT_FORM
     char szTime[30] = {'\0'};
     strftime(szTime, 30, "[%Y-%m-%d %H:%M:%S] ", tLocalTime);
     string strTime = szTime;

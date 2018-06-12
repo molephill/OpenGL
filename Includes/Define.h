@@ -9,6 +9,10 @@
 #ifndef Define_h
 #define Define_h
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <glm.hpp>
+
 #include <string>
 
 // buffsize
@@ -27,6 +31,19 @@ const unsigned int WINDOW_H = 600;
 
 // 渲染模式
 //#define RENDER_MOD_LINE 1;
+
+// 相机默认参数
+const float CAMERA_YAW		= -90.0f;
+const float CAMERA_PITCH	= 0.0f;
+
+// 相机类型
+enum CAMERA_TYPE
+{
+	ORTHO = 0,
+	PERPECTIVE = 1
+};
+
+const float CAMERA_FOV = 45.0f;
 
 // shader类型
 enum ShaderType

@@ -11,7 +11,7 @@
 
 namespace Liar
 {
-    int OpenGLWindow::InitGLFW(uint w, uint h)
+    int OpenGLWindow::InitGLFW(unsigned int w, unsigned int h)
     {
         if (!glfwInit()) {
             return -1;
@@ -48,8 +48,8 @@ namespace Liar
         //    cout << "GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 #endif
         
-        m_renderMgr = new RenderMgr();
-        m_renderMgr->Init();
+        renderMgr = new RenderMgr();
+        renderMgr->Init();
         
         while (!glfwWindowShouldClose(window)) {
             
@@ -57,18 +57,20 @@ namespace Liar
             processInput(window);
             
             // -- render --
-            m_renderMgr->Render();
+            renderMgr->Render();
             
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
         
-        delete m_renderMgr;
+        delete renderMgr;
         
         glfwTerminate();
         
         return 0;
     }
+
+	RenderMgr* OpenGLWindow::renderMgr = nullptr;
 }
 
 // 响应窗口事件
@@ -81,5 +83,6 @@ void processInput(GLFWwindow *window)
 // 修改屏幕大小时
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0, 0, width, height);
+    //glViewport(0, 0, width, height);
+	OpenGLWindow::renderMgr->SetSize(width, height);
 }

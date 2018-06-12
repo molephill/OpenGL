@@ -20,6 +20,11 @@
 #include <string>
 #include <ctime>
 
+#ifndef __APPLE__
+#include <time.h>
+#endif // !__APPLE__
+
+
 #include "Define.h"
 
 using namespace std;

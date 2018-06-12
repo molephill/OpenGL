@@ -16,6 +16,12 @@
 
 #include "TextureData.hpp"
 
+#ifndef __APPLE__
+#include <functional>
+#endif // !__APPLE__
+
+
+
 using namespace std;
 
 namespace Liar

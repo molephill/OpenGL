@@ -12,17 +12,27 @@
 #include <stdio.h>
 
 #include "RenderItem.hpp"
+#include "Camera.hpp"
 
 namespace Liar
 {
     class RenderMgr
     {
     public:
+		RenderMgr();
         ~RenderMgr();
         
     public:
-        void Init();
+		void Init();
+
+		Camera* GetCamera() { return m_camera; };
+
+		void SetSize(unsigned int, unsigned int);
         void Render();
+
+
+	private:
+		Camera* m_camera;
         
     private:
         RenderItem* m_render;

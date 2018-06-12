@@ -13,9 +13,16 @@
 
 namespace Liar
 {
+	RenderMgr::RenderMgr()
+	{
+		m_camera = new Camera(0.0f, 0.0f, 3.0f);
+		glEnable(GL_DEPTH_TEST);
+	}
+
     RenderMgr::~RenderMgr()
     {
         delete m_render;
+		delete m_camera;
     }
     
     void RenderMgr::Init()
@@ -23,17 +30,21 @@ namespace Liar
         m_render = new RenderItem();
         m_render->Init();
     }
+
+	void RenderMgr::SetSize(unsigned int w, unsigned int h)
+	{
+		m_camera->SetSize(w, h);
+		glViewport(0, 0, w, h);
+	}
     
     void RenderMgr::Render()
     {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
 #ifdef RENDER_MOD_LINE
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
-        
-        m_render->Draw();
+		// 先计算视角
+		m_camera->Render();
+        m_render->Draw(m_camera);
         
     }
 }

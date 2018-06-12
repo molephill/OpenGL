@@ -64,25 +64,30 @@ namespace Liar
         // texture coord
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
-        
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
     }
     
     void RenderItem::Init()
     {
         InitBase();
-        m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.vs",
-                              "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.fs");
-        m_texture1 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
-        m_texture2 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+
+#ifndef __APPLE__
+		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test.vs",
+			"E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test.fs");
+		m_texture1 = new Texture2D("E:/c++/VSOpenGL/OpenGL/Assets/Images/wall.jpg");
+		m_texture2 = new Texture2D("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+#else
+		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.vs",
+			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.fs");
+		m_texture1 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
+		m_texture2 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+#endif // WIN_PLAT_FORM
         
         m_shader->Use();
         m_shader->SetInt("texture1", 0);
         m_shader->SetInt("texture2", 1);
     }
     
-    void RenderItem::Draw()
+    void RenderItem::Draw(Camera* camera)
     {
         m_texture1->Use(GL_TEXTURE0);
         m_texture2->Use(GL_TEXTURE1);
@@ -91,12 +96,14 @@ namespace Liar
         float timeValue = glfwGetTime();
         float greenValue = (sin(timeValue)/2.0f) + 0.5f;
         m_shader->SetFloat("greenChange", greenValue);
+
+		m_shader->SetMat4("projection", camera->GetMatrix());
         
         glm::mat4 transform(1.0);
         transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
         transform = glm::rotate(transform, timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
         m_shader->SetMat4("aTransform", transform);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         transform = glm::mat4(1.0);
         transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
