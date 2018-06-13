@@ -4,7 +4,7 @@ namespace Liar
 {
 	Camera::Camera():
 		m_position(new CPosition(0.0f, 0.0f, 0.0f))
-		, m_rotation(new CRotation(CAMERA_YAW, CAMERA_PITCH, 0))
+		, m_rotation(new CRotation(CAMERA_PITCH, CAMERA_YAW, 0))
 		, m_viewPort(new ViewPort())
 		, m_worldUp(glm::vec3(0.0f, 1.0f, 0.0f))
 		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
@@ -15,19 +15,21 @@ namespace Liar
 
 	Camera::Camera(glm::vec3 pos, glm::vec3 up): 
 		m_position(new CPosition(pos))
-		, m_rotation(new CRotation(CAMERA_YAW, CAMERA_PITCH, 0))
+		, m_rotation(new CRotation(CAMERA_PITCH, CAMERA_YAW, 0))
 		, m_viewPort(new ViewPort())
 		, m_worldUp(up)
+		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
 		, m_mixMatrix(glm::mat4(1.0))
 		, m_isDirty(true)
 	{
 	}
 
-	Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) : 
+	Camera::Camera(glm::vec3 pos, glm::vec3 up, float pitch, float yaw) :
 		m_position(new CPosition(pos))
-		, m_rotation(new CRotation(yaw, pitch, 0))
+		, m_rotation(new CRotation(pitch, yaw, 0))
 		, m_viewPort(new ViewPort())
 		, m_worldUp(up)
+		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
 		, m_mixMatrix(glm::mat4(1.0))
 		, m_isDirty(true)
 	{
@@ -35,19 +37,21 @@ namespace Liar
 
 	Camera::Camera(float px, float py, float pz, float ux, float uy, float uz) : 
 		m_position(new CPosition(px, py, pz))
-		, m_rotation(new CRotation(CAMERA_YAW, CAMERA_PITCH, 0))
+		, m_rotation(new CRotation(CAMERA_PITCH, CAMERA_YAW, 0))
 		, m_viewPort(new ViewPort())
 		, m_worldUp(glm::vec3(ux, uy, ux))
+		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
 		, m_mixMatrix(glm::mat4(1.0))
 		, m_isDirty(true)
 	{
 	}
 
-	Camera::Camera(float px, float py, float pz, float ux, float uy, float uz, float yaw, float pitch) : 
+	Camera::Camera(float px, float py, float pz, float ux, float uy, float uz, float pitch, float yaw) :
 		m_position(new CPosition(px, py, pz))
-		, m_rotation(new CRotation(yaw, pitch, 0))
+		, m_rotation(new CRotation(pitch, yaw, 0))
 		, m_viewPort(new ViewPort())
 		, m_worldUp(glm::vec3(ux, uy, ux))
+		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
 		, m_mixMatrix(glm::mat4(1.0))
 		, m_isDirty(true)
 	{
@@ -163,8 +167,8 @@ namespace Liar
 			glm::mat4 projection = m_viewPort->GetPerspective();
 
 			// =============================== viewMatrix =================
-			float yaw = m_rotation->GetX();
-			float pitch = m_rotation->GetY();
+			float pitch = m_rotation->GetX();
+			float yaw = m_rotation->GetY();
 
 			m_front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 			m_front.y = sin(glm::radians(pitch));
