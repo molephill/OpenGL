@@ -6,14 +6,11 @@
 //  Copyright © 2018年 lier. All rights reserved.
 //
 
-#include "OpenGLWindow.hpp"
+#include "Stage.hpp"
 
 int main() {
 
-    OpenGLWindow* window = new OpenGLWindow();
-
-    if(window->InitGLFW() < 0)
-    {
-        delete window;
-    }
+	Liar::Stage* stage = new Liar::Stage();
+    
+	return 0;
 }

@@ -34,8 +34,9 @@ namespace Liar
     public:
         static TextureDataMgr& GetInstance()
         {
-            static TextureDataMgr m_instance;
-            return m_instance;
+            static TextureDataMgr* m_instance;
+			if (!m_instance) m_instance = new TextureDataMgr;
+            return *m_instance;
         }
         
     private:

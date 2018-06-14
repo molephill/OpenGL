@@ -9,30 +9,29 @@
 #ifndef OpenGLWindow_hpp
 #define OpenGLWindow_hpp
 
-#include <stdio.h>
-#include <iostream>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include "Define.h"
+#include "BaseWindow.hpp"
 #include "RenderMgr.hpp"
 
 using namespace std;
-using namespace Liar;
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
 
 namespace Liar
 {
     class OpenGLWindow
+		:public BaseWindow
     {
-    public:
-        int InitGLFW(unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
+	public:
+		OpenGLWindow(WindowActiveMgr*);
+
+	protected:
+		virtual bool Created();
+		virtual void Render();
+		virtual void Destory();
+
+	public:
+		virtual void SetSize(unsigned int, unsigned int);
         
-    public:
-        static RenderMgr* renderMgr;
+    private:
+        RenderMgr* m_renderMgr;
     };
 }
 
