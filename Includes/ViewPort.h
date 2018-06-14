@@ -4,7 +4,7 @@
 
 #include "Define.h"
 
-#include <gtc\matrix_transform.hpp>
+#include <gtc/matrix_transform.hpp>
 
 namespace Liar
 {

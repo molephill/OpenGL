@@ -12,12 +12,11 @@ namespace Liar
 	class BaseWindow
 	{
 	public:
-		BaseWindow(WindowActiveMgr* handler = nullptr);
+		BaseWindow();
 		virtual ~BaseWindow();
 
 	protected:
 		GLFWwindow* m_window;
-		WindowActiveMgr* m_handler;
 
 	public:
 		GLFWwindow* GetWindow() { return m_window; };
@@ -25,11 +24,11 @@ namespace Liar
 	protected:
 		virtual bool Created();
 		virtual void Render();
-		virtual void Destory();
 
 	public:
 		bool Init(std::string, unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
 		virtual void SetSize(unsigned int, unsigned int);
+        bool ProcessHandler();
 	};
 }
 

@@ -1,4 +1,4 @@
-﻿
+
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
@@ -47,7 +47,7 @@ namespace Liar
 		void SetWorldUp(float, float, float);
 		// ===================================================
 		void SetSize(unsigned int, unsigned int);
-		void Camera::SetViewParams(float n, float f, float fov = CAMERA_FOV, CAMERA_TYPE type = CAMERA_TYPE::PERPECTIVE);
+		void SetViewParams(float n, float f, float fov = CAMERA_FOV, CAMERA_TYPE type = CAMERA_TYPE::PERPECTIVE);
 
 	public:
 		// ===================================================

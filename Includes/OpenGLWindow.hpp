@@ -20,12 +20,11 @@ namespace Liar
 		:public BaseWindow
     {
 	public:
-		OpenGLWindow(WindowActiveMgr*);
+		OpenGLWindow();
 
 	protected:
 		virtual bool Created();
 		virtual void Render();
-		virtual void Destory();
 
 	public:
 		virtual void SetSize(unsigned int, unsigned int);

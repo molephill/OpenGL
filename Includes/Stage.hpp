@@ -14,6 +14,7 @@ namespace Liar
 		~Stage();
 
 	private:
+        bool m_isActive;
 		OpenGLWindow* m_openglWindow;
 
 	public:

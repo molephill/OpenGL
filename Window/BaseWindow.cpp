@@ -2,14 +2,13 @@
 
 namespace Liar
 {
-	BaseWindow::BaseWindow(WindowActiveMgr* handler):
-		m_handler(handler),m_window(nullptr)
+	BaseWindow::BaseWindow()
 	{
-		
 	}
 
 	BaseWindow::~BaseWindow()
 	{
+        glfwTerminate();
 	}
 
 	bool BaseWindow::Init(std::string title, unsigned int w, unsigned int h)
@@ -31,55 +30,46 @@ namespace Liar
 			return false;
 		}
 
-		// 创建成功回调
+		// create success
 		if (!Created())
 		{
 			return false;
 		}
 
-		while (!glfwWindowShouldClose(m_window)) {
-
-			// -- input --
-			if (m_handler)
-			{
-				m_handler->ProcessHandler();
-			}
-
-			// -- render --
-			Render();
-
-			glfwSwapBuffers(m_window);
-			glfwPollEvents();
-		}
-
-		Destory();
-
-		glfwTerminate();
-
 		return true;
 	}
 
-	// 修改大小
+	// 衦esize
 	void BaseWindow::SetSize(unsigned int, unsigned int)
 	{
 
 	}
 
-	// 创建成功时的回调
+	// created_call_back
 	bool BaseWindow::Created()
 	{
 		return true;
 	}
 
-	// 刷新时
+	// render_handler
 	void BaseWindow::Render()
 	{
-
+        
 	}
-
-	void BaseWindow::Destory()
-	{
-
-	}
-
+    
+    bool BaseWindow::ProcessHandler()
+    {
+        if(!glfwWindowShouldClose(m_window))
+        {
+            Render();
+            
+            glfwSwapBuffers(m_window);
+            glfwPollEvents();
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
 }

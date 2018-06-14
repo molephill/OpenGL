@@ -11,7 +11,7 @@
 
 namespace Liar
 {
-	OpenGLWindow::OpenGLWindow(WindowActiveMgr* handler) :BaseWindow(handler)
+	OpenGLWindow::OpenGLWindow()
 	{
 	}
 
@@ -33,18 +33,10 @@ namespace Liar
 			return false;
 		}
 
-		m_handler->RegisttHandler(this);
-
 		m_renderMgr = new RenderMgr();
 		m_renderMgr->Init();
 
 		return true;
-	}
-
-	void OpenGLWindow::Destory()
-	{
-		delete m_renderMgr;
-		m_handler = nullptr;
 	}
 
 	void OpenGLWindow::SetSize(unsigned int w, unsigned int h)
@@ -54,6 +46,6 @@ namespace Liar
 
 	void OpenGLWindow::Render()
 	{
-		m_renderMgr->Render();
+        m_renderMgr->Render();
 	}
 }
