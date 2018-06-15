@@ -10,7 +10,6 @@ namespace Liar
         
         while(m_isActive)
         {
-            windowActive->ProcessHandler();
             m_isActive = m_openglWindow->ProcessHandler();
         }
 	}

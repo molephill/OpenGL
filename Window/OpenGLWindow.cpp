@@ -48,4 +48,19 @@ namespace Liar
 	{
         m_renderMgr->Render();
 	}
+
+	void OpenGLWindow::KeyInputEvent()
+	{
+
+	}
+
+	void OpenGLWindow::MouseEvent(double x, double y)
+	{
+
+	}
+
+	void OpenGLWindow::ScrollEvent(double offsetx, double offsety)
+	{
+
+	}
 }

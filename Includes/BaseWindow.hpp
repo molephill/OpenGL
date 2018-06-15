@@ -29,6 +29,11 @@ namespace Liar
 		bool Init(std::string, unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
 		virtual void SetSize(unsigned int, unsigned int);
         bool ProcessHandler();
+
+	public:
+		virtual void KeyInputEvent();
+		virtual void MouseEvent(double, double);
+		virtual void ScrollEvent(double, double);
 	};
 }
 

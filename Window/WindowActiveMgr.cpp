@@ -30,10 +30,6 @@ namespace Liar
 			m_handler->SetSize(w, h);
 		}
 	}
-
-	void WindowActiveMgr::ProcessHandler()
-	{
-	}
 }
 
 // 响应窗口事件
@@ -42,7 +38,6 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, true);
-		Liar::Stage::windowActive->RegisttHandler(nullptr);
 	}
 	else
 	{

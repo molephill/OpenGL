@@ -71,5 +71,23 @@ namespace Liar
             return false;
         }
     }
+
+	// keyInput
+	void BaseWindow::KeyInputEvent()
+	{
+
+	}
+
+	// mouse
+	void BaseWindow::MouseEvent(double, double)
+	{
+
+	}
+
+	// scroll
+	void BaseWindow::ScrollEvent(double, double)
+	{
+
+	}
     
 }

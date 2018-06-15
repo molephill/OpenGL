@@ -28,7 +28,6 @@ namespace Liar
 	public:
 		void RegisttHandler(BaseWindow* handler = nullptr);
 		void SetSize(unsigned int, unsigned int);
-		void ProcessHandler();
 	};
 }
 
