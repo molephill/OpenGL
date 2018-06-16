@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "LiarUtil.hpp"
 
 namespace Liar
 {
@@ -212,7 +213,8 @@ namespace Liar
 			glm::vec3 up = glm::normalize(glm::cross(m_right, m_front));
 
 			glm::vec3 pos = m_position->GetValue();
-			glm::mat4 viewMatrix = glm::lookAt(pos, pos + m_front, up);
+//            glm::mat4 viewMatrix = glm::lookAt(pos, pos + m_front, up);
+            glm::mat4 viewMatrix = LiarUtil::LookAt(pos, pos + m_front, up);
 
 			// =============================== viewMatrix =================
 
