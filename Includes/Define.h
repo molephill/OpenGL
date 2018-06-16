@@ -53,4 +53,13 @@ enum ShaderType
     TYPE_PROGROM = 2,
 };
 
+// 移动方向
+enum MOVE_DIRECTION
+{
+    FORWARD = 0,
+    BACKWARD = 1,
+    LEFT,
+    RIGHT,
+};
+
 #endif /* Define_h */

@@ -3,42 +3,38 @@
 #define CAMERA_HPP
 
 #include "ViewPort.h"
-#include "Component.hpp"
+#include "LiarObject.hpp"
 
 namespace Liar
 {
-	class Camera
+    class Camera:
+        public LiarObject
 	{
 	public:
 		Camera();
-		Camera(glm::vec3, glm::vec3);
-		Camera(glm::vec3, glm::vec3, float yaw = CAMERA_YAW, float pitch = CAMERA_PITCH);
-		Camera(float, float, float, float ux = 0.0f, float uy = 1.0f, float uz = 0.0f);
-		Camera(float, float, float, float, float, float, float yaw = CAMERA_YAW, float pitch = CAMERA_PITCH);
+        Camera(float, float, float);
 		~Camera();
 
 	private:
-		CPosition* m_position;
-		CRotation* m_rotation;
-
 		ViewPort* m_viewPort;
 
 		glm::vec3 m_front;
+        glm::vec3 m_right;
 		glm::vec3 m_worldUp;
-
+        
 		// 矩阵
 		glm::mat4 m_mixMatrix;
-
-		// 是否是脏数据
-		bool m_isDirty;
+        
+        // 限定
+        bool m_constrainPitch;
 
 	public:
-		// ===================================================
-		void SetPosition(const glm::vec3&);
-		void SetPosition(float, float, float);
-		// ===================================================
-		void SetRotation(const glm::vec3&);
-		void SetRotation(float, float, float);
+        // ===================================================
+        virtual void SetRotation(const glm::vec3&);
+        virtual void SetRotation(float, float, float);
+        // ===================================================
+        virtual void AddRotation(const glm::vec3&);
+        virtual void AddRotation(float, float, float);
 		// ===================================================
 		void SetFront(const glm::vec3&);
 		void SetFront(float, float, float);
@@ -48,26 +44,21 @@ namespace Liar
 		// ===================================================
 		void SetSize(unsigned int, unsigned int);
 		void SetViewParams(float n, float f, float fov = CAMERA_FOV, CAMERA_TYPE type = CAMERA_TYPE::PERPECTIVE);
+        // ===================================================
+        void SetFov(float);
+        void AddFov(float);
+        void SetType(CAMERA_TYPE);
+        // ===================================================
+        void MoveForward(MOVE_DIRECTION);
 
 	public:
 		// ===================================================
-		BaseComponent* GetPosition() { return m_position; };
-		BaseComponent* GetRotation() { return m_rotation; };
-
-		float GetX() { return m_position->GetX(); };
-		float GetY() { return m_position->GetY(); };
-		float GetZ() { return m_position->GetZ(); };
-
-		float GetRX() { return m_rotation->GetX(); };
-		float GetRY() { return m_rotation->GetY(); };
-		float GetRZ() { return m_rotation->GetZ(); };
-		// ===================================================
-		// ===================================================
-		// ===================================================
 		ViewPort* GetViewPort() { return m_viewPort; };
 		glm::mat4& GetMatrix() { return m_mixMatrix; };
+        bool GetConstrainPitch() { return m_constrainPitch; };
+        void SetConstrainPitch(bool v) { m_constrainPitch = v; };
 
-		void Render();
+		virtual void Render();
 	};
 }
 

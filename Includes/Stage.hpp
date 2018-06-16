@@ -16,9 +16,7 @@ namespace Liar
 	private:
         bool m_isActive;
 		OpenGLWindow* m_openglWindow;
-
-	public:
-		static WindowActiveMgr* windowActive;
+        WindowActiveMgr* m_windowActive;
 	};
 }
 

@@ -33,6 +33,9 @@ namespace Liar
 		bool SetSize(const glm::uvec2&);
 		bool SetSize(unsigned int, unsigned int);
 		// ==================================================
+        bool ChangeFov(float);
+        bool ChangeType(CAMERA_TYPE);
+        // ==================================================
 		void SetBackground(const glm::vec4&);
 		void SetBackground(const glm::vec3&, float a = 1.0);
 		void SetBackground(float, float, float, float a = 1.0);
@@ -44,6 +47,7 @@ namespace Liar
 		float GetAspect() { return static_cast<float>(m_width / m_height); };
 		unsigned int GetWidth() { return m_width; };
 		unsigned int GetHeight() { return m_height; };
+        float GetFov() { return m_cameraParams.z; };
 		void Render();
 	};
 }

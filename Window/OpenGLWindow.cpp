@@ -51,16 +51,55 @@ namespace Liar
 
 	void OpenGLWindow::KeyInputEvent()
 	{
-
+        BaseWindow::KeyInputEvent();
+        if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+        {
+            m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::FORWARD);
+        }
+        else if(glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::RIGHT);
+        }
+        else if(glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::BACKWARD);
+        }
+        else if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+        {
+            m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::LEFT);
+        }
 	}
 
-	void OpenGLWindow::MouseEvent(double x, double y)
+	bool OpenGLWindow::MouseEvent(double x, double y)
 	{
-
+        bool inWindow = BaseWindow::MouseEvent(x, y);
+        if(inWindow)
+        {
+            if(m_isFirstMouse)
+            {
+                m_isFirstMouse = false;
+            }
+            else
+            {
+                Camera* mainCamera = m_renderMgr->GetCamera();
+                
+                float offsetx = x - m_lastMouseX;
+                float offsety = y - m_lastMouseY;
+                
+                offsetx *= Global::mouseSensitivity;
+                offsety *= Global::mouseSensitivity;
+                mainCamera->AddRotation(offsetx, offsety, 0.0f);
+            }
+            
+            m_lastMouseY = y;
+            m_lastMouseX = x;
+        }
+        return inWindow;
 	}
 
 	void OpenGLWindow::ScrollEvent(double offsetx, double offsety)
 	{
-
+        Camera* mainCamera = m_renderMgr->GetCamera();
+        mainCamera->AddFov(-offsety);
 	}
 }

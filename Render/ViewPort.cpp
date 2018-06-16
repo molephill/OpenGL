@@ -103,6 +103,32 @@ namespace Liar
 			return false;
 		}
 	}
+    
+    bool ViewPort::ChangeFov(float fov)
+    {
+        if(m_cameraParams.z != fov)
+        {
+            m_cameraParams.z = fov;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    bool ViewPort::ChangeType(CAMERA_TYPE type)
+    {
+        if(m_cameraType != type)
+        {
+            m_cameraType = type;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 	glm::mat4 ViewPort::GetPerspective()
 	{

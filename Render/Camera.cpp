@@ -2,81 +2,29 @@
 
 namespace Liar
 {
-	Camera::Camera():
-		m_position(new CPosition(0.0f, 0.0f, 0.0f))
-		, m_rotation(new CRotation(CAMERA_PITCH, CAMERA_YAW, 0))
+	Camera::Camera():Liar::LiarObject()
 		, m_viewPort(new ViewPort())
 		, m_worldUp(glm::vec3(0.0f, 1.0f, 0.0f))
 		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
 		, m_mixMatrix(glm::mat4(1.0))
-		, m_isDirty(true)
+        , m_constrainPitch(true)
 	{
+        SetRotation(CAMERA_PITCH, CAMERA_YAW, 0.0f);
 	}
-
-	Camera::Camera(glm::vec3 pos, glm::vec3 up): 
-		m_position(new CPosition(pos))
-		, m_rotation(new CRotation(CAMERA_PITCH, CAMERA_YAW, 0))
-		, m_viewPort(new ViewPort())
-		, m_worldUp(up)
-		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
-		, m_mixMatrix(glm::mat4(1.0))
-		, m_isDirty(true)
-	{
-	}
-
-	Camera::Camera(glm::vec3 pos, glm::vec3 up, float pitch, float yaw) :
-		m_position(new CPosition(pos))
-		, m_rotation(new CRotation(pitch, yaw, 0))
-		, m_viewPort(new ViewPort())
-		, m_worldUp(up)
-		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
-		, m_mixMatrix(glm::mat4(1.0))
-		, m_isDirty(true)
-	{
-	}
-
-	Camera::Camera(float px, float py, float pz, float ux, float uy, float uz) : 
-		m_position(new CPosition(px, py, pz))
-		, m_rotation(new CRotation(CAMERA_PITCH, CAMERA_YAW, 0))
-		, m_viewPort(new ViewPort())
-		, m_worldUp(glm::vec3(ux, uy, ux))
-		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
-		, m_mixMatrix(glm::mat4(1.0))
-		, m_isDirty(true)
-	{
-	}
-
-	Camera::Camera(float px, float py, float pz, float ux, float uy, float uz, float pitch, float yaw) :
-		m_position(new CPosition(px, py, pz))
-		, m_rotation(new CRotation(pitch, yaw, 0))
-		, m_viewPort(new ViewPort())
-		, m_worldUp(glm::vec3(ux, uy, ux))
-		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
-		, m_mixMatrix(glm::mat4(1.0))
-		, m_isDirty(true)
-	{
-	}
+    
+    Camera::Camera(float x, float y, float z):Liar::LiarObject(x, y, z)
+        , m_viewPort(new ViewPort())
+        , m_worldUp(glm::vec3(0.0f, 1.0f, 0.0f))
+        , m_front(glm::vec3(0.0f, 0.0f, -1.0f))
+        , m_mixMatrix(glm::mat4(1.0))
+        , m_constrainPitch(true)
+    {
+        SetRotation(CAMERA_PITCH, CAMERA_YAW, 0.0f);
+    }
 
 	Camera::~Camera()
 	{
 		delete m_viewPort;
-	}
-
-	// ===================================================
-	void Camera::SetPosition(const glm::vec3& pos)
-	{
-		if (m_position->SetValue(pos))
-		{
-			m_isDirty = true;
-		}
-	}
-
-	void Camera::SetPosition(float x, float y, float z)
-	{
-		if (m_position->SetValue(x, y, z))
-		{
-			m_isDirty = true;
-		}
 	}
 
 	// ===================================================
@@ -100,6 +48,49 @@ namespace Liar
 			m_isDirty = true;
 		}
 	}
+    
+    // ===================================================
+    void Camera::SetRotation(const glm::vec3& r)
+    {
+        float x = GetRX();
+        if(m_constrainPitch)
+        {
+            x = x > 89.0f ? 89.0f : x;
+            x = x < -89.0f ? - 89.0f : x;
+            m_rotation->SetValue(x, GetRY(), GetRZ());
+        }
+        if (m_rotation->SetValue(x, r.y, r.z))
+        {
+            m_isDirty = true;
+        }
+    }
+    
+    void Camera::SetRotation(float x, float y, float z)
+    {
+        x = x > 89.0f ? 89.0f : x;
+        x = x < -89.0f ? - 89.0f : x;
+        if (m_rotation->SetValue(x, y, z))
+        {
+            m_isDirty = true;
+        }
+    }
+    
+    // ===================================================
+    void Camera::AddRotation(const glm::vec3& r)
+    {
+        if (m_rotation->AddValue(r))
+        {
+            m_isDirty = true;
+        }
+    }
+    
+    void Camera::AddRotation(float x, float y, float z)
+    {
+        if (m_rotation->AddValue(x, y, z))
+        {
+            m_isDirty = true;
+        }
+    }
 
 	// ===================================================
 	void Camera::SetFront(const glm::vec3& front)
@@ -122,23 +113,6 @@ namespace Liar
 		}
 	}
 
-	// ===================================================
-	void Camera::SetRotation(const glm::vec3& r)
-	{
-		if (m_rotation->SetValue(r))
-		{
-			m_isDirty = true;
-		}
-	}
-
-	void Camera::SetRotation(float x, float y, float z)
-	{
-		if (m_rotation->SetValue(x, y, z))
-		{
-			m_isDirty = true;
-		}
-	}
-
 	// ==================================================
 	void Camera::SetViewParams(float n, float f, float fov, CAMERA_TYPE type)
 	{
@@ -155,6 +129,64 @@ namespace Liar
 			m_isDirty = true;
 		}
 	}
+    
+    void Camera::SetFov(float fov)
+    {
+        if(m_viewPort->ChangeFov(fov))
+        {
+            m_isDirty = true;
+        }
+    }
+    
+    void Camera::AddFov(float fov)
+    {
+        float oldFov = m_viewPort->GetFov();
+        if(oldFov >= 1.0f && oldFov <= 45.0f)
+        {
+            float newFov = oldFov + fov;
+            SetFov(newFov);
+        }
+        else if(oldFov < 1.0)
+        {
+            SetFov(1.0);
+        }
+        else
+        {
+            SetFov(45.0f);
+        }
+    }
+    
+    void Camera::SetType(CAMERA_TYPE type)
+    {
+        if(m_viewPort->ChangeType(type))
+        {
+            m_isDirty = true;
+        }
+    }
+    
+    // ==================================================
+    void Camera::MoveForward(MOVE_DIRECTION type)
+    {
+        float velocity = Global::cameraMoveSpeed * Global::delataTime;
+        
+        switch(type)
+        {
+            case MOVE_DIRECTION::FORWARD:
+                AddPosition(m_front*velocity);
+                break;
+            case MOVE_DIRECTION::BACKWARD:
+                AddPosition(-m_front*velocity);
+                break;
+            case MOVE_DIRECTION::RIGHT:
+                AddPosition(m_right*velocity);
+                break;
+            case MOVE_DIRECTION::LEFT:
+                AddPosition(-m_right*velocity);
+                break;
+            default:
+                break;
+        }
+    }
 
 	// ==================================================
 	void Camera::Render()
@@ -176,8 +208,8 @@ namespace Liar
 
 			m_front = glm::normalize(m_front);
 
-			glm::vec3 right = glm::normalize(glm::cross(m_front, m_worldUp));
-			glm::vec3 up = glm::normalize(glm::cross(right, m_front));
+			m_right = glm::normalize(glm::cross(m_front, m_worldUp));
+			glm::vec3 up = glm::normalize(glm::cross(m_right, m_front));
 
 			glm::vec3 pos = m_position->GetValue();
 			glm::mat4 viewMatrix = glm::lookAt(pos, pos + m_front, up);

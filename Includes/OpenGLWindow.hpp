@@ -27,10 +27,10 @@ namespace Liar
 		virtual void Render();
 
 	public:
-		virtual void SetSize(unsigned int, unsigned int);
 		virtual void KeyInputEvent();
-		virtual void MouseEvent(double, double);
-		virtual void ScrollEvent(double, double);
+        virtual void SetSize(unsigned int, unsigned int);
+        virtual bool MouseEvent(double, double);
+        virtual void ScrollEvent(double, double);
         
     private:
         RenderMgr* m_renderMgr;

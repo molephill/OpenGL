@@ -17,6 +17,9 @@ namespace Liar
 
 	protected:
 		GLFWwindow* m_window;
+        bool m_isFirstMouse;
+        double m_lastMouseX;
+        double m_lastMouseY;
 
 	public:
 		GLFWwindow* GetWindow() { return m_window; };
@@ -27,12 +30,12 @@ namespace Liar
 
 	public:
 		bool Init(std::string, unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
-		virtual void SetSize(unsigned int, unsigned int);
         bool ProcessHandler();
 
 	public:
 		virtual void KeyInputEvent();
-		virtual void MouseEvent(double, double);
+        virtual void SetSize(unsigned int, unsigned int);
+		virtual bool MouseEvent(double, double);
 		virtual void ScrollEvent(double, double);
 	};
 }
