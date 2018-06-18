@@ -21,6 +21,7 @@ namespace Liar
     {
 	public:
 		OpenGLWindow();
+        OpenGLWindow(string title, unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
 
 	protected:
 		virtual bool Created();

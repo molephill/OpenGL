@@ -190,7 +190,7 @@ namespace Liar
     }
 
 	// ==================================================
-	void Camera::Render()
+    void Camera::Render()
 	{
 		m_viewPort->Render();
 

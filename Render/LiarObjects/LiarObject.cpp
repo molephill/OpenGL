@@ -7,6 +7,7 @@
 //
 
 #include "LiarObject.hpp"
+#include "Camera.hpp"
 
 namespace Liar
 {
@@ -15,6 +16,8 @@ namespace Liar
         ,m_rotation(new CRotation())
         ,m_scale(new CScale())
         ,m_isDirty(true)
+        ,m_vao(0), m_vbo(0)
+        ,m_matrix(glm::mat4(1.0))
     {
         
     }
@@ -24,12 +27,20 @@ namespace Liar
         ,m_rotation(new CRotation())
         ,m_scale(new CScale())
         ,m_isDirty(true)
+        ,m_vao(0), m_vbo(0)
+        ,m_matrix(glm::mat4(1.0))
     {
         
     }
     
     LiarObject::~LiarObject()
     {
+        glDeleteVertexArrays(1, &m_vao);
+        glDeleteBuffers(1, &m_vbo);
+//        glDeleteBuffers(1, &m_EBO);
+        
+        delete m_shader;
+        
         delete m_scale;
         delete m_position;
         delete m_rotation;
@@ -138,9 +149,29 @@ namespace Liar
         }
     }
     
-    void LiarObject::Render()
+    void LiarObject::Upload()
     {
         
+    }
+    
+    void LiarObject::Render(Camera* camera)
+    {
+//        if(m_isDirty)
+//        {
+//            glm::mat4 transform(1.0);
+//            m_matrix = glm::translate(transform, m_position->GetValue());
+////            m_matrix = glm::scale(m_matrix, m_scale->GetValue());
+//            m_matrix = glm::rotate(m_matrix, 1.0f, m_rotation->GetValue());
+//            m_isDirty = false;
+//        }
+        
+        float timeValue = glfwGetTime();
+        glm::mat4 transform(1.0);
+//        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+        transform = glm::rotate(transform, timeValue, glm::vec3(1.0f, 0.0f, 0.0f));
+        
+        m_shader->Use();
+        m_shader->SetMat4("projection", camera->GetMatrix()*transform);
     }
     
 }

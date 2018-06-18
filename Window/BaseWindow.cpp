@@ -5,6 +5,11 @@ namespace Liar
     BaseWindow::BaseWindow():m_isFirstMouse(true),m_lastMouseX(0.0),m_lastMouseY(0.0)
 	{
 	}
+    
+    BaseWindow::BaseWindow(std::string title, unsigned int w, unsigned int h)
+    {
+        this->Init(title, w, h);
+    }
 
 	BaseWindow::~BaseWindow()
 	{
@@ -31,7 +36,7 @@ namespace Liar
 		}
 
 		// create success
-		if (!Created())
+		if (!this->Created())
 		{
 			return false;
 		}

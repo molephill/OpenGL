@@ -7,6 +7,7 @@
 
 namespace Liar
 {
+    
     class Camera:
         public LiarObject
 	{
@@ -58,7 +59,7 @@ namespace Liar
         bool GetConstrainPitch() { return m_constrainPitch; };
         void SetConstrainPitch(bool v) { m_constrainPitch = v; };
 
-		virtual void Render();
+        void Render();
 	};
 }
 

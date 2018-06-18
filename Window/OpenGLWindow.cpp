@@ -14,15 +14,21 @@ namespace Liar
 	OpenGLWindow::OpenGLWindow()
 	{
 	}
+    
+    OpenGLWindow::OpenGLWindow(std::string title, unsigned int w, unsigned int h)
+        :Liar::BaseWindow(title, w, h)
+    {
+        
+    }
 
 	bool OpenGLWindow::Created()
 	{
 
 #ifdef DEBUG
-		//    cout << "OpenGL Vendor:" << glGetString(GL_VENDOR) << endl;
-		//    cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << endl;
-		//    cout << "OpenGL Version: " << glGetString(GL_VERSION) << endl;
-		//    cout << "GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+//            cout << "OpenGL Vendor:" << glGetString(GL_VENDOR) << endl;
+//            cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << endl;
+//            cout << "OpenGL Version: " << glGetString(GL_VERSION) << endl;
+//            cout << "GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 #endif
 
 		glfwMakeContextCurrent(m_window);

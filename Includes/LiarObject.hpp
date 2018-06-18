@@ -13,9 +13,12 @@
 #include "Define.h"
 #include "Component.hpp"
 #include "Global.hpp"
+#include "Shader.hpp"
 
 namespace Liar
 {
+    class Camera;
+    
     class LiarObject
     {
     public:
@@ -24,10 +27,18 @@ namespace Liar
         virtual ~LiarObject();
         
     protected:
+        
+        unsigned int m_vbo;
+        unsigned int m_vao;
+        
+        Shader* m_shader;
+        
         CPosition* m_position;
         CRotation* m_rotation;
         CScale* m_scale;
         bool m_isDirty;
+        
+        glm::mat4 m_matrix;
         
     public:
         // ===================================================
@@ -49,13 +60,18 @@ namespace Liar
         virtual void AddScale(const glm::vec3&);
         virtual void AddScale(float, float, float);
         
-        virtual void Render();
+        virtual void Render(Camera* camera);
+        
+    protected:
+        virtual void Upload();
         
     public:
         // ===================================================
-        BaseComponent* GetPosition() { return m_position; };
-        BaseComponent* GetRotation() { return m_rotation; };
-        BaseComponent* GetScale() { return m_scale; };
+        unsigned int GetVBO() { return m_vbo; };
+        
+        glm::vec3& GetPosition() { return m_position->GetValue(); };
+        glm::vec3& GetRotation() { return m_rotation->GetValue(); };
+        glm::vec3& GetScale() { return m_scale->GetValue(); };
         
         float GetX() const { return m_position->GetX(); };
         float GetY() const { return m_position->GetY(); };

@@ -13,6 +13,8 @@
 
 #include "RenderItem.hpp"
 #include "Camera.hpp"
+#include "Light.hpp"
+#include "LiarPrefab.hpp"
 
 namespace Liar
 {
@@ -33,9 +35,11 @@ namespace Liar
 
 	private:
 		Camera* m_camera;
+        Light* m_mainLight;
         
     private:
         RenderItem* m_render;
+        Cube* m_cube;
     };
 }
 

@@ -13,6 +13,7 @@ namespace Liar
 	{
 	public:
 		BaseWindow();
+        BaseWindow(std::string, unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
 		virtual ~BaseWindow();
 
 	protected:

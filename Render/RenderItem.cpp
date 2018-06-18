@@ -80,7 +80,7 @@ namespace Liar
 			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.fs");
 		m_texture1 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
 		m_texture2 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
-#endif // WIN_PLAT_FORM
+#endif // __APPLE__
         
         m_shader->Use();
         m_shader->SetInt("texture1", 0);
