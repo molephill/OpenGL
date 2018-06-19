@@ -94,8 +94,8 @@ namespace Liar
         m_shader->Use();
         //    m_shader->SetFloat("xOffset", 0.5f);
         float timeValue = glfwGetTime();
-        float greenValue = (sin(timeValue)/2.0f) + 0.5f;
-        m_shader->SetFloat("greenChange", greenValue);
+        float mixRate = (sin(timeValue)/2.0f) + 0.5f;
+        m_shader->SetFloat("mixRate", mixRate);
 
 		m_shader->SetMat4("projection", camera->GetPerspective());
 		m_shader->SetMat4("view", camera->GetViewMatrix());

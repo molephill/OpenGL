@@ -32,7 +32,7 @@ namespace Liar
 		m_mainLight = new Light();
 		m_mainLight->SetPosition(1.2f, 1.0f, 2.0f);
 		m_mainLight->SetScale(0.2f);
-#ifdef DEBUG
+#ifdef RENDER_DEBUG
         m_mainLight->SetBuffers(m_cube->GetVBO());
 #endif
     }

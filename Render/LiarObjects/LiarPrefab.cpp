@@ -86,8 +86,8 @@ namespace Liar
 		m_texture1 = new Texture2D("E:/c++/VSOpenGL/OpenGL/Assets/Images/wall.jpg");
 		m_texture2 = new Texture2D("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
 #else
-		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.vs",
-			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.fs");
+		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/light.vs",
+			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/light.fs");
 		m_texture1 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
 		m_texture2 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
 #endif // __APPLE__
@@ -101,9 +101,13 @@ namespace Liar
     {
 		m_texture1->Use(GL_TEXTURE0);
 		m_texture2->Use(GL_TEXTURE1);
-		float timeValue = glfwGetTime();
+        float timeValue = Global::lastFrame;
 		SetRotation(timeValue, timeValue, 0.0f);
         LiarObject::Render(rmg);
+        
+        float mixRate = (sin(timeValue)/2.0f) + 0.5f;
+        m_shader->SetFloat("mixRate", mixRate);
+        
 		m_shader->SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		m_shader->SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
 

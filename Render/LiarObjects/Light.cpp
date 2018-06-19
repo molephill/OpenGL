@@ -33,13 +33,13 @@ namespace Liar
     void Light::Render(Liar::RenderMgr* rmg)
     {
 		LiarObject::Render(rmg);
-#ifdef DEBUG
+#ifdef RENDER_DEBUG
         glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(m_vao);
 #endif
     }
     
-#ifdef DEBUG
+#ifdef RENDER_DEBUG
     void Light::SetBuffers(unsigned int vbo)
     {
         glBindBuffer(GL_ARRAY_BUFFER, vbo);

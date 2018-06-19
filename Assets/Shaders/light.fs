@@ -13,6 +13,8 @@ uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
 
+uniform float mixRate;
+
 void main()
 {
     // ambient
@@ -33,5 +35,5 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;  
         
     vec3 result = (ambient + diffuse + specular) * objectColor;
-    FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 1) * vec4(result, 1.0);
+    FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), mixRate) * vec4(result, 1.0);
 } 
