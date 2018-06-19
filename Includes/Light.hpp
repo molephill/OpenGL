@@ -21,7 +21,7 @@ namespace Liar
         ~Light();
         
     public:
-        virtual void Render(Camera* camera);
+        virtual void Render(Liar::RenderMgr*);
         // show
 #ifdef DEBUG
         void SetBuffers(unsigned int);

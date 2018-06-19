@@ -30,7 +30,7 @@ namespace Liar
         BaseTexture* m_texture2;
         
     public:
-        virtual void Render(Camera* camera);
+        virtual void Render(Liar::RenderMgr*);
     };
 }
 

@@ -32,6 +32,11 @@ const unsigned int WINDOW_H = 600;
 // 渲染模式
 //#define RENDER_MOD_LINE 1;
 
+//
+//#ifndef __APPLE__
+//#define DEBUG 1
+//#endif
+
 // 相机默认参数
 const float CAMERA_YAW		= -90.0f;
 const float CAMERA_PITCH	= 0.0f;

@@ -16,7 +16,6 @@ namespace Liar
 	RenderMgr::RenderMgr()
 	{
 		m_camera = new Camera(0.0f, 0.0f, 3.0f);
-        m_mainLight = new Light();
 		glEnable(GL_DEPTH_TEST);
 	}
 
@@ -28,12 +27,14 @@ namespace Liar
     
     void RenderMgr::Init()
     {
-//        m_render = new RenderItem();
-//        m_render->Init();
+
         m_cube = new Cube();
-//#ifdef DEBUG
-//        m_mainLight->SetBuffers(m_cube->GetVBO());
-//#endif
+		m_mainLight = new Light();
+		m_mainLight->SetPosition(1.2f, 1.0f, 2.0f);
+		m_mainLight->SetScale(0.2f);
+#ifdef DEBUG
+        m_mainLight->SetBuffers(m_cube->GetVBO());
+#endif
     }
 
 	void RenderMgr::SetSize(unsigned int w, unsigned int h)
@@ -49,10 +50,7 @@ namespace Liar
 #endif
 		// 先计算视角
 		m_camera->Render();
-        
-        m_mainLight->Render(m_camera);
-        
-        m_cube->Render(m_camera);
-        
+        m_mainLight->Render(this);
+        m_cube->Render(this);
     }
 }

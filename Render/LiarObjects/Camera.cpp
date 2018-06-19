@@ -7,7 +7,6 @@ namespace Liar
 		, m_viewPort(new ViewPort())
 		, m_worldUp(glm::vec3(0.0f, 1.0f, 0.0f))
 		, m_front(glm::vec3(0.0f, 0.0f, -1.0f))
-		, m_mixMatrix(glm::mat4(1.0))
         , m_constrainPitch(true)
 	{
         SetRotation(CAMERA_PITCH, CAMERA_YAW, 0.0f);
@@ -17,7 +16,6 @@ namespace Liar
         , m_viewPort(new ViewPort())
         , m_worldUp(glm::vec3(0.0f, 1.0f, 0.0f))
         , m_front(glm::vec3(0.0f, 0.0f, -1.0f))
-        , m_mixMatrix(glm::mat4(1.0))
         , m_constrainPitch(true)
     {
         SetRotation(CAMERA_PITCH, CAMERA_YAW, 0.0f);
@@ -189,6 +187,16 @@ namespace Liar
         }
     }
 
+	glm::mat4& Camera::GetViewMatrix()
+	{
+		return m_matrix;
+	}
+
+	glm::mat4& Camera::GetPerspective()
+	{
+		return m_viewPort->GetViewMatrix();
+	}
+
 	// ==================================================
     void Camera::Render()
 	{
@@ -196,9 +204,6 @@ namespace Liar
 
 		if (m_isDirty)
 		{
-			// ========================== prespectiveMatrix ===============
-			glm::mat4 projection = m_viewPort->GetPerspective();
-
 			// =============================== viewMatrix =================
 			float pitch = m_rotation->GetX();
 			float yaw = m_rotation->GetY();
@@ -213,13 +218,10 @@ namespace Liar
 			glm::vec3 up = glm::normalize(glm::cross(m_right, m_front));
 
 			glm::vec3 pos = m_position->GetValue();
-//            glm::mat4 viewMatrix = glm::lookAt(pos, pos + m_front, up);
-            glm::mat4 viewMatrix = LiarUtil::LookAt(pos, pos + m_front, up);
+			//            glm::mat4 viewMatrix = glm::lookAt(pos, pos + m_front, up);
+			m_matrix = LiarUtil::LookAt(pos, pos + m_front, up);
 
 			// =============================== viewMatrix =================
-
-			m_mixMatrix = projection * viewMatrix;
-
 			m_isDirty = false;
 		}
 	}

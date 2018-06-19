@@ -28,6 +28,7 @@ namespace Liar
 		void Init();
 
 		Camera* GetCamera() { return m_camera; };
+		Light* GetMainLight() { return m_mainLight; };
 
 		void SetSize(unsigned int, unsigned int);
         void Render();

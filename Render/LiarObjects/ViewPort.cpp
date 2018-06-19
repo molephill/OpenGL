@@ -7,7 +7,8 @@ namespace Liar
 		, m_backRed(0.0f), m_backGreen(0.0f), m_backBlue(0.0f)
 		, m_backAlpha(1.0f)
 		, m_cameraType(CAMERA_TYPE::PERPECTIVE)
-		, m_cameraParams(glm::vec3(0.1, 100.0f, CAMERA_FOV))
+		, m_cameraParams(glm::vec3(0.1f, 100.0f, CAMERA_FOV))
+		, m_isDirty(true)
 	{
 	}
 
@@ -16,7 +17,8 @@ namespace Liar
 		, m_backRed(0.0f), m_backGreen(0.0f), m_backBlue(0.0f)
 		, m_backAlpha(1.0f)
 		, m_cameraType(CAMERA_TYPE::PERPECTIVE)
-		, m_cameraParams(glm::vec3(0.1, 100.0f, CAMERA_FOV))
+		, m_cameraParams(glm::vec3(0.1f, 100.0f, CAMERA_FOV))
+		, m_isDirty(true)
 	{
 	}
 
@@ -26,6 +28,7 @@ namespace Liar
 		, m_backAlpha(1.0f)
 		, m_cameraType(CAMERA_TYPE::PERPECTIVE)
 		, m_cameraParams(glm::vec3(0.1, 100.0f, CAMERA_FOV))
+		, m_isDirty(true)
 	{
 	}
 
@@ -41,6 +44,7 @@ namespace Liar
 		{
 			m_width = val.x;
 			m_height = val.y;
+			m_isDirty = true;
 			return true;
 		}
 		else
@@ -55,6 +59,7 @@ namespace Liar
 		{
 			m_width = w;
 			m_height = h;
+			m_isDirty = true;
 			return true;
 		}
 		else
@@ -96,6 +101,7 @@ namespace Liar
 			m_cameraParams.x = n;
 			m_cameraParams.y = f;
 			m_cameraParams.z = fov;
+			m_isDirty = true;
 			return true;
 		}
 		else
@@ -109,6 +115,7 @@ namespace Liar
         if(m_cameraParams.z != fov)
         {
             m_cameraParams.z = fov;
+			m_isDirty = true;
             return true;
         }
         else
@@ -122,6 +129,7 @@ namespace Liar
         if(m_cameraType != type)
         {
             m_cameraType = type;
+			m_isDirty = true;
             return true;
         }
         else
@@ -130,16 +138,21 @@ namespace Liar
         }
     }
 
-	glm::mat4 ViewPort::GetPerspective()
+	glm::mat4& ViewPort::GetViewMatrix()
 	{
-		return m_cameraType == CAMERA_TYPE::PERPECTIVE ?
-			glm::perspective(glm::radians(m_cameraParams.z), GetAspect(), m_cameraParams.x, m_cameraParams.y)
-			: glm::ortho(0.0f, static_cast<float>(m_width), 0.0f, static_cast<float>(m_height), m_cameraParams.x, m_cameraParams.y);
+		return m_matrix;
 	}
 
 	// ==================================================
 	void ViewPort::Render()
 	{
+		if (m_isDirty)
+		{
+			m_matrix = m_cameraType == CAMERA_TYPE::PERPECTIVE ?
+				glm::perspective(glm::radians(m_cameraParams.z), GetAspect(), m_cameraParams.x, m_cameraParams.y)
+				: glm::ortho(0.0f, static_cast<float>(m_width), 0.0f, static_cast<float>(m_height), m_cameraParams.x, m_cameraParams.y);
+			m_isDirty = false;
+		}
 		glClearColor(m_backRed, m_backGreen, m_backBlue, m_backAlpha);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}

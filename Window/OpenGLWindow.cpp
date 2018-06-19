@@ -79,7 +79,8 @@ namespace Liar
 	bool OpenGLWindow::MouseEvent(double x, double y)
 	{
         bool inWindow = BaseWindow::MouseEvent(x, y);
-        if(inWindow)
+		int state = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT);
+        if(inWindow && state == GLFW_PRESS)
         {
             if(m_isFirstMouse)
             {
@@ -89,11 +90,12 @@ namespace Liar
             {
                 Camera* mainCamera = m_renderMgr->GetCamera();
                 
-                float offsetx = x - m_lastMouseX;
-                float offsety = y - m_lastMouseY;
+                double offsetx = x - m_lastMouseX;
+				double offsety = y - m_lastMouseY;
                 
                 offsetx *= Global::mouseSensitivity;
                 offsety *= Global::mouseSensitivity;
+
                 mainCamera->AddRotation(offsetx, offsety, 0.0f);
             }
             

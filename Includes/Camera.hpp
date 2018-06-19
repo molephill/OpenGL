@@ -24,7 +24,7 @@ namespace Liar
 		glm::vec3 m_worldUp;
         
 		// 矩阵
-		glm::mat4 m_mixMatrix;
+		glm::mat4 m_matrix;
         
         // 限定
         bool m_constrainPitch;
@@ -55,7 +55,8 @@ namespace Liar
 	public:
 		// ===================================================
 		ViewPort* GetViewPort() { return m_viewPort; };
-		glm::mat4& GetMatrix() { return m_mixMatrix; };
+		glm::mat4& GetPerspective();
+		glm::mat4& GetViewMatrix();
         bool GetConstrainPitch() { return m_constrainPitch; };
         void SetConstrainPitch(bool v) { m_constrainPitch = v; };
 

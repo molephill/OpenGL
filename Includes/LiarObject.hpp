@@ -14,10 +14,11 @@
 #include "Component.hpp"
 #include "Global.hpp"
 #include "Shader.hpp"
+#include "LiarUtil.hpp"
 
 namespace Liar
 {
-    class Camera;
+    class RenderMgr;
     
     class LiarObject
     {
@@ -55,12 +56,13 @@ namespace Liar
         virtual void AddRotation(float, float, float);
         // ===================================================
         virtual void SetScale(const glm::vec3&);
+		virtual void SetScale(float);
         virtual void SetScale(float, float, float);
         // ===================================================
         virtual void AddScale(const glm::vec3&);
         virtual void AddScale(float, float, float);
         
-        virtual void Render(Camera* camera);
+        virtual void Render(Liar::RenderMgr*);
         
     protected:
         virtual void Upload();

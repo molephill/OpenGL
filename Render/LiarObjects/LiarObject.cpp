@@ -7,7 +7,7 @@
 //
 
 #include "LiarObject.hpp"
-#include "Camera.hpp"
+#include "RenderMgr.hpp"
 
 namespace Liar
 {
@@ -123,6 +123,14 @@ namespace Liar
             m_isDirty = true;
         }
     }
+
+	void LiarObject::SetScale(float v)
+	{
+		if (m_scale->SetValue(v, v, v))
+		{
+			m_isDirty = true;
+		}
+	}
     
     void LiarObject::SetScale(float x, float y, float z)
     {
@@ -154,24 +162,27 @@ namespace Liar
         
     }
     
-    void LiarObject::Render(Camera* camera)
+    void LiarObject::Render(Liar::RenderMgr* rmg)
     {
-//        if(m_isDirty)
-//        {
-//            glm::mat4 transform(1.0);
-//            m_matrix = glm::translate(transform, m_position->GetValue());
-////            m_matrix = glm::scale(m_matrix, m_scale->GetValue());
-//            m_matrix = glm::rotate(m_matrix, 1.0f, m_rotation->GetValue());
-//            m_isDirty = false;
-//        }
+        if(m_isDirty)
+        {
+			LiarUtil::RestMatrix(m_matrix);
+            m_matrix = glm::translate(m_matrix, m_position->GetValue());
+            m_matrix = glm::scale(m_matrix, m_scale->GetValue());
+			Global::SetVecX(1.0f);
+			m_matrix = glm::rotate(m_matrix, m_rotation->GetX(), Global::commonVec3);
+			Global::SetVecY(1.0f);
+			m_matrix = glm::rotate(m_matrix, m_rotation->GetY(), Global::commonVec3);
+			Global::SetVecZ(1.0f);
+			m_matrix = glm::rotate(m_matrix, m_rotation->GetZ(), Global::commonVec3);
+            m_isDirty = false;
+        }
         
-        float timeValue = glfwGetTime();
-        glm::mat4 transform(1.0);
-//        transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-        transform = glm::rotate(transform, timeValue, glm::vec3(1.0f, 0.0f, 0.0f));
-        
+		Camera* camera = rmg->GetCamera();
         m_shader->Use();
-        m_shader->SetMat4("projection", camera->GetMatrix()*transform);
+		m_shader->SetMat4("model", m_matrix);
+		m_shader->SetMat4("projection", camera->GetPerspective());
+		m_shader->SetMat4("view", camera->GetViewMatrix());
     }
     
 }

@@ -97,19 +97,20 @@ namespace Liar
         float greenValue = (sin(timeValue)/2.0f) + 0.5f;
         m_shader->SetFloat("greenChange", greenValue);
 
-		m_shader->SetMat4("projection", camera->GetMatrix());
+		m_shader->SetMat4("projection", camera->GetPerspective());
+		m_shader->SetMat4("view", camera->GetViewMatrix());
         
         glm::mat4 transform(1.0);
         transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
         transform = glm::rotate(transform, timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
-        m_shader->SetMat4("aTransform", transform);
+        m_shader->SetMat4("model", transform);
        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         transform = glm::mat4(1.0);
         transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
         float scaleAmount = sin(glfwGetTime());
         transform = glm::scale(transform, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
-        m_shader->SetMat4("aTransform", transform);
+        m_shader->SetMat4("model", transform);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         glBindVertexArray(m_VAO);

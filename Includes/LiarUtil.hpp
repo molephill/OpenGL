@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include <glm.hpp>
+#include "Component.hpp"
 
 namespace Liar
 {
@@ -19,6 +20,7 @@ namespace Liar
     {
     public:
         static glm::mat4 LookAt(const glm::vec3&, const glm::vec3&, const glm::vec3&);
+		static void RestMatrix(glm::mat4&);
     };
 }
 

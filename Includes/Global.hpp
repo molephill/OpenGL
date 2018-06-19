@@ -10,6 +10,7 @@
 #define Global_hpp
 
 #include <stdio.h>
+#include <glm.hpp>
 
 namespace Liar
 {
@@ -27,6 +28,13 @@ namespace Liar
         
         static WindowActiveMgr* windowActive;
         static Stage* mainStage;
+
+		static glm::vec3 commonVec3;
+
+	public:
+		static void SetVecX(float);
+		static void SetVecY(float);
+		static void SetVecZ(float);
     };
 }
 

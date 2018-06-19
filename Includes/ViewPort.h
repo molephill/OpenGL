@@ -25,9 +25,13 @@ namespace Liar
 		float m_backBlue;
 		float m_backAlpha;
 
+		//
+		bool m_isDirty;
+
 		// 其他参数
 		CAMERA_TYPE m_cameraType;
 		glm::vec3 m_cameraParams;
+		glm::mat4 m_matrix;
 
 	public:
 		bool SetSize(const glm::uvec2&);
@@ -42,7 +46,7 @@ namespace Liar
 		// ===================================================
 		bool SetViewParams(float, float, float fov = CAMERA_FOV, CAMERA_TYPE type = CAMERA_TYPE::PERPECTIVE);
 		// ==================================================
-		glm::mat4 GetPerspective();
+		glm::mat4& GetViewMatrix();
 		// ==================================================
 		float GetAspect() { return static_cast<float>(m_width / m_height); };
 		unsigned int GetWidth() { return m_width; };
