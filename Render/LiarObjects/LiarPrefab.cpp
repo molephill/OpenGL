@@ -97,24 +97,20 @@ namespace Liar
 		m_shader->SetInt("texture2", 1);
     }
     
-    void Cube::Render(Liar::RenderMgr* rmg)
+    void Cube::Render(Liar::RenderMgr* rmg, bool calcInvest)
     {
 		m_texture1->Use(GL_TEXTURE0);
 		m_texture2->Use(GL_TEXTURE1);
         float timeValue = Global::lastFrame;
 		SetRotation(timeValue, timeValue, 0.0f);
-        LiarObject::Render(rmg);
+        LiarObject::Render(rmg, calcInvest);
         
         float mixRate = (sin(timeValue)/2.0f) + 0.5f;
         m_shader->SetFloat("mixRate", mixRate);
-        
-		m_shader->SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		m_shader->SetVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
-		Camera* camera = rmg->GetCamera();
-		Light* light = rmg->GetMainLight();
-		m_shader->SetVec3("lightPos", light->GetPosition());
-		m_shader->SetVec3("viewPos", camera->GetPosition());
+		Camera* camera = rmg->GetCamera();        
+		m_shader->SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		
 
         glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(m_vao);

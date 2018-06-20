@@ -7,10 +7,13 @@
 //
 
 #include "Light.hpp"
+#include "RenderMgr.hpp"
 
 namespace Liar
 {
     Light::Light()
+		:m_ambientStrength(0.1f), m_specularStrength(0.5f)
+		, m_specularShininess(32), m_color(glm::vec3(1.0f, 1.0f, 1.0f))
     {
         
         glGenVertexArrays(1, &m_vao);
@@ -29,10 +32,33 @@ namespace Liar
     {
         
     }
+
+	void Light::SetColor(float r, float g, float b)
+	{
+		m_color.x = r;
+		m_color.y = g;
+		m_color.z = b;
+	}
+
+	bool Light::CalcMatrix(Liar::RenderMgr* rmg, bool calcInvest)
+	{
+		if (LiarObject::CalcMatrix(rmg, calcInvest))
+		{
+			Camera* camera = rmg->GetCamera();
+			m_viewPos = glm::vec3(camera->GetViewMatrix() * glm::vec4(m_position->GetValue(), 1.0));
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
     
-    void Light::Render(Liar::RenderMgr* rmg)
+    void Light::Render(Liar::RenderMgr* rmg, bool calcInvest)
     {
-		LiarObject::Render(rmg);
+		CalcMatrix(rmg, calcInvest);
+		LiarObject::SetBaseMatrix(rmg);
+
 #ifdef RENDER_DEBUG
         glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(m_vao);

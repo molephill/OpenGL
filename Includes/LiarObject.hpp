@@ -39,7 +39,10 @@ namespace Liar
         CScale* m_scale;
         bool m_isDirty;
         
+		// model matrix
         glm::mat4 m_matrix;
+		// invest matrix
+		glm::mat4 m_investMatrix;
         
     public:
         // ===================================================
@@ -62,7 +65,9 @@ namespace Liar
         virtual void AddScale(const glm::vec3&);
         virtual void AddScale(float, float, float);
         
-        virtual void Render(Liar::RenderMgr*);
+		virtual bool CalcMatrix(Liar::RenderMgr*, bool);
+		virtual void SetBaseMatrix(Liar::RenderMgr*);
+        virtual void Render(Liar::RenderMgr*, bool calcInvest = true);
         
     protected:
         virtual void Upload();

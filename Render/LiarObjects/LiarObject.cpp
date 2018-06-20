@@ -161,28 +161,69 @@ namespace Liar
     {
         
     }
-    
-    void LiarObject::Render(Liar::RenderMgr* rmg)
-    {
-        if(m_isDirty)
-        {
+
+	bool LiarObject::CalcMatrix(Liar::RenderMgr* rmg, bool calcInvest)
+	{
+		if (m_isDirty)
+		{
+			Camera* camera = rmg->GetCamera();
+			glm::mat4& viewMatrix = camera->GetViewMatrix();
+
 			LiarUtil::RestMatrix(m_matrix);
-            m_matrix = glm::translate(m_matrix, m_position->GetValue());
-            m_matrix = glm::scale(m_matrix, m_scale->GetValue());
+			m_matrix = glm::translate(m_matrix, m_position->GetValue());
+			m_matrix = glm::scale(m_matrix, m_scale->GetValue());
 			Global::SetVecX(1.0f);
 			m_matrix = glm::rotate(m_matrix, m_rotation->GetX(), Global::commonVec3);
 			Global::SetVecY(1.0f);
 			m_matrix = glm::rotate(m_matrix, m_rotation->GetY(), Global::commonVec3);
 			Global::SetVecZ(1.0f);
 			m_matrix = glm::rotate(m_matrix, m_rotation->GetZ(), Global::commonVec3);
-            m_isDirty = false;
-        }
-        
+
+			if (calcInvest)
+			{
+				// calc world invest
+				//m_investMatrix = glm::inverse(m_matrix);
+
+				// calc view invest
+				m_investMatrix = glm::inverse(viewMatrix * m_matrix);
+			}
+
+			m_isDirty = false;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	void LiarObject::SetBaseMatrix(Liar::RenderMgr* rmg)
+	{
 		Camera* camera = rmg->GetCamera();
-        m_shader->Use();
+		m_shader->Use();
 		m_shader->SetMat4("model", m_matrix);
 		m_shader->SetMat4("projection", camera->GetPerspective());
 		m_shader->SetMat4("view", camera->GetViewMatrix());
+	}
+    
+    void LiarObject::Render(Liar::RenderMgr* rmg, bool calcInvest)
+    {
+
+		CalcMatrix(rmg, calcInvest);
+		SetBaseMatrix(rmg);
+
+		if (calcInvest)
+		{
+			m_shader->SetMat4("invest", m_investMatrix);
+		}
+
+		Camera* camera = rmg->GetCamera();
+		Light* light = rmg->GetMainLight();
+		m_shader->SetVec3("lightColor", light->GetColor());
+		m_shader->SetVec3("lightPos", light->GetViewPos());
+		m_shader->SetVec3("viewPos", camera->GetPosition());
+		m_shader->SetFloat("ambientStrength", light->GetAmbientStrength());
+		m_shader->SetFloat("specularStrength", light->GetSpecularStrength());
+		m_shader->SetInt("specularShininess", light->GetSpecularShininess());
     }
     
 }

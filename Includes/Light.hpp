@@ -19,11 +19,36 @@ namespace Liar
     public:
         Light();
         ~Light();
+
+	private:
+		float m_ambientStrength;
+		float m_specularStrength;
+		int m_specularShininess;
+		glm::vec3 m_color;
+
+		// view pos
+		glm::vec3 m_viewPos;
+
+	public:
+		void SetColor(float, float, float);
+		void SetColor(const glm::vec3& v) { m_color = v; };
+		void SetAmbientStrength(float v) { m_ambientStrength = v; };
+		void SetSpecularStrength(float v) { m_specularStrength = v; };
+		void SetSpecularShininess(unsigned int v) { m_specularShininess = v; };
+
+		glm::vec3& GetColor() { return m_color; };
+		float GetAmbientStrength() { return m_ambientStrength; };
+		float GetSpecularStrength() { return m_specularStrength; };
+		int GetSpecularShininess() { return m_specularShininess; };
+
+		// get view_pos
+		glm::vec3& GetViewPos() { return m_viewPos; };
         
     public:
-        virtual void Render(Liar::RenderMgr*);
+		virtual bool CalcMatrix(Liar::RenderMgr*, bool);
+        virtual void Render(Liar::RenderMgr*, bool calcInvest = false);
         // show
-#ifdef DEBUG
+#ifdef RENDER_DEBUG
         void SetBuffers(unsigned int);
 #endif
     };
