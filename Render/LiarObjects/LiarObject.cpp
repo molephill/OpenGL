@@ -196,8 +196,10 @@ namespace Liar
 		return false;
 	}
 
-	void LiarObject::SetBaseMatrix(Liar::RenderMgr* rmg)
+	void LiarObject::SetBaseMatrix(Liar::RenderMgr* rmg, bool calcInvest)
 	{
+		CalcMatrix(rmg, calcInvest);
+
 		Camera* camera = rmg->GetCamera();
 		m_shader->Use();
 		m_shader->SetMat4("model", m_matrix);
@@ -207,10 +209,7 @@ namespace Liar
     
     void LiarObject::Render(Liar::RenderMgr* rmg, bool calcInvest)
     {
-
-		CalcMatrix(rmg, calcInvest);
-		SetBaseMatrix(rmg);
-
+		SetBaseMatrix(rmg, calcInvest);
 		if (calcInvest)
 		{
 			m_shader->SetMat4("invest", m_investMatrix);

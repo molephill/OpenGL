@@ -56,8 +56,7 @@ namespace Liar
     
     void Light::Render(Liar::RenderMgr* rmg, bool calcInvest)
     {
-		CalcMatrix(rmg, calcInvest);
-		LiarObject::SetBaseMatrix(rmg);
+		LiarObject::SetBaseMatrix(rmg, calcInvest);
 
 #ifdef RENDER_DEBUG
         glDrawArrays(GL_TRIANGLES, 0, 36);

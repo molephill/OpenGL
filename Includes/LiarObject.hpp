@@ -66,7 +66,7 @@ namespace Liar
         virtual void AddScale(float, float, float);
         
 		virtual bool CalcMatrix(Liar::RenderMgr*, bool);
-		virtual void SetBaseMatrix(Liar::RenderMgr*);
+		virtual void SetBaseMatrix(Liar::RenderMgr*, bool);
         virtual void Render(Liar::RenderMgr*, bool calcInvest = true);
         
     protected:
