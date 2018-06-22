@@ -12,57 +12,80 @@ namespace Liar
 {
     AssetsMgr::AssetsMgr()
     {
-        m_textureDatas = new vector<TextureData*>();
+        m_textureDatas = new vector<LiarTextureData*>();
     }
     
     AssetsMgr::~AssetsMgr()
     {
-        for(vector<TextureData*>::iterator iter = m_textureDatas->begin(); iter != m_textureDatas->end(); iter++)
+        for(vector<LiarTextureData*>::iterator iter = m_textureDatas->begin(); iter != m_textureDatas->end(); iter++)
         {
             delete *iter;
         }
     }
     
-    void AssetsMgr::LoadTextureData(std::string& path, TDCallFun ParseData, int rgb_mod)
+    LiarTextureData* AssetsMgr::GetTextureData(std::string& path, int rgbMod)
     {
-        
-        for(vector<TextureData*>::const_iterator citer = m_textureDatas->begin(); citer != m_textureDatas->end(); citer++)
+        for(vector<LiarTextureData*>::const_iterator citer = m_textureDatas->begin(); citer != m_textureDatas->end(); citer++)
         {
             if((*citer)->CheckSamePath(path))
             {
-                ParseData(*citer);
-                return;
-            }
-        }
-        
-        TextureData* data = new TextureData(path, rgb_mod);
-        m_textureDatas->push_back(data);
-        ParseData(data);
-    }
-    
-    TextureData* AssetsMgr::GetTextureData(std::string& path) const
-    {
-        for(vector<TextureData*>::const_iterator citer = m_textureDatas->begin(); citer != m_textureDatas->end(); citer++)
-        {
-            if((*citer)->CheckSamePath(path))
-            {
+                (*citer)->IncRefCount();
                 return *citer;
             }
         }
-        return nullptr;
+        
+        LiarTextureData* data = new LiarTextureData(path, rgbMod);
+        m_textureDatas->push_back(data);
+        
+        return data;
     }
     
-    void AssetsMgr::ReleaseData(std::string& path)
+    void AssetsMgr::ReleaseTextureData(const std::string& path)
     {
-        for(vector<TextureData*>::iterator iter = m_textureDatas->begin(); iter != m_textureDatas->end(); iter++)
+        for(vector<LiarTextureData*>::iterator iter = m_textureDatas->begin(); iter != m_textureDatas->end();)
         {
 			if ((*iter)->CheckSamePath(path))
             {
-				int refCount = (*iter)->Release();
-				if ( refCount <= 0)
-				{
-					m_textureDatas->erase(iter);
-				}
+                int refCount = (*iter)->DecRefCount();
+                if(refCount <= 0)
+                {
+                    delete *iter;
+                    iter = m_textureDatas->erase(iter);
+                }
+                else
+                {
+                    ++iter;
+                }
+            }
+            else
+            {
+                ++iter;
+            }
+        }
+    }
+    
+    void AssetsMgr::ReleaseTextureData(Liar::LiarTextureData* check)
+    {
+        if(!check) return;
+        
+        for(vector<LiarTextureData*>::iterator iter = m_textureDatas->begin(); iter != m_textureDatas->end();)
+        {
+            if ((*iter) == check)
+            {
+                int refCount = (*iter)->DecRefCount();
+                if(refCount <= 0)
+                {
+                    delete *iter;
+                    iter = m_textureDatas->erase(iter);
+                }
+                else
+                {
+                    ++iter;
+                }
+            }
+            else
+            {
+                ++iter;
             }
         }
     }

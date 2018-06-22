@@ -14,7 +14,7 @@
 #include "Shader.hpp"
 #include "AssetsMgr.hpp"
 
-#include "Texture2D.hpp"
+#include "Texture.hpp"
 #include "Camera.hpp"
 
 //#include <glad/glad.h>
@@ -33,8 +33,8 @@ namespace Liar
         unsigned int m_EBO;
         
         Shader* m_shader;
-        BaseTexture* m_texture1;
-        BaseTexture* m_texture2;
+        Texture2D* m_texture1;
+        Texture2D* m_texture2;
         
     private:
         void InitBase();

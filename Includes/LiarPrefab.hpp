@@ -14,7 +14,7 @@
 
 #include "Shader.hpp"
 #include "AssetsMgr.hpp"
-#include "Texture2D.hpp"
+#include "Texture.hpp"
 
 namespace Liar
 {
@@ -26,8 +26,8 @@ namespace Liar
         virtual void Upload();
         
     private:
-        BaseTexture* m_texture1;
-        BaseTexture* m_texture2;
+        Texture2D* m_texture1;
+        Texture2D* m_texture2;
         
     public:
         virtual void Render(Liar::RenderMgr*, bool calcInvest = true);

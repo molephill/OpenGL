@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 
-#include "TextureData.hpp"
+#include "LiarAssetsData.hpp"
 
 #ifndef __APPLE__
 #include <functional>
@@ -26,9 +26,6 @@ using namespace std;
 
 namespace Liar
 {
-    // 定义回调函数
-    typedef std::function<void(TextureData*)> TDCallFun;
-    
     class AssetsMgr
     {
     public:
@@ -75,12 +72,12 @@ namespace Liar
 		static InstanceConfirm m_confirm;  //最后保证main函数之前完成初始化
         
     private:
-        std::vector<TextureData*>* m_textureDatas;
+        std::vector<LiarTextureData*>* m_textureDatas;
         
     public:
-        void LoadTextureData(string&, TDCallFun, int rgb_mod = GL_RGB);
-        void ReleaseData(string&);
-        TextureData* GetTextureData(string&) const;
+        void ReleaseTextureData(const string&);
+        void ReleaseTextureData(LiarTextureData*);
+        LiarTextureData* GetTextureData(string&, int rgbMod = GL_RGB);
     };
 
 	

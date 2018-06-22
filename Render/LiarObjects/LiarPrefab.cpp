@@ -107,11 +107,8 @@ namespace Liar
         
         float mixRate = (sin(timeValue)/2.0f) + 0.5f;
         m_shader->SetFloat("mixRate", mixRate);
-
-		Camera* camera = rmg->GetCamera();        
 		m_shader->SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		
-
         glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(m_vao);
     }
