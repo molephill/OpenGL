@@ -13,7 +13,7 @@
 
 #include <string>
 
-#include "TextureDataMgr.hpp"
+#include "AssetsMgr.hpp"
 
 namespace Liar
 {

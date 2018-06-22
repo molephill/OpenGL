@@ -10,7 +10,7 @@
 
 namespace Liar
 {
-    TextureData::TextureData(std::string& path, int rgb_type):m_rgb_mod(rgb_type)
+    TextureData::TextureData(std::string& path, int rgb_type):m_rgb_mod(rgb_type), m_refCount(1)
     {
         m_path = path;
         Load();

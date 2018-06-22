@@ -13,7 +13,7 @@
 #include "LiarObject.hpp"
 
 #include "Shader.hpp"
-#include "TextureDataMgr.hpp"
+#include "AssetsMgr.hpp"
 #include "Texture2D.hpp"
 
 namespace Liar

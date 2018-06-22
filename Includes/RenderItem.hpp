@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #include "Shader.hpp"
-#include "TextureDataMgr.hpp"
+#include "AssetsMgr.hpp"
 
 #include "Texture2D.hpp"
 #include "Camera.hpp"

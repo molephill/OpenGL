@@ -36,14 +36,19 @@ namespace Liar
         int m_rgb_mod;
         
         unsigned char* m_data;
+		int m_refCount;
         
     public:
         int GetWidth() const {return m_width;};
         int GetHeight() const {return m_height;};
         int GetNrChannels() const {return m_nrChannels;};
         int GetRgbMod() const {return m_rgb_mod;};
-        std::string GetPath() const {return m_path;};
         unsigned char* GetData() const {return m_data;};
+		bool CheckSamePath(const std::string& val) { return val == m_path; };
+
+	public:
+		void IncRefCount() { ++m_refCount; };
+		int Release() { return --m_refCount; };
         
     private:
         bool Load();
