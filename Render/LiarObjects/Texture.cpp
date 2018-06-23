@@ -78,7 +78,6 @@ namespace Liar
     
     void Texture2D::Use(Shader* shader, int index)
     {
-		shader->SetFloat("material.shininess", m_shininess);
         glActiveTexture(index);
         glBindTexture(GL_TEXTURE_2D, m_id);
     }

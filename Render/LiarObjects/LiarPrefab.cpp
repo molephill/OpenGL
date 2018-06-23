@@ -81,20 +81,20 @@ namespace Liar
         glEnableVertexAttribArray(2);
         
 #ifndef __APPLE__
-		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/light.vs",
-							  "E:/c++/VSOpenGL/OpenGL/Assets/Shaders/light.fs");
-		m_texture1 = new LiarMaterial("E:/c++/VSOpenGL/OpenGL/Assets/Images/wall.jpg");
-		m_texture2 = new LiarMaterial("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/material.vs",
+							  "E:/c++/VSOpenGL/OpenGL/Assets/Shaders/material.fs");
+		m_texture1 = new LiarMaterial("E:/c++/VSOpenGL/OpenGL/Assets/Images/container2_specular.png", GL_RGBA);
+		m_texture2 = new LiarMaterial("E:/c++/VSOpenGL/OpenGL/Assets/Images/container2.png", GL_RGBA);
 #else
-		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/light.vs",
-							  "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/light.fs");
+		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/material.vs",
+							  "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/material.fs");
 		m_texture1 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
 		m_texture2 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
 #endif // __APPLE__
 
 		m_shader->Use();
-		m_shader->SetInt("texture1", 0);
-		m_shader->SetInt("texture2", 1);
+		m_shader->SetInt("material.diffuse", 1);
+		m_shader->SetInt("material.specular", 0);
     }
     
     void Cube::Render(Liar::RenderMgr* rmg, bool calcInvest)
@@ -112,6 +112,7 @@ namespace Liar
         float mixRate = (sin(timeValue)/2.0f) + 0.5f;
         m_shader->SetFloat("mixRate", mixRate);
 		m_shader->SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		m_shader->SetFloat("material.shininess", 64.0f);
 		
         glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(m_vao);

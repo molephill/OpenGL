@@ -1,40 +1,31 @@
-#version 410 core
+#version 330 core
 out vec4 FragColor;
 
-in vec3 Normal;  
-in vec3 FragPos;
-in vec2 TexCoord;
-  
-uniform vec3 lightPos; 
-uniform vec3 viewPos; 
-uniform vec3 objectColor;
-
-// material
 struct Material {
     sampler2D diffuse;
     sampler2D specular;    
     float shininess;
 }; 
 
-// light params
 struct Light {
     vec3 position;
 
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
-	vec3 color;
 };
 
+in vec3 FragPos;  
+in vec3 Normal;  
+in vec2 TexCoords;
+  
+uniform vec3 viewPos;
 uniform Material material;
 uniform Light light;
 
-uniform float mixRate;
-
-
 void main()
 {
-     // ambient
+    // ambient
     vec3 ambient = light.ambient * texture(material.diffuse, TexCoords).rgb;
   	
     // diffuse 
@@ -50,5 +41,5 @@ void main()
     vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
         
     vec3 result = ambient + diffuse + specular;
-    FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), mixRate) * vec4(result, 1.0);
+    FragColor = vec4(result, 1.0);
 } 

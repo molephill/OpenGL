@@ -56,10 +56,15 @@ namespace Liar
 
 	void Light::Use(Shader* shader)
 	{
-		shader->SetVec3("light.position", m_viewPos);
+		/*shader->SetVec3("light.position", m_viewPos);
 		shader->SetVec3("light.ambient", m_ambient.r*m_color);
 		shader->SetVec3("light.diffuse", m_diffuse.r*m_color);
-		shader->SetVec3("light.specular", m_specular.r*m_color);
+		shader->SetVec3("light.specular", m_specular.r*m_color);*/
+
+		shader->SetVec3("light.position", m_viewPos);
+		shader->SetVec3("light.ambient", m_ambient*m_color);
+		shader->SetVec3("light.diffuse", m_diffuse*m_color);
+		shader->SetVec3("light.specular", m_specular*m_color);
 	}
     
     void Light::Render(Liar::RenderMgr* rmg, bool calcInvest)
