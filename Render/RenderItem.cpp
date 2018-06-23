@@ -89,8 +89,8 @@ namespace Liar
     
     void RenderItem::Draw(Camera* camera)
     {
-        m_texture1->Use(GL_TEXTURE0);
-        m_texture2->Use(GL_TEXTURE1);
+        m_texture1->Use(m_shader, GL_TEXTURE0);
+        m_texture2->Use(m_shader, GL_TEXTURE1);
         m_shader->Use();
         //    m_shader->SetFloat("xOffset", 0.5f);
         float timeValue = glfwGetTime();

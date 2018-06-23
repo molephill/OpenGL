@@ -21,10 +21,11 @@ namespace Liar
         ~Light();
 
 	private:
-		float m_ambientStrength;
-		float m_specularStrength;
-		int m_specularShininess;
 		glm::vec3 m_color;
+		// 
+		glm::vec3 m_ambient;
+		glm::vec3 m_diffuse;
+		glm::vec3 m_specular;
 
 		// view pos
 		glm::vec3 m_viewPos;
@@ -32,20 +33,27 @@ namespace Liar
 	public:
 		void SetColor(float, float, float);
 		void SetColor(const glm::vec3& v) { m_color = v; };
-		void SetAmbientStrength(float v) { m_ambientStrength = v; };
-		void SetSpecularStrength(float v) { m_specularStrength = v; };
-		void SetSpecularShininess(unsigned int v) { m_specularShininess = v; };
+		
+		void SetAmbient(const glm::vec3& v) { m_ambient = v; };
+		void SetAmbient(float r, float g, float b) { m_ambient.r = r; m_ambient.g = g; m_ambient.b = b; };
+
+		void SetDiffuse(const glm::vec3& v) { m_diffuse = v; };
+		void SetDiffuse(float r, float g, float b) { m_diffuse.r = r; m_diffuse.b = b; m_diffuse.b = b; };
+
+		void SetSpecular(const glm::vec3& v) { m_specular = v; };
+		void SetSpecular(float r, float g, float b) { m_specular.r = r; m_specular.g = g; m_specular.b = b;	};
 
 		glm::vec3& GetColor() { return m_color; };
-		float GetAmbientStrength() { return m_ambientStrength; };
-		float GetSpecularStrength() { return m_specularStrength; };
-		int GetSpecularShininess() { return m_specularShininess; };
+		glm::vec3& GetAmbient() { return m_ambient;	};
+		glm::vec3& GetDiffuse() { return m_diffuse; };
+		glm::vec3& GetSpecular() { return m_specular; };
 
 		// get view_pos
 		glm::vec3& GetViewPos() { return m_viewPos; };
         
     public:
 		virtual bool CalcMatrix(Liar::RenderMgr*, bool);
+		virtual void Use(Shader*);
         virtual void Render(Liar::RenderMgr*, bool calcInvest = false);
         // show
 #ifdef RENDER_DEBUG

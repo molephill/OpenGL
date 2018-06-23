@@ -73,6 +73,7 @@ namespace Liar
         
     private:
         std::vector<LiarTextureData*>* m_textureDatas;
+		//std::vector<Textur2D*>* m_textureList;
         
     public:
         void ReleaseTextureData(const string&);

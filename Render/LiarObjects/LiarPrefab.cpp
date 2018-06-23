@@ -82,14 +82,14 @@ namespace Liar
         
 #ifndef __APPLE__
 		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/light.vs",
-			"E:/c++/VSOpenGL/OpenGL/Assets/Shaders/light.fs");
-		m_texture1 = new Texture2D("E:/c++/VSOpenGL/OpenGL/Assets/Images/wall.jpg");
-		m_texture2 = new Texture2D("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+							  "E:/c++/VSOpenGL/OpenGL/Assets/Shaders/light.fs");
+		m_texture1 = new LiarMaterial("E:/c++/VSOpenGL/OpenGL/Assets/Images/wall.jpg");
+		m_texture2 = new LiarMaterial("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
 #else
 		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/light.vs",
-			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/light.fs");
-		m_texture1 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
-		m_texture2 = new Texture2D("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+							  "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/light.fs");
+		m_texture1 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
+		m_texture2 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
 #endif // __APPLE__
 
 		m_shader->Use();
@@ -99,11 +99,15 @@ namespace Liar
     
     void Cube::Render(Liar::RenderMgr* rmg, bool calcInvest)
     {
-		m_texture1->Use(GL_TEXTURE0);
-		m_texture2->Use(GL_TEXTURE1);
         float timeValue = Global::lastFrame;
 		SetRotation(timeValue, timeValue, 0.0f);
         LiarObject::Render(rmg, calcInvest);
+
+		m_texture1->Use(m_shader, GL_TEXTURE0);
+		m_texture2->Use(m_shader, GL_TEXTURE1);
+
+		Light* mainLight = rmg->GetMainLight();
+		mainLight->Use(m_shader);
         
         float mixRate = (sin(timeValue)/2.0f) + 0.5f;
         m_shader->SetFloat("mixRate", mixRate);

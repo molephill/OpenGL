@@ -215,14 +215,7 @@ namespace Liar
 			m_shader->SetMat4("invest", m_investMatrix);
 		}
 
-		Camera* camera = rmg->GetCamera();
-		Light* light = rmg->GetMainLight();
-		m_shader->SetVec3("lightColor", light->GetColor());
-		m_shader->SetVec3("lightPos", light->GetViewPos());
-		m_shader->SetVec3("viewPos", camera->GetPosition());
-		m_shader->SetFloat("ambientStrength", light->GetAmbientStrength());
-		m_shader->SetFloat("specularStrength", light->GetSpecularStrength());
-		m_shader->SetInt("specularShininess", light->GetSpecularShininess());
+		m_shader->SetVec3("viewPos", rmg->GetCamera()->GetPosition());
     }
     
 }

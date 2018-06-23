@@ -12,8 +12,8 @@
 namespace Liar
 {
     Light::Light()
-		:m_ambientStrength(0.1f), m_specularStrength(0.5f)
-		, m_specularShininess(32), m_color(glm::vec3(1.0f, 1.0f, 1.0f))
+		:m_ambient(glm::vec3(0.2f)), m_diffuse(glm::vec3(0.5f))
+		, m_specular(glm::vec3(32.0f)), m_color(glm::vec3(1.0f, 1.0f, 1.0f))
     {
         
         glGenVertexArrays(1, &m_vao);
@@ -52,6 +52,14 @@ namespace Liar
 		{
 			return false;
 		}
+	}
+
+	void Light::Use(Shader* shader)
+	{
+		shader->SetVec3("light.position", m_viewPos);
+		shader->SetVec3("light.ambient", m_ambient.r*m_color);
+		shader->SetVec3("light.diffuse", m_diffuse.r*m_color);
+		shader->SetVec3("light.specular", m_specular.r*m_color);
 	}
     
     void Light::Render(Liar::RenderMgr* rmg, bool calcInvest)
