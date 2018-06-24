@@ -88,8 +88,8 @@ namespace Liar
 #else
 		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/material.vs",
 							  "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/material.fs");
-		m_texture1 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/wall.jpg");
-		m_texture2 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png", GL_RGBA);
+		m_texture1 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/container2_specular.png", GL_RGBA);
+		m_texture2 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/container2.png", GL_RGBA);
 #endif // __APPLE__
 
 		m_shader->Use();
@@ -100,7 +100,7 @@ namespace Liar
     void Cube::Render(Liar::RenderMgr* rmg, bool calcInvest)
     {
         float timeValue = Global::lastFrame;
-		SetRotation(timeValue, timeValue, 0.0f);
+        SetRotation(timeValue, timeValue, 0.0f);
         LiarObject::Render(rmg, calcInvest);
 
 		m_texture1->Use(m_shader, GL_TEXTURE0);
@@ -109,9 +109,9 @@ namespace Liar
 		Light* mainLight = rmg->GetMainLight();
 		mainLight->Use(m_shader);
         
-        float mixRate = (sin(timeValue)/2.0f) + 0.5f;
-        m_shader->SetFloat("mixRate", mixRate);
-		m_shader->SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
+//        float mixRate = (sin(timeValue)/2.0f) + 0.5f;
+//        m_shader->SetFloat("mixRate", mixRate);
+//        m_shader->SetVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		m_shader->SetFloat("material.shininess", 64.0f);
 		
         glDrawArrays(GL_TRIANGLES, 0, 36);
