@@ -11,7 +11,7 @@
 
 namespace Liar
 {
-    Light::Light()
+    DirectLight::DirectLight()
 		:m_ambient(glm::vec3(0.2f)), m_diffuse(glm::vec3(0.5f))
 		, m_specular(glm::vec3(32.0f)), m_color(glm::vec3(1.0f, 1.0f, 1.0f))
     {
@@ -28,19 +28,19 @@ namespace Liar
 #endif // __APPLE__
     }
     
-    Light::~Light()
+    DirectLight::~DirectLight()
     {
         
     }
 
-	void Light::SetColor(float r, float g, float b)
+	void DirectLight::SetColor(float r, float g, float b)
 	{
 		m_color.x = r;
 		m_color.y = g;
 		m_color.z = b;
 	}
 
-	bool Light::CalcMatrix(Liar::RenderMgr* rmg, bool calcInvest)
+	bool DirectLight::CalcMatrix(Liar::RenderMgr* rmg, bool calcInvest)
 	{
 		if (LiarObject::CalcMatrix(rmg, calcInvest))
 		{
@@ -54,7 +54,7 @@ namespace Liar
 		}
 	}
 
-	void Light::Use(Shader* shader)
+	void DirectLight::Use(Shader* shader)
 	{
 		/*shader->SetVec3("light.position", m_viewPos);
 		shader->SetVec3("light.ambient", m_ambient.r*m_color);
@@ -67,7 +67,7 @@ namespace Liar
 		shader->SetVec3("light.specular", m_specular*m_color);
 	}
     
-    void Light::Render(Liar::RenderMgr* rmg, bool calcInvest)
+    void DirectLight::Render(Liar::RenderMgr* rmg, bool calcInvest)
     {
 		LiarObject::SetBaseMatrix(rmg, calcInvest);
 
@@ -78,12 +78,20 @@ namespace Liar
     }
     
 #ifdef RENDER_DEBUG
-    void Light::SetBuffers(unsigned int vbo)
+    void DirectLight::SetBuffers(unsigned int vbo)
     {
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
     }
 #endif
+
+	// ====================================== point_light ==========================================
+	PointLight::PointLight(float constant, float linear, float quadratic)
+		:DirectLight()
+		, m_constant(constant), m_linear(linear), m_quadratic(quadratic)
+	{
+
+	}
     
 }

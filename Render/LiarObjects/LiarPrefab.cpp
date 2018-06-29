@@ -106,7 +106,7 @@ namespace Liar
 		m_texture1->Use(m_shader, GL_TEXTURE0);
 		m_texture2->Use(m_shader, GL_TEXTURE1);
 
-		Light* mainLight = rmg->GetMainLight();
+		DirectLight* mainLight = rmg->GetMainLight();
 		mainLight->Use(m_shader);
         
 //        float mixRate = (sin(timeValue)/2.0f) + 0.5f;

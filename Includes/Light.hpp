@@ -14,13 +14,13 @@
 
 namespace Liar
 {
-    class Light:public LiarObject
+    class DirectLight:public LiarObject
     {
     public:
-        Light();
-        ~Light();
+        DirectLight();
+        virtual ~DirectLight();
 
-	private:
+	protected:
 		glm::vec3 m_color;
 		// 
 		glm::vec3 m_ambient;
@@ -60,6 +60,18 @@ namespace Liar
         void SetBuffers(unsigned int);
 #endif
     };
+
+	// ====================================== point_light ==========================================
+	class PointLight :public DirectLight
+	{
+	public:
+		PointLight(float constant = 1.0f, float linear = 0.09f, float quadratic = 0.032f);
+
+	protected:
+		float m_constant;
+		float m_linear;
+		float m_quadratic;
+	};
 }
 
 #endif /* Light_hpp */

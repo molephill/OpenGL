@@ -28,7 +28,7 @@ namespace Liar
 		void Init();
 
 		Camera* GetCamera() { return m_camera; };
-		Light* GetMainLight() { return m_mainLight; };
+		DirectLight* GetMainLight() { return m_mainLight; };
 
 		void SetSize(unsigned int, unsigned int);
         void Render();
@@ -36,7 +36,7 @@ namespace Liar
 
 	private:
 		Camera* m_camera;
-        Light* m_mainLight;
+        DirectLight* m_mainLight;
         
     private:
         RenderItem* m_render;

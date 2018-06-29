@@ -29,7 +29,7 @@ namespace Liar
     {
 
         m_cube = new Cube();
-		m_mainLight = new Light();
+		m_mainLight = new DirectLight();
 		m_mainLight->SetPosition(1.2f, 1.0f, 2.0f);
 		m_mainLight->SetScale(0.2f);
 #ifdef RENDER_DEBUG
