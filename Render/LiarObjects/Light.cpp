@@ -93,5 +93,13 @@ namespace Liar
 	{
 
 	}
+
+	// ====================================== spot_light ==========================================
+	SpotLight::SpotLight(float constant, float linear, float quadratic, float cutOff, float outerCutOff)
+		:PointLight(constant, linear, quadratic)
+		, m_direction(glm::vec3(0.0f, 0.0f, 1.0f)), m_cutOff(cutOff), m_outerCutOff(outerCutOff)
+	{
+
+	}
     
 }

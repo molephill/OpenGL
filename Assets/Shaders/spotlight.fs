@@ -13,8 +13,9 @@ struct Material {
 }; 
 
 // light params
-struct PointLight {
+struct SpotLight {
     vec3 position;
+	vec3 direction;
 
     vec3 ambient;
     vec3 diffuse;
@@ -23,12 +24,15 @@ struct PointLight {
 	float constant;
     float linear;
     float quadratic;
+
+	float cutOff;
+    float outerCutOff;
 };
 
 uniform vec3 viewPos; 
 uniform vec3 objectColor;
 
-uniform PointLight light;
+uniform SpotLight light;
 uniform Material material;
 
 void main()

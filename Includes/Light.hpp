@@ -71,6 +71,36 @@ namespace Liar
 		float m_constant;
 		float m_linear;
 		float m_quadratic;
+
+	public:
+		void SetConstant(float v) { m_constant = v; };
+		void SetLinear(float v) { m_linear = v; };
+		void SetQuadratic(float v) { m_quadratic = v; };
+
+		float GetConstant() const { return m_constant; };
+		float GetLinear() const { return m_linear; };
+		float GetQuadratic() const { return m_quadratic; };
+	};
+
+	// ====================================== spot_light ==========================================
+	class SpotLight :public PointLight
+	{
+	public:
+		SpotLight(float constant = 1.0f, float linear = 0.09f, float quadratic = 0.032f, float cutOff = 12.5f, float outerCutOff = 15.0f);
+
+	protected:
+		float m_cutOff;
+		float m_outerCutOff;
+		glm::vec3 m_direction;
+
+	public:
+		void SetDirection(const glm::vec3& v) { m_direction = v; };
+		void SetDirection(float x, float y, float z) { m_direction.x = x; m_direction.y = y; m_direction.z = z; };
+		void SetCutOff(float v) { m_cutOff = glm::cos(v); };
+		void SetOuterCutOff(float v) { m_outerCutOff = glm::cos(v); };
+
+		float GetCutOff() const { return m_cutOff; };
+		float GetOutCutOff() const { return m_outerCutOff; };
 	};
 }
 
