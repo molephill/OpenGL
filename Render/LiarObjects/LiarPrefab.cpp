@@ -88,8 +88,8 @@ namespace Liar
 #else
 		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/material.vs",
 							  "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/material.fs");
-		m_texture1 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/container2_specular.png", GL_RGBA);
-		m_texture2 = new LiarMaterial("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/container2.png", GL_RGBA);
+		m_texture1 = new LiarMaterial1("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/container2_specular.png", GL_RGBA);
+		m_texture2 = new LiarMaterial1("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/container2.png", GL_RGBA);
 #endif // __APPLE__
 
 		m_shader->Use();

@@ -40,11 +40,11 @@ namespace Liar
         virtual void Use(Shader*, int index = GL_TEXTURE0);
     };
 
-	class LiarMaterial :public Texture2D
+	class LiarMaterial1 :public Texture2D
 	{
 	public:
-		LiarMaterial(std::string, int rgbMod = GL_RGB);
-		LiarMaterial(std::string, const glm::vec3&, const glm::vec3&, int rgbMod = GL_RGB);
+		LiarMaterial1(std::string, int rgbMod = GL_RGB);
+		LiarMaterial1(std::string, const glm::vec3&, const glm::vec3&, int rgbMod = GL_RGB);
 
 	protected:
 		glm::vec3 m_diffuse;

@@ -26,8 +26,8 @@ namespace Liar
         virtual void Upload();
         
     private:
-		LiarMaterial* m_texture1;
-		LiarMaterial* m_texture2;
+		LiarMaterial1* m_texture1;
+		LiarMaterial1* m_texture2;
         
     public:
         virtual void Render(Liar::RenderMgr*, bool calcInvest = true);

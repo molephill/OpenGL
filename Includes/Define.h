@@ -23,7 +23,11 @@ const unsigned int WINDOW_W = 800;
 const unsigned int WINDOW_H = 600;
 
 // 资源路径
-#define BASE_PATH "/Users/maowei/Downloads/C++/OpenGL/";
+#ifdef __APPLE__
+const std::string BASE_PATH = "/Users/maowei/Downloads/C++/OpenGL/";
+#else
+const std::string BASE_PATH = "E:/c++/VSOpenGL/OpenGL/Assets/”;
+#endif
 
 // log设置
 #define LOG_FILE_NAME "log.txt";

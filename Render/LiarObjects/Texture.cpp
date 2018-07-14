@@ -83,28 +83,28 @@ namespace Liar
     }
 
 	// ================================== Material ==================================
-	LiarMaterial::LiarMaterial(std::string path, int rgbMod) 
+	LiarMaterial1::LiarMaterial1(std::string path, int rgbMod) 
 		:Texture2D(path, rgbMod)
 		,m_diffuse(glm::vec3(0.2)),m_specular(glm::vec3(0.5))
 	{
 
 	}
 
-	LiarMaterial::LiarMaterial(std::string path, const glm::vec3& diffuse, const glm::vec3& specular, int rgbMod)
+	LiarMaterial1::LiarMaterial1(std::string path, const glm::vec3& diffuse, const glm::vec3& specular, int rgbMod)
 		:Texture2D(path, rgbMod)
 		, m_diffuse(diffuse), m_specular(specular)
 	{
 
 	}
 
-	void LiarMaterial::Use(Shader* shader, int index)
+	void LiarMaterial1::Use(Shader* shader, int index)
 	{
 		/*shader->SetVec3("material.specular", m_specular);
 		shader->SetVec3("material.diffuse", m_diffuse);*/
 		Texture2D::Use(shader, index);
 	}
 
-	void LiarMaterial::ChangeDiffuse(const glm::vec3& v)
+	void LiarMaterial1::ChangeDiffuse(const glm::vec3& v)
 	{
 		if (m_diffuse != v)
 		{
@@ -112,7 +112,7 @@ namespace Liar
 		}
 	}
 
-	void LiarMaterial::ChangeDiffuse(float r, float g, float b)
+	void LiarMaterial1::ChangeDiffuse(float r, float g, float b)
 	{
 		if (m_diffuse.r != r || m_diffuse.g != g || m_diffuse.b != b)
 		{
@@ -122,7 +122,7 @@ namespace Liar
 		}
 	}
 
-	void LiarMaterial::ChangeSpecular(const glm::vec3& v)
+	void LiarMaterial1::ChangeSpecular(const glm::vec3& v)
 	{
 		if (m_diffuse != v)
 		{
@@ -130,7 +130,7 @@ namespace Liar
 		}
 	}
 
-	void LiarMaterial::ChangeSpecular(float r, float g, float b)
+	void LiarMaterial1::ChangeSpecular(float r, float g, float b)
 	{
 		if (m_specular.r != r || m_specular.g != g || m_specular.b != b)
 		{
