@@ -26,7 +26,7 @@ const unsigned int WINDOW_H = 600;
 #ifdef __APPLE__
 const std::string BASE_PATH = "/Users/maowei/Downloads/C++/OpenGL/";
 #else
-const std::string BASE_PATH = "E:/c++/VSOpenGL/OpenGL/Assets/”;
+const std::string BASE_PATH = "E:/c++/VSOpenGL/OpenGL/Assets/";
 #endif
 
 // log设置
@@ -42,13 +42,6 @@ const std::string BASE_PATH = "E:/c++/VSOpenGL/OpenGL/Assets/”;
 // 相机默认参数
 const float CAMERA_YAW		= -90.0f;
 const float CAMERA_PITCH	= 0.0f;
-
-// 相机类型
-enum CAMERA_TYPE
-{
-	ORTHO = 0,
-	PERPECTIVE = 1
-};
 
 const float CAMERA_FOV = 45.0f;
 

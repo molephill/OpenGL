@@ -139,6 +139,11 @@ namespace Liar
     {
         glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
     }
+
+	void Shader::SetMat4(const std::string&name, const Liar::Matrix4& mat) const
+	{
+		glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, mat.GetRawData());
+	}
     
     // 检测报错
     void Shader::CheckCompileErrors(unsigned int shader, ShaderType type)
