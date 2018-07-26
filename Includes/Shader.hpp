@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include "Define.h"
+#include <Matrices.h>
 
 namespace Liar
 {
@@ -55,6 +56,7 @@ namespace Liar
         void SetMat3(const std::string&, const glm::mat3&) const;
         // ------------------------------------------------------------------------
         void SetMat4(const std::string&, const glm::mat4&) const;
+		void SetMat4(const std::string&, const Liar::Matrix4&) const;
         
     private:
         void CheckCompileErrors(unsigned int, ShaderType);

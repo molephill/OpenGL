@@ -9,12 +9,7 @@
 #ifndef RenderMgr_hpp
 #define RenderMgr_hpp
 
-#include <stdio.h>
-
-#include "RenderItem.hpp"
-#include "Camera.hpp"
-#include "Light.hpp"
-#include "LiarPrefab.hpp"
+#include <LiarMesh.h>
 
 namespace Liar
 {
@@ -25,22 +20,23 @@ namespace Liar
         ~RenderMgr();
         
     public:
-		void Init();
-
-		Camera* GetCamera() { return m_camera; };
-		DirectLight* GetMainLight() { return m_mainLight; };
 
 		void SetSize(unsigned int, unsigned int);
         void Render();
 
-
 	private:
-		Camera* m_camera;
-        DirectLight* m_mainLight;
-        
-    private:
-        RenderItem* m_render;
-        Cube* m_cube;
+		float m_red;
+		float m_green;
+		float m_blue;
+		Liar::Camera3D* m_camera;
+		Liar::Shader* m_shader;
+
+		unsigned int m_VAO;
+		unsigned int m_VBO;
+		unsigned int m_EBO;
+
+		Liar::LiarMesh* m_testMesh;
+		
     };
 }
 

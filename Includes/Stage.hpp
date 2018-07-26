@@ -4,6 +4,7 @@
 
 #include "WindowActiveMgr.hpp"
 #include "OpenGLWindow.hpp"
+#include "RenderMgr.hpp"
 
 namespace Liar
 {
@@ -15,8 +16,9 @@ namespace Liar
 
 	private:
         bool m_isActive;
-		OpenGLWindow* m_openglWindow;
+		OpenGLWindow* m_openglMainWindow;
         WindowActiveMgr* m_windowActive;
+		RenderMgr* m_renderMgr;
 	};
 }
 

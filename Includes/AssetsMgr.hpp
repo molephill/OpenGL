@@ -14,8 +14,6 @@
 #include <string>
 #include <vector>
 
-#include "LiarAssetsData.hpp"
-
 #ifndef __APPLE__
 #include <functional>
 #endif // !__APPLE__
@@ -72,13 +70,10 @@ namespace Liar
 		static InstanceConfirm m_confirm;  //最后保证main函数之前完成初始化
         
     private:
-        std::vector<LiarTextureData*>* m_textureDatas;
 		//std::vector<Textur2D*>* m_textureList;
         
     public:
         void ReleaseTextureData(const string&);
-        void ReleaseTextureData(LiarTextureData*);
-        LiarTextureData* GetTextureData(string&, int rgbMod = GL_RGB);
     };
 
 	

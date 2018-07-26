@@ -22,6 +22,7 @@ namespace Liar
 	public:
 		OpenGLWindow();
         OpenGLWindow(string title, unsigned int w = WINDOW_W, unsigned int h = WINDOW_H);
+		~OpenGLWindow();
 
 	protected:
 		virtual bool Created();
@@ -32,6 +33,8 @@ namespace Liar
         virtual void SetSize(unsigned int, unsigned int);
         virtual bool MouseEvent(double, double);
         virtual void ScrollEvent(double, double);
+
+		void SetRenderMgr(Liar::RenderMgr* mgr) { m_renderMgr = mgr; };
         
     private:
         RenderMgr* m_renderMgr;

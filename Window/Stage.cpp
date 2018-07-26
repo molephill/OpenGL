@@ -6,21 +6,26 @@ namespace Liar
     Stage::Stage():m_isActive(true)
 	{
 		m_windowActive = new WindowActiveMgr();
-		m_openglWindow = new OpenGLWindow();
-        m_openglWindow->Init("OpenGL");
-        m_windowActive->RegisttHandler(m_openglWindow);
+
+		m_openglMainWindow = new OpenGLWindow();
+        m_openglMainWindow->Init("LiarMainOpenGL");
+
+		m_renderMgr = new RenderMgr();
+		m_openglMainWindow->SetRenderMgr(m_renderMgr);
+
+        m_windowActive->RegisttHandler(m_openglMainWindow);
         
         Global::mainStage = this;
         Global::windowActive = m_windowActive;
         
         while(m_isActive)
         {
-            float curFrame = glfwGetTime();
+            double curFrame = glfwGetTime();
             Global::delataTime = curFrame - Global::lastFrame;
             Global::lastFrame = curFrame;
             
             m_windowActive->ProcessHandler();
-            m_isActive = m_openglWindow->ProcessHandler();
+            m_isActive = m_openglMainWindow->ProcessHandler();
         }
 	}
 
@@ -28,6 +33,6 @@ namespace Liar
 	Stage::~Stage()
 	{
 		delete m_windowActive;
-        delete m_openglWindow;
+        delete m_openglMainWindow;
 	}
 }
