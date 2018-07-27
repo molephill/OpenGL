@@ -59,13 +59,7 @@ namespace Liar
 
 	void Entity::SetPosition(const Liar::Vector3D& v)
 	{
-		if (v.x != m_x || v.y != m_y || v.z != m_z)
-		{
-			m_x = v.x;
-			m_y = v.y;
-			m_z = v.z;
-			m_transformChanged = true;
-		}
+        SetPosition(v.x, v.y, v.z);
 	}
 
 	// ================ change rotation ==================== 
@@ -109,13 +103,7 @@ namespace Liar
 
 	void Entity::SetRotation(const Liar::Vector3D& v)
 	{
-		if (v.x != m_rotationX || v.y != m_rotationY || v.z != m_rotationZ)
-		{
-			m_rotationX = v.x;
-			m_rotationY = v.y;
-			m_rotationZ = v.z;
-			m_transformChanged = true;
-		}
+        SetRotation(v.x, v.y, v.z);
 	}
 
 	// ======================== change Scale ==========================
@@ -159,14 +147,137 @@ namespace Liar
 
 	void Entity::SetScale(const Liar::Vector3D& v)
 	{
-		if (v.x != m_scaleX || v.y != m_scaleY || v.z != m_scaleZ)
-		{
-			m_scaleX = v.x;
-			m_scaleY = v.y;
-			m_scaleZ = v.z;
-			m_transformChanged = true;
-		}
+        SetScale(v.x, v.y, v.z);
 	}
+    
+    void Entity::AddX(float x)
+    {
+        if(x != 0)
+        {
+            m_x += x;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddY(float y)
+    {
+        if(y != 0)
+        {
+            m_y += y;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddZ(float z)
+    {
+        if(z != 0)
+        {
+            m_z += z;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddPosition(float x, float y, float z)
+    {
+        if(x != 0 || y != 0 || z != 0)
+        {
+            m_x += x;
+            m_y += y;
+            m_z += z;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddPosition(const Liar::Vector3D& v)
+    {
+        AddPosition(v.x, v.y, v.z);
+    }
+    
+    void Entity::AddScaleX(float x)
+    {
+        if(x != 0)
+        {
+            m_scaleX += x;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddScaleY(float y)
+    {
+        if(y != 0)
+        {
+            m_scaleY += y;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddScaleZ(float z)
+    {
+        if(z != 0)
+        {
+            m_scaleZ += z;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddScale(float x, float y, float z)
+    {
+        if(x != 0 || y != 0 || z != 0)
+        {
+            m_scaleX += x;
+            m_scaleY += y;
+            m_scaleZ += z;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddScale(const Liar::Vector3D& v)
+    {
+        AddScale(v.x, v.y, v.z);
+    }
+    
+    void Entity::AddRotationX(float x)
+    {
+        if(x != 0)
+        {
+            m_rotationX += x;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddRotationY(float y)
+    {
+        if(y != 0)
+        {
+            m_rotationY += y;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddRotationZ(float z)
+    {
+        if(z != 0)
+        {
+            m_rotationZ += z;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddRotation(float x, float y, float z)
+    {
+        if(x != 0 || y != 0 || z != 0)
+        {
+            m_rotationX += x;
+            m_rotationY += y;
+            m_rotationZ += z;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Entity::AddRotation(const Liar::Vector3D& v)
+    {
+        AddRotation(v.x, v.y, v.z);
+    }
 
 	// ================== render ==================
 	void Entity::CalcTransform(bool calcInvert)

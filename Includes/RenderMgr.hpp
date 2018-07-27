@@ -36,6 +36,9 @@ namespace Liar
 		unsigned int m_EBO;
 
 		Liar::LiarMesh* m_testMesh;
+        
+    public:
+        Camera3D* GetMainCamera() { return m_camera; };
 		
     };
 }

@@ -75,6 +75,24 @@ namespace Liar
 		void SetScaleZ(float);
 		void SetScale(float, float, float);
 		void SetScale(const Liar::Vector3D&);
+        
+        void AddX(float);
+        void AddY(float);
+        void AddZ(float);
+        void AddPosition(float, float, float);
+        void AddPosition(const Liar::Vector3D&);
+        
+        void AddRotationX(float);
+        void AddRotationY(float);
+        void AddRotationZ(float);
+        void AddRotation(float, float, float);
+        void AddRotation(const Liar::Vector3D&);
+        
+        void AddScaleX(float);
+        void AddScaleY(float);
+        void AddScaleZ(float);
+        void AddScale(float, float, float);
+        void AddScale(const Liar::Vector3D&);
 
 	public:
 		void CalcTransform(bool calcInvert = true);

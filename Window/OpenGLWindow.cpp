@@ -8,7 +8,7 @@
 
 #include "OpenGLWindow.hpp"
 #include "Log.hpp"
-#include <Global.hpp>
+#include "Global.hpp"
 
 namespace Liar
 {
@@ -31,12 +31,12 @@ namespace Liar
 	bool OpenGLWindow::Created()
 	{
 
-#ifdef DEBUG
-            cout << "OpenGL Vendor:" << glGetString(GL_VENDOR) << endl;
-            cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << endl;
-            cout << "OpenGL Version: " << glGetString(GL_VERSION) << endl;
-            cout << "GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
-#endif
+//#ifdef DEBUG
+//        std::cout << "OpenGL Vendor:" << glGetString(GL_VENDOR) << std::endl;
+//        std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
+//        std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
+//        std::cout << "GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+//#endif
 
 		glfwMakeContextCurrent(m_window);
 
@@ -68,21 +68,22 @@ namespace Liar
 	void OpenGLWindow::KeyInputEvent()
 	{
         BaseWindow::KeyInputEvent();
+        if(!m_renderMgr) return;
         if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
         {
-           // m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::FORWARD);
+            m_renderMgr->GetMainCamera()->AddZ(Global::cameraMoveSpeed);
         }
         else if(glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
         {
-          //  m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::RIGHT);
+          m_renderMgr->GetMainCamera()->AddX(-Global::cameraMoveSpeed);
         }
         else if(glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
         {
-           // m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::BACKWARD);
+           m_renderMgr->GetMainCamera()->AddZ(-Global::cameraMoveSpeed);
         }
         else if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
         {
-            //m_renderMgr->GetCamera()->MoveForward(MOVE_DIRECTION::LEFT);
+            m_renderMgr->GetMainCamera()->AddX(Global::cameraMoveSpeed);
         }
 	}
 

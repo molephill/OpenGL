@@ -23,7 +23,8 @@ namespace Liar
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0, 0.0f, 20.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 20.0f);
+        m_camera->LookAt(0.0f, 0.0f, 0.0f);
 		//m_camera->SetRotationX(26.0f);
 
 
@@ -119,7 +120,6 @@ namespace Liar
 		//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, oneSize, (void*)uvOffSize);
 		//glEnableVertexAttribArray(3);
 
-		m_testMesh = Liar::LiarMeshRead::ReadMesh("C:/Users/Administrator/Desktop/nanosuit/nano_body.mesh");
 		/*m_testMesh = new Liar::LiarMesh();
 		std::vector<Liar::LiarVertexBuffer*>* vertices2 = m_testMesh->GetGeo()->GetBuffers();
 
@@ -160,18 +160,19 @@ namespace Liar
 		{
 			indices1->push_back(indices[i]);
 		}*/
-
-		m_testMesh->Upload();
-
 		
 
 #ifndef __APPLE__
+        m_testMesh = Liar::LiarMeshRead::ReadMesh("C:/Users/Administrator/Desktop/nanosuit/nano_body.mesh");
 		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.vs",
 			"E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.fs");
 #else
-		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.vs",
-			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test.fs");
+        m_testMesh = Liar::LiarMeshRead::ReadMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_legs.mesh");
+		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test1.vs",
+			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test1.fs");
 #endif // __APPLE__
+        
+        m_testMesh->Upload();
 	}
 
     RenderMgr::~RenderMgr()

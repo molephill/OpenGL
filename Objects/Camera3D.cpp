@@ -113,8 +113,9 @@ namespace Liar
 		if (m_transformChanged)
 		{
 			// viewMatrix
+            m_transform->Identity();
 			m_transform->Translate(-m_x, -m_y, -m_z);
-			m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
+            m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
 			m_transform->LookAt(m_targetX, m_targetY, m_targetZ, 0.0f, 1.0f, 0.0f);
 
 			std::cout << (*m_transform) << std::endl;
