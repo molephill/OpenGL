@@ -15,8 +15,8 @@ namespace Liar
 		std::vector<Liar::LiarMesh*>* m_subMeshList;
 
 	public:
-		void AddMesh(const char*);
-		void AddMesh(const std::string&);
+		void AddMesh(const char*, const char* base=nullptr);
+		void AddMesh(const std::string&, const char* base=nullptr);
 		void Render(Liar::Shader&);
 	};
 }
