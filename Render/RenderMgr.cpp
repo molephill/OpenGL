@@ -16,22 +16,12 @@
 namespace Liar
 {
 
-	RenderMgr::RenderMgr():m_red(0.2f),m_green(0.3f),m_blue(0.3f)
+	void Test()
 	{
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 0.0f, 20.0f);
-        m_camera->LookAt(0.0f, 0.0f, 0.0f);
-		//m_camera->SetRotationX(26.0f);
-
-
-		unsigned int indices[] = {
-			0, 1, 3, // first triangle
-			1, 2, 3  // second triangle
-		};
+		//unsigned int indices[] = {
+		//	0, 1, 3, // first triangle
+		//	1, 2, 3  // second triangle
+		//};
 
 		//std::vector<Liar::LiarVertexBuffer*>* vertices2 = new std::vector<LiarVertexBuffer*>();
 		//Liar::LiarVertexBuffer* v = new Liar::LiarVertexBuffer();
@@ -150,7 +140,7 @@ namespace Liar
 		v3->normal->Set(1.0f, 0.0f, 0.0f);
 		v3->uv->Set(0.0f, 1.0f);
 		vertices2->push_back(v3);
-		
+
 
 		m_testMesh->GetGeo()->SetBufferSize(4);
 
@@ -158,12 +148,33 @@ namespace Liar
 		size_t indicesLen = sizeof(indices) / sizeof(unsigned int);
 		for (size_t i = 0; i < indicesLen; ++i)
 		{
-			indices1->push_back(indices[i]);
+		indices1->push_back(indices[i]);
 		}*/
-		
+	}
+
+	RenderMgr::RenderMgr():m_red(0.2f),m_green(0.3f),m_blue(0.3f)
+	{
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		m_camera = new Liar::Camera3D();
+		m_camera->SetPosition(0.0f, -25.0f, -25.0f);
+		m_camera->SetRotationX(45.0f);
+        m_camera->LookAt(0.0f, 0.0f, 0.0f);
+		//m_camera->SetRotationX(26.0f);
+
+		m_testModel = new Liar::Model();
 
 #ifndef __APPLE__
-        m_testMesh = Liar::LiarMeshRead::ReadMesh("C:/Users/Administrator/Desktop/nanosuit/nano_body.mesh");
+        //m_testMesh = Liar::LiarMeshRead::ReadMesh("C:/Users/Administrator/Desktop/nanosuit/nano_legs.mesh");
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_arms.mesh");
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_body.mesh");
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_hands.mesh");
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_helmet.mesh");
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_legs.mesh");
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_lights.mesh");
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_visor.mesh");
 		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.vs",
 			"E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.fs");
 #else
@@ -172,7 +183,7 @@ namespace Liar
 			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test1.fs");
 #endif // __APPLE__
         
-        m_testMesh->Upload();
+       // m_testMesh->Upload();
 	}
 
     RenderMgr::~RenderMgr()
@@ -197,7 +208,9 @@ namespace Liar
 		m_shader->Use();
 		m_shader->SetMat4("projection", *(m_camera->GetMatrix()));
 
-		m_testMesh->Render(*m_shader);
+		m_testModel->Render(*m_shader);
+
+		//m_testMesh->Render(*m_shader);
 
 		/*glBindVertexArray(m_VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/

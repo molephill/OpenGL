@@ -8,7 +8,7 @@ namespace Liar
 	Camera3D::Camera3D(float nearClipping, float farClipping):Liar::Entity(),
 		m_nearClipping(nearClipping), m_farClipping(farClipping),
 		m_targetX(0.0f),m_targetY(0.0f),m_targetZ(0.0f),
-		m_fov(45.0f),m_viewWidth(WINDOW_W),m_viewHeight(WINDOW_H),
+		m_fov(60.0f),m_viewWidth(WINDOW_W),m_viewHeight(WINDOW_H),
 		m_isPerspective(true),
 		m_projection(new Liar::Matrix4())
 	{
@@ -105,26 +105,23 @@ namespace Liar
 
 	void Camera3D::Render()
 	{
-		CalcPerspective();
-	}
-
-	void Camera3D::CalcPerspective()
-	{
 		if (m_transformChanged)
 		{
-			// viewMatrix
-            m_transform->Identity();
-			m_transform->Translate(-m_x, -m_y, -m_z);
-            m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
-			m_transform->LookAt(m_targetX, m_targetY, m_targetZ, 0.0f, 1.0f, 0.0f);
+			m_transform->Identity();
+			m_transform->Translate(m_x, m_y, m_z);
+			m_transform->LookAt(m_targetX, m_targetY, m_targetZ);
+			m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
 
 			std::cout << (*m_transform) << std::endl;
 
 			// projection
 			SetFrustum(m_fov, static_cast<float>(m_viewWidth / m_viewHeight), m_nearClipping, m_farClipping);
 
+			std::cout << (*m_projection) << std::endl;
+
 			// projection*viewMatrix
 			(*m_projection) *= (*m_transform);
+
 			m_transformChanged = false;
 		}
 	}

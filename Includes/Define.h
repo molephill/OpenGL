@@ -19,7 +19,7 @@
 const static int DEFAULT_BUFF_SIZE = 512;
 
 // 窗口大小
-const unsigned int WINDOW_W = 800;
+const unsigned int WINDOW_W = 960;
 const unsigned int WINDOW_H = 600;
 
 // 资源路径

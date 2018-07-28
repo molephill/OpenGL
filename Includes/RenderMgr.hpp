@@ -10,6 +10,7 @@
 #define RenderMgr_hpp
 
 #include <LiarMesh.h>
+#include "Model.h"
 
 namespace Liar
 {
@@ -36,6 +37,7 @@ namespace Liar
 		unsigned int m_EBO;
 
 		Liar::LiarMesh* m_testMesh;
+		Liar::Model* m_testModel;
         
     public:
         Camera3D* GetMainCamera() { return m_camera; };

@@ -20,7 +20,7 @@ namespace Liar
         
         while(m_isActive)
         {
-            double curFrame = glfwGetTime();
+            float curFrame = static_cast<float>(glfwGetTime());
             Global::delataTime = curFrame - Global::lastFrame;
             Global::lastFrame = curFrame;
             

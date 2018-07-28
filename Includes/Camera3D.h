@@ -10,7 +10,7 @@ namespace Liar
 	class Camera3D:public Entity
 	{
 	public:
-		Camera3D(float nearCliping = 0.1f, float farClipping = 100.0f);
+		Camera3D(float nearCliping = 1.0f, float farClipping = 1000.0f);
 		~Camera3D();
 
 	private:
@@ -40,8 +40,6 @@ namespace Liar
 		Liar::Matrix4* GetMatrix() const { return m_projection; };
 
 	private:
-		void CalcPerspective();
-
 		void SetFrustum(float, float, float, float);
 		void SetFrustum(float, float, float, float, float, float);
 

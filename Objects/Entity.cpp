@@ -284,7 +284,10 @@ namespace Liar
 	{
 		if (m_transformChanged)
 		{
-
+			m_transform->Identity();
+			m_transform->Scale(m_scaleX, m_scaleY, m_scaleZ);
+			m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
+			m_transform->Translate(m_x, m_y, m_z);
 			m_transformChanged = false;
 		}
 	}
