@@ -227,6 +227,7 @@ namespace Liar
         m_testModel->SetZ(30.0f);
 
 #ifndef __APPLE__
+		m_testModel->AddMesh("E:/c++/VSOpenGL/OpenGL/Assets/models/testbox.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
         //m_testMesh = Liar::LiarMeshRead::ReadMesh("C:/Users/Administrator/Desktop/nanosuit/nano_legs.mesh");
 		/*m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_arms.mesh");
 		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_body.mesh");
@@ -237,7 +238,7 @@ namespace Liar
 		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_visor.mesh");*/
 		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.vs",
 			"E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.fs");
-        Liar::LiarTexture* tex = AssetsMgr::GetInstance().GetTexture("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
+        //Liar::LiarTexture* tex = AssetsMgr::GetInstance().GetTexContext("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
 #else
         //m_testMesh = Liar::LiarMeshRead::ReadMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_legs.mesh");
         m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/testbox.mesh","/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/");
