@@ -226,8 +226,11 @@ namespace Liar
 		/*Liar::LiarNode* node = new Liar::LiarNode();
 		Liar::LiarMeshRead::ReadNode("C:/Users/Administrator/Desktop/test/test.model", *node);*/
 
-		m_testModel = Liar::LiarMeshRead::ReadModel("C:/Users/Administrator/Desktop/nanosuit/test.model");
-        m_testModel->SetZ(30.0f);
+		/*m_testModel = Liar::LiarMeshRead::ReadModel("C:/Users/Administrator/Desktop/nanosuit/test.model");
+        m_testModel->SetZ(30.0f);*/
+
+		m_testModel = new Liar::Model();
+		m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/box_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
 
 #ifndef __APPLE__
 		//m_testModel->AddMesh("E:/c++/VSOpenGL/OpenGL/Assets/models/testbox.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
