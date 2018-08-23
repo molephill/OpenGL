@@ -20,7 +20,7 @@
 
 #include <LiarMesh.h>
 #include <LiarMaterial.h>
-#include <LiarMeshRead.h>
+#include <LiarPluginRead.h>
 
 namespace Liar
 {
@@ -75,6 +75,8 @@ namespace Liar
 
 		Liar::LiarTexContext* GetTexContext(const char*);
 		Liar::LiarTexContext* GetTexContext(const std::string&);
+
+		LiarMesh* GetMeshByObj(const char*, const char* base = nullptr);
 
 	private:
 		std::vector<Liar::LiarTexContext*>* m_allTexContexts;

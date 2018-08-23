@@ -38,6 +38,8 @@ namespace Liar
 
 		Liar::LiarMesh* m_testMesh;
 		Liar::Model* m_testModel;
+
+		unsigned int VAO, VBO, EBO;
         
     public:
         Camera3D* GetMainCamera() { return m_camera; };

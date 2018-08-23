@@ -17,7 +17,13 @@ namespace Liar
 	public:
 		void AddMesh(const char*, const char* base=nullptr);
 		void AddMesh(const std::string&, const char* base=nullptr);
+
+		void AddMeshByObj(const char*, const char* base = nullptr);
+		void AddMeshByObj(const std::string&, const char* base = nullptr);
+
 		void Render(Liar::Shader&);
+
+		friend std::ostream& operator<<(std::ostream& os, const Liar::Model& m);
 	};
 }
 

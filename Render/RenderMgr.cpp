@@ -11,8 +11,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <LiarMeshRead.h>
+#include <LiarPluginRead.h>
 #include <AssetsMgr.hpp>
+#include <Global.hpp>
 
 namespace Liar
 {
@@ -164,97 +165,128 @@ namespace Liar
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
         
 #ifdef __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, -25.0f, -25.0f);
+		m_camera->SetPosition(0.0f, -10.0f, -10.0f);
 		m_camera->SetRotationX(45.0f);
         m_camera->LookAt(0.0f, 0.0f, 0.0f);
 		//m_camera->SetRotationX(26.0f);
 
-//        unsigned int indices[] = {
-//            0, 1, 3, // first triangle
-//            1, 2, 3  // second triangle
-//        };
-//
-//        m_testMesh = new Liar::LiarMesh();
-//        std::vector<Liar::LiarVertexBuffer*>* vertices2 = m_testMesh->GetGeo()->GetBuffers();
-//
-//        Liar::LiarVertexBuffer* v = new Liar::LiarVertexBuffer();
-//        v->position->Set(0.5f, 0.5f, 0.0);
-//        v->color->Set(1.0f, 0.0f, 0.0f);
-//        v->normal->Set(1.0f, 0.0f, 0.0f);
-//        v->uv->Set(1.0f, 1.0f);
-//        vertices2->push_back(v);
-//
-//        Liar::LiarVertexBuffer* v1 = new Liar::LiarVertexBuffer();
-//        v1->position->Set(0.5f, -0.5f, 0.0f);
-//        v1->color->Set(0.0f, 1.0f, 0.0f);
-//        v1->normal->Set(1.0f, 0.0f, 0.0f);
-//        v1->uv->Set(1.0f, 0.0f);
-//        vertices2->push_back(v1);
-//
-//        Liar::LiarVertexBuffer* v2 = new Liar::LiarVertexBuffer();
-//        v2->position->Set(-0.5f, -0.5f, 0.0f);
-//        v2->color->Set(0.0f, 0.0f, 1.0f);
-//        v2->normal->Set(1.0f, 0.0f, 0.0f);
-//        v2->uv->Set(0.0f, 0.0f);
-//        vertices2->push_back(v2);
-//
-//        Liar::LiarVertexBuffer* v3 = new Liar::LiarVertexBuffer();
-//        v3->position->Set(-0.5f, 0.5f, 0.0f);
-//        v3->color->Set(1.0f, 1.0f, 0.0f);
-//        v3->normal->Set(1.0f, 0.0f, 0.0f);
-//        v3->uv->Set(0.0f, 1.0f);
-//        vertices2->push_back(v3);
-//
-//
-//        m_testMesh->GetGeo()->SetBufferSize(4);
-//
-//        std::vector<unsigned int>* indices1 = m_testMesh->GetGeo()->GetIndices();
-//        size_t indicesLen = sizeof(indices) / sizeof(unsigned int);
-//        for (size_t i = 0; i < indicesLen; ++i)
-//        {
-//            indices1->push_back(indices[i]);
-//        }
-//
-//        m_testMesh->Upload();
+		
+        /*m_testMesh = new Liar::LiarMesh();
+        std::vector<Liar::LiarVertexBuffer*>* vertices2 = m_testMesh->GetGeo()->GetBuffers();
+
+        Liar::LiarVertexBuffer* v = new Liar::LiarVertexBuffer(true);
+        v->position->Set(-0.5, -0.5, -0.5);
+        v->color->Set(1.0f, 0.0f, 0.0f);
+        v->normal->Set(1.0f, 0.0f, 0.0f);
+        v->uv->Set(1.0f, 1.0f);
+        vertices2->push_back(v);
+
+        Liar::LiarVertexBuffer* v1 = new Liar::LiarVertexBuffer(true);
+        v1->position->Set(0.5, -0.5, -0.5);
+        v1->color->Set(1.0f, 0.0f, 0.0f);
+        v1->normal->Set(1.0f, 0.0f, 0.0f);
+        v1->uv->Set(1.0f, 0.0f);
+        vertices2->push_back(v1);
+
+        Liar::LiarVertexBuffer* v2 = new Liar::LiarVertexBuffer(true);
+        v2->position->Set(-0.5, -0.5, 0.5);
+        v2->color->Set(1.0f, 0.0f, 0.0f);
+        v2->normal->Set(1.0f, 0.0f, 0.0f);
+        v2->uv->Set(0.0f, 0.0f);
+        vertices2->push_back(v2);
+
+        Liar::LiarVertexBuffer* v3 = new Liar::LiarVertexBuffer(true);
+        v3->position->Set(0.5, -0.5, 0.5);
+        v3->color->Set(1.0f, 0.0f, 0.0f);
+        v3->normal->Set(1.0f, 0.0f, 0.0f);
+        v3->uv->Set(0.0f, 1.0f);
+        vertices2->push_back(v3);
+
+
+		Liar::LiarVertexBuffer* v4 = new Liar::LiarVertexBuffer(true);
+		v4->position->Set(-0.5, 0.5, -0.5);
+		v4->color->Set(0.0f, 0.0f, 0.0f);
+		v4->normal->Set(1.0f, 0.0f, 0.0f);
+		v4->uv->Set(1.0f, 1.0f);
+		vertices2->push_back(v4);
+
+		Liar::LiarVertexBuffer* v5 = new Liar::LiarVertexBuffer(true);
+		v5->position->Set(0.5, 0.5, -0.5);
+		v5->color->Set(0.0f, 0.0f, 0.0f);
+		v5->normal->Set(1.0f, 0.0f, 0.0f);
+		v5->uv->Set(1.0f, 0.0f);
+		vertices2->push_back(v5);
+
+		Liar::LiarVertexBuffer* v6 = new Liar::LiarVertexBuffer(true);
+		v6->position->Set(-0.5, 0.5, 0.5);
+		v6->color->Set(0.0f, 0.0f, 0.0f);
+		v6->normal->Set(1.0f, 0.0f, 0.0f);
+		v6->uv->Set(0.0f, 0.0f);
+		vertices2->push_back(v6);
+
+		Liar::LiarVertexBuffer* v7 = new Liar::LiarVertexBuffer(true);
+		v7->position->Set(0.5, 0.5, 0.5);
+		v7->color->Set(0.0f, 0.0f, 0.0f);
+		v7->normal->Set(1.0f, 0.0f, 0.0f);
+		v7->uv->Set(0.0f, 1.0f);
+		vertices2->push_back(v7);
+
+
+        m_testMesh->GetGeo()->SetBufferSize(8);
+
+		unsigned int ver = 0;
+		ver |= (1 << LIAR_POSITION);
+		ver |= (1 << LIAR_NORMAL);
+		ver |= (1 << LIAR_COLOR);
+		ver |= (1 << LIAR_UV);
+		m_testMesh->GetGeo()->SetVertexOpen(ver);
+
+        std::vector<unsigned int>* indices1 = m_testMesh->GetGeo()->GetIndices();
+        size_t indicesLen = sizeof(indices) / sizeof(unsigned int);
+        for (size_t i = 0; i < indicesLen; ++i)
+        {
+            indices1->push_back(indices[i]);
+        }
+
+        m_testMesh->Upload();
+		m_testModel = new Liar::Model();
+		m_testModel->AddMesh(m_testMesh);*/
+		//m_testModel->SetZ(30.0f);
 
 		/*Liar::LiarNode* node = new Liar::LiarNode();
 		Liar::LiarMeshRead::ReadNode("C:/Users/Administrator/Desktop/test/test.model", *node);*/
 
-		/*m_testModel = Liar::LiarMeshRead::ReadModel("C:/Users/Administrator/Desktop/nanosuit/test.model");
-        m_testModel->SetZ(30.0f);*/
+		//m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/nanosuit/nano.model");
+		m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/dog/dd.model");
+		//m_testModel = new Liar::Model();
+		//m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/test_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
+		//m_testModel->AddMeshByObj("C:/Users/Administrator/Desktop/test/ttt.obj", "E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
+        m_testModel->SetZ(80.0f);
 
-		m_testModel = new Liar::Model();
+		//std::cout << *m_testModel << std::endl;
+
+		/*m_testModel = new Liar::Model();
 		m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/box_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
+		m_testModel->SetZ(30.0f);*/
 
 #ifndef __APPLE__
 		//m_testModel->AddMesh("E:/c++/VSOpenGL/OpenGL/Assets/models/testbox.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
         //m_testMesh = Liar::LiarMeshRead::ReadMesh("C:/Users/Administrator/Desktop/nanosuit/nano_legs.mesh");
-		/*m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_arms.mesh");
-		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_body.mesh");
-		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_hands.mesh");
-		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_helmet.mesh");
-		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_legs.mesh");
-		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_lights.mesh");
-		m_testModel->AddMesh("C:/Users/Administrator/Desktop/nanosuit/nano_visor.mesh");*/
 		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.vs",
 			"E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.fs");
         //Liar::LiarTexture* tex = AssetsMgr::GetInstance().GetTexContext("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
 #else
         //m_testMesh = Liar::LiarMeshRead::ReadMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_legs.mesh");
         m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/testbox.mesh","/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/");
-//        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_arms.mesh");
-//        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_body.mesh");
-//        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_hands.mesh");
-//        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_helmet.mesh");
-//        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_legs.mesh");
-//        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_lights.mesh");
-//        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_visor.mesh");
 		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test1.vs",
 			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test1.fs");
 //        Liar::LiarTexture* tex = AssetsMgr::GetInstance().GetTexture("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png");

@@ -292,6 +292,14 @@ namespace Liar
 		}
 	}
 
+	std::ostream& operator<<(std::ostream& os, const Liar::Entity& m)
+	{
+		os << "position(x:" << m.m_x << "," << m.m_y << "," << m.m_z << "),\n";
+		os << "rotation(x:" << m.m_rotationX << "," << m.m_rotationX << "," << m.m_rotationZ << "),\n";
+		os << "scale(x:" << m.m_scaleX << "," << m.m_scaleY << "," << m.m_scaleZ << "),\n";
+		return os;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////
 	// draw the local axis of an object
 	///////////////////////////////////////////////////////////////////////////////

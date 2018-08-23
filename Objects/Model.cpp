@@ -22,13 +22,24 @@ namespace Liar
 
 	void Model::AddMesh(const std::string& fileName, const char* base)
 	{
-		AddMesh(fileName.data(), base);
+		AddMesh(fileName.c_str(), base);
+	}
+
+	void Model::AddMeshByObj(const char* fileName, const char* base)
+	{
+		Liar::LiarMesh* ret = Liar::AssetsMgr::GetInstance().GetMeshByObj(fileName, base);
+		m_subMeshList->push_back(ret);
+	}
+
+	void Model::AddMeshByObj(const std::string& fileName, const char* base)
+	{
+		AddMeshByObj(fileName.c_str(), base);
 	}
 
 	void Model::Render(Liar::Shader& shader)
 	{
 		AddRotationY(1.0f);
-        AddRotation(1.0f, 0.0f, 0.0f);
+		AddRotation(1.0f, 0.0f, 0.0f);
 
 		CalcTransform();
 		shader.SetMat4("model", *m_transform);
@@ -39,5 +50,16 @@ namespace Liar
 			Liar::LiarMesh* mesh = m_subMeshList->at(i);
 			mesh->Render(shader);
 		}
+	}
+
+	std::ostream& operator<<(std::ostream& os, const Liar::Model& m)
+	{
+		size_t len = m.m_subMeshList->size();
+		os << "mesh size:" << len << "\n";
+		for (size_t i = 0; i < len; ++i)
+		{
+			os << "sub mesh info:\n" << *(m.m_subMeshList->at(i)) << "\n";
+		}
+		return os;
 	}
 }

@@ -96,6 +96,8 @@ namespace Liar
 
 	public:
 		void CalcTransform(bool calcInvert = true);
+		
+		friend std::ostream& operator<<(std::ostream& os, const Liar::Entity&);
 
 	private:
 		virtual void DrawAxis(float);
