@@ -24,6 +24,7 @@ namespace Liar
 	public:
 		static GLuint Load(const char*);
 		static GLuint LoadDDS(const char*);
+		static GLuint LoadTGA(const char*);
 	};
 }
 

@@ -268,7 +268,9 @@ namespace Liar
 		Liar::LiarMeshRead::ReadNode("C:/Users/Administrator/Desktop/test/test.model", *node);*/
 
 		//m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/nanosuit/nano.model");
-		m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/dog/dd.model");
+		//m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/dog/dd.model");
+		m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/model/laddy/laddy.model");
+		//m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/ttt/dav.model");
 		//m_testModel = new Liar::Model();
 		//m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/test_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
 		//m_testModel->AddMeshByObj("C:/Users/Administrator/Desktop/test/ttt.obj", "E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
