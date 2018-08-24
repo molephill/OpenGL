@@ -15,6 +15,7 @@
 #include <AssetsMgr.hpp>
 #include <Global.hpp>
 
+
 namespace Liar
 {
 
@@ -168,6 +169,7 @@ namespace Liar
 
 		glCullFace(GL_BACK);
 		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
         
 #ifdef __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
@@ -270,7 +272,9 @@ namespace Liar
 		//m_testModel = new Liar::Model();
 		//m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/test_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
 		//m_testModel->AddMeshByObj("C:/Users/Administrator/Desktop/test/ttt.obj", "E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
-        m_testModel->SetZ(80.0f);
+
+		//m_testModel = Liar::AssimpMgr::LoadModel("C:/Users/Administrator/Desktop/nanosuit/nanosuit.obj");
+		m_testModel->SetZ(30.0f);
 
 		//std::cout << *m_testModel << std::endl;
 
