@@ -89,6 +89,11 @@ namespace Liar
 			m_transformChanged = true;
 		}
 	}
+    
+    void Entity::SetRotation(float r)
+    {
+        SetRotation(r, r, r);
+    }
 
 	void Entity::SetRotation(float x, float y, float z)
 	{
@@ -133,6 +138,11 @@ namespace Liar
 			m_transformChanged = true;
 		}
 	}
+    
+    void Entity::SetScale(float scale)
+    {
+        SetScale(scale, scale, scale);
+    }
 
 	void Entity::SetScale(float x, float y, float z)
 	{

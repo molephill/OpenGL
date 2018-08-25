@@ -109,8 +109,8 @@ namespace Liar
 		{
 			m_transform->Identity();
 			m_transform->Translate(m_x, m_y, m_z);
-			m_transform->LookAt(m_targetX, m_targetY, m_targetZ);
 			m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
+            m_transform->LookAt(m_targetX, m_targetY, m_targetZ);
 
 			std::cout << (*m_transform) << std::endl;
 

@@ -67,12 +67,14 @@ namespace Liar
 		void SetRotationX(float);
 		void SetRotationY(float);
 		void SetRotationZ(float);
+        void SetRotation(float);
 		void SetRotation(float, float, float);
 		void SetRotation(const Liar::Vector3D&);
 
 		void SetScaleX(float);
 		void SetScaleY(float);
 		void SetScaleZ(float);
+        void SetScale(float);
 		void SetScale(float, float, float);
 		void SetScale(const Liar::Vector3D&);
         

@@ -24,12 +24,23 @@
 
 namespace Liar
 {
+    
+    // shader类型
+    enum ShaderType
+    {
+        TYPE_VERTEXT = 0,
+        TYPE_FRAGMENT = 1,
+        TYPE_PROGROM = 2,
+    };
+    
     class Shader
     {
     public:
+        Shader(const std::string&, const std::string&);
         Shader(const char* vertexPath, const char* fragmentPath);
         
     private:
+        void Init(const char*, const char*);
         unsigned int m_ID;
         
     public:

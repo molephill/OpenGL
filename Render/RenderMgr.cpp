@@ -12,154 +12,14 @@
 #include <GLFW/glfw3.h>
 
 #include <LiarPluginRead.h>
-#include <AssetsMgr.hpp>
-#include <Global.hpp>
+#include "Global.hpp"
+#include "AssetsMgr.hpp"
 
 
 namespace Liar
 {
 
-	void Test()
-	{
-		//unsigned int indices[] = {
-		//	0, 1, 3, // first triangle
-		//	1, 2, 3  // second triangle
-		//};
-
-		//std::vector<Liar::LiarVertexBuffer*>* vertices2 = new std::vector<LiarVertexBuffer*>();
-		//Liar::LiarVertexBuffer* v = new Liar::LiarVertexBuffer();
-		//v->position->Set(0.5f, 0.5f, 0.0);
-		//v->color->Set(1.0f, 0.0f, 0.0f);
-		//v->normal->Set(1.0f, 0.0f, 0.0f);
-		//v->uv->Set(1.0f, 1.0f);
-		//vertices2->push_back(v);
-
-		//Liar::LiarVertexBuffer* v1 = new Liar::LiarVertexBuffer();
-		//v1->position->Set(0.5f, -0.5f, 0.0f);
-		//v1->color->Set(0.0f, 1.0f, 0.0f);
-		//v1->normal->Set(1.0f, 0.0f, 0.0f);
-		//v1->uv->Set(1.0f, 0.0f);
-		//vertices2->push_back(v1);
-
-		//Liar::LiarVertexBuffer* v2 = new Liar::LiarVertexBuffer();
-		//v2->position->Set(-0.5f, -0.5f, 0.0f);
-		//v2->color->Set(0.0f, 0.0f, 1.0f);
-		//v2->normal->Set(1.0f, 0.0f, 0.0f);
-		//v2->uv->Set(0.0f, 0.0f);
-		//vertices2->push_back(v2);
-
-		//Liar::LiarVertexBuffer* v3 = new Liar::LiarVertexBuffer();
-		//v3->position->Set(-0.5f, 0.5f, 0.0f);
-		//v3->color->Set(1.0f, 1.0f, 0.0f);
-		//v3->normal->Set(1.0f, 0.0f, 0.0f);
-		//v3->uv->Set(0.0f, 1.0f);
-		//vertices2->push_back(v3);
-
-		//std::vector<unsigned int>* indices1 = new std::vector<unsigned int>();
-		//size_t indicesLen = sizeof(indices) / sizeof(unsigned int);
-		//for (size_t i = 0; i < indicesLen; ++i)
-		//{
-		//	indices1->push_back(indices[i]);
-		//}
-
-		//size_t indiceSize1 = indices1->size() * sizeof(unsigned int);
-
-		//glGenVertexArrays(1, &m_VAO);
-		//glGenBuffers(1, &m_VBO);
-		//glGenBuffers(1, &m_EBO);
-
-		//glBindVertexArray(m_VAO);
-
-		//glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-		////glBufferData(GL_ARRAY_BUFFER, buffSize3, vertices3->data(), GL_STATIC_DRAW);
-
-		//size_t positionSize = sizeof(Liar::Vector3D);
-		//size_t normalSize = sizeof(Liar::Vector3D);
-		//size_t colorSize = sizeof(Liar::Vector3D);
-		//size_t uvSize = sizeof(Liar::Vector2D);
-
-		//size_t oneSize = positionSize + normalSize + colorSize + uvSize;
-		//size_t vertexSize = vertices2->size();
-		//size_t totalSize = vertexSize * oneSize;
-
-		//size_t normalOffSize = positionSize;
-		//size_t colorOffSize = positionSize + normalOffSize;
-		//size_t uvOffSize = colorOffSize + colorSize;
-
-		//glBufferData(GL_ARRAY_BUFFER, totalSize, nullptr, GL_STATIC_DRAW);
-		//for (size_t i = 0; i < vertexSize; ++i)
-		//{
-		//	size_t start = i * oneSize;
-		//	Liar::LiarVertexBuffer* buffData = vertices2->at(i);
-		//	glBufferSubData(GL_ARRAY_BUFFER, start, positionSize, buffData->position);
-		//	glBufferSubData(GL_ARRAY_BUFFER, start + normalOffSize, normalSize, buffData->normal);
-		//	glBufferSubData(GL_ARRAY_BUFFER, start + colorOffSize, colorSize, buffData->color);
-		//	glBufferSubData(GL_ARRAY_BUFFER, start + uvOffSize, uvSize, buffData->uv);
-		//}
-
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-		//glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiceSize1, indices1->data(), GL_STATIC_DRAW);
-
-		//// position attribute
-		//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, oneSize, (void*)0);
-		//glEnableVertexAttribArray(0);
-		//// color attribute
-		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, oneSize, (void*)normalOffSize);
-		//glEnableVertexAttribArray(1);
-		//// color attribute
-		//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, oneSize, (void*)colorOffSize);
-		//glEnableVertexAttribArray(2);
-		//// texture coord attribute
-		//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, oneSize, (void*)uvOffSize);
-		//glEnableVertexAttribArray(3);
-
-
-		//unsigned int indices[] = {
-		//	0, 1, 3, // first triangle
-		//	1, 2, 3  // second triangle
-		//};
-
-		//m_testMesh = new Liar::LiarMesh();
-		//std::vector<Liar::LiarVertexBuffer*>* vertices2 = m_testMesh->GetGeo()->GetBuffers();
-
-		//Liar::LiarVertexBuffer* v = new Liar::LiarVertexBuffer();
-		//v->position->Set(0.5f, 0.5f, 0.0);
-		//v->color->Set(1.0f, 0.0f, 0.0f);
-		//v->normal->Set(1.0f, 0.0f, 0.0f);
-		//v->uv->Set(1.0f, 1.0f);
-		//vertices2->push_back(v);
-
-		//Liar::LiarVertexBuffer* v1 = new Liar::LiarVertexBuffer();
-		//v1->position->Set(0.5f, -0.5f, 0.0f);
-		//v1->color->Set(0.0f, 1.0f, 0.0f);
-		//v1->normal->Set(1.0f, 0.0f, 0.0f);
-		//v1->uv->Set(1.0f, 0.0f);
-		//vertices2->push_back(v1);
-
-		//Liar::LiarVertexBuffer* v2 = new Liar::LiarVertexBuffer();
-		//v2->position->Set(-0.5f, -0.5f, 0.0f);
-		//v2->color->Set(0.0f, 0.0f, 1.0f);
-		//v2->normal->Set(1.0f, 0.0f, 0.0f);
-		//v2->uv->Set(0.0f, 0.0f);
-		//vertices2->push_back(v2);
-
-		//Liar::LiarVertexBuffer* v3 = new Liar::LiarVertexBuffer();
-		//v3->position->Set(-0.5f, 0.5f, 0.0f);
-		//v3->color->Set(1.0f, 1.0f, 0.0f);
-		//v3->normal->Set(1.0f, 0.0f, 0.0f);
-		//v3->uv->Set(0.0f, 1.0f);
-		//vertices2->push_back(v3);
-
-
-		//m_testMesh->GetGeo()->SetBufferSize(4);
-
-		//std::vector<unsigned int>* indices1 = m_testMesh->GetGeo()->GetIndices();
-		//size_t indicesLen = sizeof(indices) / sizeof(unsigned int);
-		//for (size_t i = 0; i < indicesLen; ++i)
-		//{
-		//indices1->push_back(indices[i]);
-		//}
-	}
+	#define MODEL(path) （"" + BASE_PATH + "models/")
 
 	RenderMgr::RenderMgr():m_red(0.2f),m_green(0.3f),m_blue(0.3f)
 	{
@@ -177,129 +37,24 @@ namespace Liar
 
 		m_camera = new Liar::Camera3D();
 		m_camera->SetPosition(0.0f, -10.0f, -10.0f);
-		m_camera->SetRotationX(45.0f);
-        m_camera->LookAt(0.0f, 0.0f, 0.0f);
+        //m_camera->SetRotationX(45.0f);
+        m_camera->LookAt(0.0f, 1.0f, 0.0f);
 		//m_camera->SetRotationX(26.0f);
 
-		
-        /*m_testMesh = new Liar::LiarMesh();
-        std::vector<Liar::LiarVertexBuffer*>* vertices2 = m_testMesh->GetGeo()->GetBuffers();
-
-        Liar::LiarVertexBuffer* v = new Liar::LiarVertexBuffer(true);
-        v->position->Set(-0.5, -0.5, -0.5);
-        v->color->Set(1.0f, 0.0f, 0.0f);
-        v->normal->Set(1.0f, 0.0f, 0.0f);
-        v->uv->Set(1.0f, 1.0f);
-        vertices2->push_back(v);
-
-        Liar::LiarVertexBuffer* v1 = new Liar::LiarVertexBuffer(true);
-        v1->position->Set(0.5, -0.5, -0.5);
-        v1->color->Set(1.0f, 0.0f, 0.0f);
-        v1->normal->Set(1.0f, 0.0f, 0.0f);
-        v1->uv->Set(1.0f, 0.0f);
-        vertices2->push_back(v1);
-
-        Liar::LiarVertexBuffer* v2 = new Liar::LiarVertexBuffer(true);
-        v2->position->Set(-0.5, -0.5, 0.5);
-        v2->color->Set(1.0f, 0.0f, 0.0f);
-        v2->normal->Set(1.0f, 0.0f, 0.0f);
-        v2->uv->Set(0.0f, 0.0f);
-        vertices2->push_back(v2);
-
-        Liar::LiarVertexBuffer* v3 = new Liar::LiarVertexBuffer(true);
-        v3->position->Set(0.5, -0.5, 0.5);
-        v3->color->Set(1.0f, 0.0f, 0.0f);
-        v3->normal->Set(1.0f, 0.0f, 0.0f);
-        v3->uv->Set(0.0f, 1.0f);
-        vertices2->push_back(v3);
-
-
-		Liar::LiarVertexBuffer* v4 = new Liar::LiarVertexBuffer(true);
-		v4->position->Set(-0.5, 0.5, -0.5);
-		v4->color->Set(0.0f, 0.0f, 0.0f);
-		v4->normal->Set(1.0f, 0.0f, 0.0f);
-		v4->uv->Set(1.0f, 1.0f);
-		vertices2->push_back(v4);
-
-		Liar::LiarVertexBuffer* v5 = new Liar::LiarVertexBuffer(true);
-		v5->position->Set(0.5, 0.5, -0.5);
-		v5->color->Set(0.0f, 0.0f, 0.0f);
-		v5->normal->Set(1.0f, 0.0f, 0.0f);
-		v5->uv->Set(1.0f, 0.0f);
-		vertices2->push_back(v5);
-
-		Liar::LiarVertexBuffer* v6 = new Liar::LiarVertexBuffer(true);
-		v6->position->Set(-0.5, 0.5, 0.5);
-		v6->color->Set(0.0f, 0.0f, 0.0f);
-		v6->normal->Set(1.0f, 0.0f, 0.0f);
-		v6->uv->Set(0.0f, 0.0f);
-		vertices2->push_back(v6);
-
-		Liar::LiarVertexBuffer* v7 = new Liar::LiarVertexBuffer(true);
-		v7->position->Set(0.5, 0.5, 0.5);
-		v7->color->Set(0.0f, 0.0f, 0.0f);
-		v7->normal->Set(1.0f, 0.0f, 0.0f);
-		v7->uv->Set(0.0f, 1.0f);
-		vertices2->push_back(v7);
-
-
-        m_testMesh->GetGeo()->SetBufferSize(8);
-
-		unsigned int ver = 0;
-		ver |= (1 << LIAR_POSITION);
-		ver |= (1 << LIAR_NORMAL);
-		ver |= (1 << LIAR_COLOR);
-		ver |= (1 << LIAR_UV);
-		m_testMesh->GetGeo()->SetVertexOpen(ver);
-
-        std::vector<unsigned int>* indices1 = m_testMesh->GetGeo()->GetIndices();
-        size_t indicesLen = sizeof(indices) / sizeof(unsigned int);
-        for (size_t i = 0; i < indicesLen; ++i)
-        {
-            indices1->push_back(indices[i]);
-        }
-
-        m_testMesh->Upload();
-		m_testModel = new Liar::Model();
-		m_testModel->AddMesh(m_testMesh);*/
-		//m_testModel->SetZ(30.0f);
-
-		/*Liar::LiarNode* node = new Liar::LiarNode();
-		Liar::LiarMeshRead::ReadNode("C:/Users/Administrator/Desktop/test/test.model", *node);*/
-
-		//m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/nanosuit/nano.model");
-		//m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/dog/dd.model");
-		m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/model/laddy/laddy.model");
-		//m_testModel = Liar::LiarPluginRead::ReadModel("C:/Users/Administrator/Desktop/ttt/dav.model");
+//        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/nano/nano.model"));
+//        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));
+        //m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/laddy/laddy.model"));
+        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dva/dav.model"));
 		//m_testModel = new Liar::Model();
 		//m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/test_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
 		//m_testModel->AddMeshByObj("C:/Users/Administrator/Desktop/test/ttt.obj", "E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
 
 		//m_testModel = Liar::AssimpMgr::LoadModel("C:/Users/Administrator/Desktop/nanosuit/nanosuit.obj");
 		m_testModel->SetZ(30.0f);
+        m_testModel->SetScale(0.05);
 
 		//std::cout << *m_testModel << std::endl;
-
-		/*m_testModel = new Liar::Model();
-		m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/box_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
-		m_testModel->SetZ(30.0f);*/
-
-#ifndef __APPLE__
-		//m_testModel->AddMesh("E:/c++/VSOpenGL/OpenGL/Assets/models/testbox.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
-        //m_testMesh = Liar::LiarMeshRead::ReadMesh("C:/Users/Administrator/Desktop/nanosuit/nano_legs.mesh");
-		m_shader = new Shader("E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.vs",
-			"E:/c++/VSOpenGL/OpenGL/Assets/Shaders/test1.fs");
-        //Liar::LiarTexture* tex = AssetsMgr::GetInstance().GetTexContext("E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
-#else
-        //m_testMesh = Liar::LiarMeshRead::ReadMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/nanosuit/nano_legs.mesh");
-        m_testModel->AddMesh("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/models/testbox.mesh","/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/");
-		m_shader = new Shader("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test1.vs",
-			"/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Shaders/test1.fs");
-//        Liar::LiarTexture* tex = AssetsMgr::GetInstance().GetTexture("/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/Images/awesomeface.png");
-#endif // __APPLE__
-        
-//        m_testMesh->GetMat()->GetTextures()->push_back(tex);
-//        m_testMesh->GetMat()->SetTexSize(1);
+		m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
 	}
 
     RenderMgr::~RenderMgr()

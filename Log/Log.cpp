@@ -8,7 +8,11 @@
 
 #include "Log.hpp"
 
-void CLog::GetLogFilePath(char* szPath)
+#ifdef __APPLE__
+#define DEBUG 1
+#endif
+
+void CLog::GetLogFilePath(const char* szPath)
 {
 //    GetModuleFileNameA( NULL, szPath, PATH_MAX) ;
 //    ZeroMemory(strrchr(szPath,_T('\\')), strlen(strrchr(szPath,_T('\\') ) )*sizeof(char)) ;
@@ -16,7 +20,7 @@ void CLog::GetLogFilePath(char* szPath)
 //    strcat(szPath, LOG_FILE_NAME);
 }
 
-string CLog::GetSystemTime()
+std::string CLog::GetSystemTime()
 {
 #ifndef __APPLE__
 	time_t tNowTime = time(0);
@@ -29,7 +33,7 @@ string CLog::GetSystemTime()
 #endif // WIN_PLAT_FORM
     char szTime[30] = {'\0'};
     strftime(szTime, 30, "[%Y-%m-%d %H:%M:%S] ", tLocalTime);
-    string strTime = szTime;
+    std::string strTime = szTime;
     return strTime;
 }
 
@@ -45,8 +49,10 @@ void CLog::WriteLog(T x)
     fout.seekp(ios::end);
     fout << GetSystemTime() << x <<endl;
     fout.close();
-#elseif DEBUG
+#else
+#ifdef DEBUG
     std::cout << GetSystemTime() << x << std::endl;
+#endif
 #endif
 }
 
@@ -61,8 +67,10 @@ void CLog::WriteLog2(T1 x1,T2 x2)
     fout.seekp(ios::end);
     fout << GetSystemTime() << x1 <<" = "<< x2 << endl;
     fout.close();
-#elseif DEBUG
+#else
+#ifdef DEBUG
     std::cout << GetSystemTime() << x1 << "=" << x2 << std::endl;
+#endif
 #endif
 }
 
@@ -77,8 +85,10 @@ void CLog::WriteFuncBegin(T x)
     fout.seekp(ios::end);
     fout << GetSystemTime() << "--------------------"<< x <<"  Begin  --------------------" << std::endl;
     fout.close();
-#elseif DEBUG
+#else
+#ifdef DEBUG
     std::cout << GetSystemTime() << "--------------------"<< x <<"  Begin  --------------------" << std::endl;
+#endif
 #endif
 }
 
@@ -93,7 +103,9 @@ void CLog::WriteFuncEnd(T x)
     fout.seekp(ios::end);
     fout << GetSystemTime() << "--------------------"<< x <<"  End  --------------------" << endl;
     fout.close();
-#elseif DEBUG
+#else
+#ifdef DEBUG
     std::cout << GetSystemTime() << "--------------------"<< x <<"  End  --------------------" << std::endl;
+#endif
 #endif
 }

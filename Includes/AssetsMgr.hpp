@@ -24,6 +24,13 @@
 
 namespace Liar
 {
+    // 资源路径
+#ifdef __APPLE__
+    const static std::string BASE_PATH = "/Users/maowei/Downloads/C++/OpenGL/OpenGL/Assets/";
+#else
+    const static std::string BASE_PATH = "E:/c++/VSOpenGL/OpenGL/Assets/";
+#endif
+    
     class AssetsMgr
     {
     public:
@@ -75,8 +82,8 @@ namespace Liar
 
 		Liar::LiarTexContext* GetTexContext(const char*);
 		Liar::LiarTexContext* GetTexContext(const std::string&);
-
-		LiarMesh* GetMeshByObj(const char*, const char* base = nullptr);
+        
+        static std::string GetPath(const char*);
 
 	private:
 		std::vector<Liar::LiarTexContext*>* m_allTexContexts;

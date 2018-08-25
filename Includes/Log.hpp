@@ -9,6 +9,8 @@
 #ifndef Log_hpp
 #define Log_hpp
 
+#include "Define.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -24,15 +26,10 @@
 #include <time.h>
 #endif // !__APPLE__
 
-
-#include "Define.h"
-
-using namespace std;
-
 class CLog
 {
 public:
-    static void GetLogFilePath(char* szPath);
+    static void GetLogFilePath(const char* szPath);
     
     //输出一个内容，可以是字符串(ascii)、整数、浮点数、布尔、枚举
     //格式为：[2011-11-11 11:11:11] aaaaaaa并换行
@@ -52,7 +49,7 @@ public:
     static void WriteFuncEnd(T x);
     
     //获取本地时间，格式如"[2011-11-11 11:11:11] ";
-    static string GetSystemTime();
+    static std::string GetSystemTime();
 };
 
 #define LOG(x)  CLog::WriteLog(x);  //括号内可以是字符串(ascii)、整数、浮点数、bool等
@@ -61,6 +58,7 @@ public:
 #define LOG_LINE        LOG(__LINE__)                       //输出当前行号
 #define LOG_FUNC_BEGIN  CLog::WriteFuncBegin(__FUNCTION__);     //形式如：[时间]"------------FuncName Begin------------"
 #define LOG_FUNC_END     CLog::WriteFuncEnd(__FUNCTION__);      //形式如：[时间]"------------FuncName  End------------"
+
 
 
 #endif /* Log_hpp */

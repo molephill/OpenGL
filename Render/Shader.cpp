@@ -10,7 +10,17 @@
 
 namespace Liar
 {
+    Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+    {
+        Init(vertexPath.c_str(), fragmentPath.c_str());
+    }
+    
     Shader::Shader(const char* vertexPath, const char* fragmentPath)
+    {
+        Init(vertexPath, fragmentPath);
+    }
+    
+    void Shader::Init(const char* vertexPath, const char* fragmentPath)
     {
         std::string vertexCode;
         std::string fragmentCode;

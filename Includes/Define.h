@@ -22,15 +22,8 @@ const static int DEFAULT_BUFF_SIZE = 512;
 const unsigned int WINDOW_W = 960;
 const unsigned int WINDOW_H = 600;
 
-// 资源路径
-#ifdef __APPLE__
-const std::string BASE_PATH = "/Users/maowei/Downloads/C++/OpenGL/";
-#else
-const std::string BASE_PATH = "E:/c++/VSOpenGL/OpenGL/Assets/";
-#endif
-
 // log设置
-#define LOG_FILE_NAME "log.txt";
+#define LOG_FILE_NAME "log.txt"
 //#define WRITE_LOG_ENABLE 1;
 
 // 渲染模式
@@ -44,14 +37,6 @@ const float CAMERA_YAW		= -90.0f;
 const float CAMERA_PITCH	= 0.0f;
 
 const float CAMERA_FOV = 45.0f;
-
-// shader类型
-enum ShaderType
-{
-    TYPE_VERTEXT = 0,
-    TYPE_FRAGMENT = 1,
-    TYPE_PROGROM = 2,
-};
 
 // 移动方向
 enum MOVE_DIRECTION

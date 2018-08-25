@@ -10,13 +10,19 @@ namespace Liar
 		unsigned char *data = stbi_load(filename, &width, &height, &nrComponents, 0);
 		if (data)
 		{
-			GLenum format;
+			GLenum format = GL_RGB;
 			if (nrComponents == 1)
+            {
 				format = GL_RED;
+            }
 			else if (nrComponents == 3)
+            {
 				format = GL_RGB;
+            }
 			else if (nrComponents == 4)
+            {
 				format = GL_RGBA;
+            }
 
 			glGenTextures(1, &textureID);
 			glBindTexture(GL_TEXTURE_2D, textureID);
@@ -48,8 +54,7 @@ namespace Liar
 		char filecode[4];
 		file.read(filecode, 4);
 		if (strncmp(filecode, "DDS ", 4) != 0) {
-			std::cout << "Error::loadDDs, format is not dds :"
-				<< filename << std::endl;
+			std::cout << "Error::loadDDs, format is not dds :" << filename << std::endl;
 			file.close();
 			return 0;
 		}
@@ -143,7 +148,7 @@ namespace Liar
 #ifndef __APPLE__	
 		fopen_s(&file, fileName, "rb+");
 #else
-		pFile = fopen(file, "rb+");
+		file = fopen(fileName, "rb+");
 #endif			
 
 		if (file == NULL ||										// Does File Even Exist?

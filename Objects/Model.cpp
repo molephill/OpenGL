@@ -25,17 +25,6 @@ namespace Liar
 		AddMesh(fileName.c_str(), base);
 	}
 
-	void Model::AddMeshByObj(const char* fileName, const char* base)
-	{
-		Liar::LiarMesh* ret = Liar::AssetsMgr::GetInstance().GetMeshByObj(fileName, base);
-		m_subMeshList->push_back(ret);
-	}
-
-	void Model::AddMeshByObj(const std::string& fileName, const char* base)
-	{
-		AddMeshByObj(fileName.c_str(), base);
-	}
-
 	void Model::Render(Liar::Shader& shader)
 	{
 		/*AddRotationY(1.0f);*/
