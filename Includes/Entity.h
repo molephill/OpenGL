@@ -3,6 +3,8 @@
 #include <Vectors.h>
 #include <Matrices.h>
 
+#include "Shader.hpp"
+
 namespace Liar
 {
 	class Entity
@@ -27,6 +29,9 @@ namespace Liar
 		float m_scaleX;
 		float m_scaleY;
 		float m_scaleZ;
+        
+        // name
+        std::string m_name;
 
 		//
 		bool m_transformChanged;
@@ -35,7 +40,8 @@ namespace Liar
 		Entity* m_parent;
 
 		// children
-		Entity* m_childrenList;
+		Entity* m_childrenNode;
+        Liar::Entity* m_nextChildNode;
 
 		// model matrix
 		Liar::Matrix4* m_transform;
@@ -43,7 +49,7 @@ namespace Liar
 		Liar::Matrix4* m_investtransform;
 
 	public:
-		Liar::Matrix4* GetTransfomr() { return m_transform; };
+		Liar::Matrix4* GetTransform() { return m_transform; };
 
 		float GetX() const { return m_x; };
 		float GetY() const { return m_y; };
@@ -95,13 +101,28 @@ namespace Liar
         void AddScaleZ(float);
         void AddScale(float, float, float);
         void AddScale(const Liar::Vector3D&);
+        
+    public:
+        Liar::Entity* AddChild(Liar::Entity*);
+        Liar::Entity* AddModel(const std::string&);
+        
+        Liar::Entity* RemoveChild(Liar::Entity*);
+        Liar::Entity* RemoveChild(const std::string&);
+        
+        bool RemoveAndDisposeChild(Liar::Entity*);
+        bool RemoveAndDisposeChild(const std::string&);
+        
+        Liar::Entity* GetChildNode() { return m_childrenNode; };
+        
+        virtual void Render(Liar::Shader&);
+        virtual void RenderChildren(Liar::Shader&, bool);
 
 	public:
-		void CalcTransform(bool calcInvert = true);
-		
+        void SetName(std::string name) { m_name = name; };
 		friend std::ostream& operator<<(std::ostream& os, const Liar::Entity&);
 
-	private:
+	protected:
+        void CalcTransform(bool calcInvert = true);
 		virtual void DrawAxis(float);
 
 	};

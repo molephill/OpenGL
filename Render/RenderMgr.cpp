@@ -36,11 +36,23 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 2.0f, 10.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 10.0f);
         m_camera->LookAt(0.0f, 0.0f, 0.0f);
+        
+        m_rootNode->SetRotationX(-45.0f);
+        
+        // dog
+        Liar::Entity* dog = m_rootNode->AddModel("models/dog/dd.model");
+        dog->SetPosition(20.0f, 0.0f, 100.0f);
+        dog->SetScale(0.5);
+        dog->SetName("dog");
+        
+//        Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
+//        nano->SetPosition(-20.0f, 0.0f, 80.0f);
+//        nano->SetName("nano");
 
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/nano/nano.model"));
-        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));
+//        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));
         //m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/laddy/laddy.model"));
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dva/dav.model"));
 		//m_testModel = new Liar::Model();
@@ -48,8 +60,8 @@ namespace Liar
 		//m_testModel->AddMeshByObj("C:/Users/Administrator/Desktop/test/ttt.obj", "E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
 
 		//m_testModel = Liar::AssimpMgr::LoadModel("C:/Users/Administrator/Desktop/nanosuit/nanosuit.obj");
-		m_testModel->SetZ(30.0f);
-        m_testModel->SetScale(0.5);
+//        m_testModel->SetZ(30.0f);
+//        m_testModel->SetScale(0.5);
 
 		//std::cout << *m_testModel << std::endl;
 		m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
@@ -76,8 +88,11 @@ namespace Liar
 		m_camera->Render();
 		m_shader->Use();
 		m_shader->SetMat4("projection", *(m_camera->GetMatrix()));
+        
+//        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
+        m_rootNode->Render(*m_shader);
 
-		m_testModel->Render(*m_shader);
+//        m_testModel->Render(*m_shader);
 
 		//m_testMesh->Render(*m_shader);
     }

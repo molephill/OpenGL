@@ -1,7 +1,6 @@
 #include "Model.h"
 #include "AssetsMgr.hpp"
 
-
 namespace Liar
 {
 	Model::Model():
@@ -29,10 +28,9 @@ namespace Liar
 	{
 		/*AddRotationY(1.0f);*/
 		AddRotation(0.0f, 1.0f, 0.0f);
-
-		CalcTransform();
-		shader.SetMat4("model", *m_transform);
-
+        
+        Liar::Entity::Render(shader);
+        
 		size_t len = m_subMeshList->size();
 		for (size_t i = 0; i < len; ++i)
 		{

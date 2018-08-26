@@ -1,4 +1,9 @@
+#include <LiarPluginRead.h>
+
+#include "AssetsMgr.hpp"
+
 #include "Entity.h"
+#include "Model.h"
 
 namespace Liar
 {
@@ -6,8 +11,8 @@ namespace Liar
 		:m_x(0.0f),m_y(0.0f),m_z(0.0f)
 		, m_rotationX(0.0f), m_rotationY(0.0f), m_rotationZ(0.0f)
 		, m_scaleX(1.0f), m_scaleY(1.0f), m_scaleZ(1.0f)
-		, m_transformChanged(true)
-		, m_parent(nullptr), m_childrenList(nullptr)
+		, m_transformChanged(true), m_name("")
+		, m_parent(nullptr), m_childrenNode(nullptr), m_nextChildNode(nullptr)
 		, m_transform(new Liar::Matrix4())
 	{
 	}
@@ -288,6 +293,143 @@ namespace Liar
     {
         AddRotation(v.x, v.y, v.z);
     }
+    
+    // ================= Child =================
+    Liar::Entity* Entity::AddChild(Liar::Entity * child)
+    {
+        if(!child)
+        {
+            std::cout << "Add nullptr ERROR!!" << std::endl;
+            return nullptr;
+        }
+        child->m_parent = this;
+        if(!m_childrenNode)
+        {
+            m_childrenNode = child;
+        }
+        else
+        {
+            m_nextChildNode->m_nextChildNode = child;
+        }
+        m_nextChildNode = child;
+        return child;
+    }
+    
+    Liar::Entity* Entity::AddModel(const std::string& path)
+    {
+        Liar::Model* model = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath(path.c_str()));
+        return AddChild(model);
+    }
+    
+    Liar::Entity* Entity::RemoveChild(Liar::Entity* child)
+    {
+        bool find = false;
+        if(m_childrenNode)
+        {
+            if(child == m_childrenNode)
+            {
+                m_childrenNode = nullptr;
+                m_nextChildNode = nullptr;
+                find = true;
+            }
+            else
+            {
+                Liar::Entity* nextNode = m_childrenNode;
+                while (!find && nextNode)
+                {
+                    if(nextNode == child)
+                    {
+                        if(nextNode->m_nextChildNode)
+                        {
+                            nextNode->m_nextChildNode = nextNode->m_nextChildNode->m_nextChildNode;
+                        }
+                        find = true;
+                    }
+                    else
+                    {
+                        nextNode = nextNode->m_nextChildNode;
+                    }
+                }
+            }
+        }
+        
+        if(find)
+        {
+            child->m_parent = nullptr;
+            return child;
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
+    
+    Liar::Entity* Entity::RemoveChild(const std::string& name)
+    {
+        Liar::Entity* findNode = nullptr;
+        if(m_childrenNode)
+        {
+            if(m_childrenNode->m_name == name)
+            {
+                findNode = m_childrenNode;
+                m_childrenNode = nullptr;
+                m_nextChildNode = nullptr;
+            }
+            else
+            {
+                Liar::Entity* nextNode = m_childrenNode;
+                while (!findNode && nextNode)
+                {
+                    if(nextNode->m_name == name)
+                    {
+                        findNode = nextNode;
+                        if(nextNode->m_nextChildNode)
+                        {
+                            nextNode->m_nextChildNode = nextNode->m_nextChildNode->m_nextChildNode;
+                        }
+                    }
+                    else
+                    {
+                        nextNode = nextNode->m_nextChildNode;
+                    }
+                }
+            }
+        }
+        
+        if(findNode)
+        {
+            findNode->m_parent = nullptr;
+        }
+        return findNode;
+    }
+    
+    bool Entity::RemoveAndDisposeChild(Liar::Entity* child)
+    {
+        Liar::Entity* findChild = RemoveChild(child);
+        if(findChild == child)
+        {
+            delete child;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    bool Entity::RemoveAndDisposeChild(const std::string& name)
+    {
+        Liar::Entity* findChild = RemoveChild(name);
+        if(findChild)
+        {
+            delete findChild;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 	// ================== render ==================
 	void Entity::CalcTransform(bool calcInvert)
@@ -301,6 +443,33 @@ namespace Liar
 			m_transformChanged = false;
 		}
 	}
+    
+    void Entity::Render(Liar::Shader& shader)
+    {
+        bool parentChanged = m_transformChanged;
+        CalcTransform();
+        shader.SetMat4("model", *m_transform);
+        RenderChildren(shader, parentChanged);
+    }
+    
+    void Entity::RenderChildren(Liar::Shader& shader, bool parentChanged)
+    {
+        Liar::Entity* child = m_childrenNode;
+        while (child)
+        {
+            char tx[100];
+            sprintf(tx, "%f %f %f %f %f %f %f %f", m_x, m_y, m_z, m_scaleX, m_scaleY, m_scaleZ, m_rotationX, m_rotationY, m_rotationZ);
+            std::cout << child->m_name << "===" << parentChanged << "==" << tx << std::endl;
+            if(parentChanged)
+            {
+                child->AddPosition(m_x, m_y, m_z);
+                child->AddScale(m_scaleX, m_scaleY, m_scaleZ);
+                child->AddRotation(m_rotationX, m_rotationY, m_rotationZ);
+            }
+            child->Render(shader);
+            child = child->m_nextChildNode;
+        }
+    }
 
 	std::ostream& operator<<(std::ostream& os, const Liar::Entity& m)
 	{

@@ -158,7 +158,7 @@ namespace Liar
 		if (m_transformChanged)
 		{
 			m_viewMatrix->Identity();
-            Liar::Matrix4::LookAt(-m_x, -m_y, -m_z, -m_targetX, -m_targetY, -m_targetZ, *m_viewMatrix);
+            Liar::Matrix4::LookAt(-m_x, -m_y, -m_z, m_targetX, m_targetY, m_targetZ, *m_viewMatrix);
             
             glm::vec3 position = glm::vec3(m_x, m_y, m_z);
             glm::vec3 target = glm::vec3(m_targetX, m_targetY, m_targetZ);
