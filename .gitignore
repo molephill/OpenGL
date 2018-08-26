@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+LiarMaterial.cpp
+LiarMesh.cpp
+LiarPluginCfg.cpp
+LiarPluginRead.cpp
+LiarVertexBuffer.cpp
+Matrices.cpp

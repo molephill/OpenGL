@@ -7,7 +7,7 @@
 
 namespace Liar
 {
-	class Camera3D:public Entity
+	class Camera3D
 	{
 	public:
 		Camera3D(float nearCliping = 1.0f, float farClipping = 1000.0f);
@@ -21,6 +21,13 @@ namespace Liar
 		float m_fov;
 		unsigned int m_viewWidth;
 		unsigned int m_viewHeight;
+        
+        float m_x;
+        float m_y;
+        float m_z;
+        Liar::Matrix4* m_viewMatrix;
+        
+        bool m_transformChanged;
 
 		float m_targetX;
 		float m_targetY;
@@ -30,6 +37,13 @@ namespace Liar
 
 	public:
 		// ===================================================
+        void SetPosition(float, float, float);
+        void SetPosition(const Liar::Vector3D&);
+        
+        void AddX(float);
+        void AddY(float);
+        void AddZ(float);
+        
 		void SetViewSize(unsigned int, unsigned int, unsigned int, unsigned int);
 		void LookAt(float, float, float);
 		void ChangeMode(bool);

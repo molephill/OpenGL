@@ -86,6 +86,16 @@ namespace Liar
     {
         return "" + BASE_PATH + base;
     }
+    
+    void AssetsMgr::PrintMat4(const glm::mat4 & view)
+    {
+        std::cout << std::fixed << std::setprecision(5);
+        std::cout << "[" << std::setw(10) << view[0][0] << " " << std::setw(10) << view[0][1] << " " << std::setw(10) << view[0][2] << " " << std::setw(10) << view[0][3] << "]\n"
+        << "[" << std::setw(10) << view[1][0] << " " << std::setw(10) << view[1][1] << " " << std::setw(10) << view[1][2] << " " << std::setw(10) << view[1][3] << "]\n"
+        << "[" << std::setw(10) << view[2][0] << " " << std::setw(10) << view[2][1] << " " << std::setw(10) << view[2][2] << " " << std::setw(10) << view[2][3] << "]\n"
+        << "[" << std::setw(10) << view[3][0] << " " << std::setw(10) << view[3][1] << " " <<std::setw(10) << view[3][2] << " " << std::setw(10) << view[3][3] << "]\n";
+        std::cout << std::resetiosflags(std::ios_base::fixed | std::ios_base::floatfield);
+    }
 
 	AssetsMgr* AssetsMgr::m_instance = nullptr;
 }

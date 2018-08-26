@@ -3,9 +3,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include "AssetsMgr.hpp"
+
 namespace Liar
 {
-	Camera3D::Camera3D(float nearClipping, float farClipping):Liar::Entity(),
+	Camera3D::Camera3D(float nearClipping, float farClipping):
+        m_x(0.0f),m_y(0.0f),m_z(0.0),
+        m_transformChanged(true),m_viewMatrix(new Liar::Matrix4()),
 		m_nearClipping(nearClipping), m_farClipping(farClipping),
 		m_targetX(0.0f),m_targetY(0.0f),m_targetZ(0.0f),
 		m_fov(60.0f),m_viewWidth(WINDOW_W),m_viewHeight(WINDOW_H),
@@ -17,8 +23,52 @@ namespace Liar
 
 	Camera3D::~Camera3D()
 	{
-		
+        delete m_viewMatrix;
+        delete m_projection;
 	}
+    
+    void Camera3D::SetPosition(float x, float y, float z)
+    {
+        if(m_x != x || m_y != y || m_z != z)
+        {
+            m_x = x;
+            m_y = y;
+            m_z = z;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Camera3D::SetPosition(const Liar::Vector3D& v)
+    {
+        SetPosition(v.x, v.y, v.z);
+    }
+    
+    void Camera3D::AddX(float x)
+    {
+        if(x != 0)
+        {
+            m_x += x;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Camera3D::AddY(float y)
+    {
+        if(y != 0)
+        {
+            m_y += y;
+            m_transformChanged = true;
+        }
+    }
+    
+    void Camera3D::AddZ(float z)
+    {
+        if(z != 0)
+        {
+            m_z += z;
+            m_transformChanged = true;
+        }
+    }
 
 	void Camera3D::LookAt(float x, float y, float z)
 	{
@@ -107,12 +157,42 @@ namespace Liar
 	{
 		if (m_transformChanged)
 		{
-			m_transform->Identity();
-			m_transform->Translate(m_x, m_y, m_z);
-			m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
-            m_transform->LookAt(m_targetX, m_targetY, m_targetZ);
-
-			std::cout << (*m_transform) << std::endl;
+			m_viewMatrix->Identity();
+            Liar::Matrix4::LookAt(-m_x, -m_y, -m_z, -m_targetX, -m_targetY, -m_targetZ, *m_viewMatrix);
+            
+            glm::vec3 position = glm::vec3(m_x, m_y, m_z);
+            glm::vec3 target = glm::vec3(m_targetX, m_targetY, m_targetZ);
+            glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+            // 1. Position = known
+            // 2. Calculate cameraDirection
+            glm::vec3 zaxis = glm::normalize(position - target);
+            // 3. Get positive right axis vector
+            glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));
+            // 4. Calculate camera up vector
+            glm::vec3 yaxis = glm::cross(zaxis, xaxis);
+            
+            // Create translation and rotation matrix
+            // In glm we access elements as mat[col][row] due to column-major layout
+            glm::mat4 translation(1.0f); // Identity matrix by default
+            translation[3][0] = position.x; // Third column, first row
+            translation[3][1] = position.y;
+            translation[3][2] = position.z;
+            glm::mat4 rotation(1.0f);
+            rotation[0][0] = xaxis.x; // First column, first row
+            rotation[1][0] = xaxis.y;
+            rotation[2][0] = xaxis.z;
+            rotation[0][1] = yaxis.x; // First column, second row
+            rotation[1][1] = yaxis.y;
+            rotation[2][1] = yaxis.z;
+            rotation[0][2] = zaxis.x; // First column, third row
+            rotation[1][2] = zaxis.y;
+            rotation[2][2] = zaxis.z;
+            
+            Liar::AssetsMgr::PrintMat4(rotation*translation);
+            
+            std::cout << "============" << std::endl;
+            
+			std::cout << (*m_viewMatrix) << std::endl;
 
 			// projection
 			SetFrustum(m_fov, static_cast<float>(m_viewWidth / m_viewHeight), m_nearClipping, m_farClipping);
@@ -120,7 +200,7 @@ namespace Liar
 			std::cout << (*m_projection) << std::endl;
 
 			// projection*viewMatrix
-			(*m_projection) *= (*m_transform);
+			(*m_projection) *= (*m_viewMatrix);
 
 			m_transformChanged = false;
 		}

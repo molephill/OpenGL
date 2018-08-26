@@ -9,7 +9,7 @@
 #ifndef RenderMgr_hpp
 #define RenderMgr_hpp
 
-#include <LiarMesh.h>
+#include "Entity.h"
 #include "Model.h"
 
 namespace Liar
@@ -31,6 +31,8 @@ namespace Liar
 		float m_blue;
 		Liar::Camera3D* m_camera;
 		Liar::Shader* m_shader;
+        
+        Liar::Entity* m_rootNode;
 
 		unsigned int m_VAO;
 		unsigned int m_VBO;

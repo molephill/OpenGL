@@ -19,9 +19,9 @@
 namespace Liar
 {
 
-	#define MODEL(path) （"" + BASE_PATH + "models/")
-
-	RenderMgr::RenderMgr():m_red(0.2f),m_green(0.3f),m_blue(0.3f)
+	RenderMgr::RenderMgr():
+        m_red(0.2f),m_green(0.3f),m_blue(0.3f),
+        m_rootNode(new Liar::Entity())
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -36,22 +36,20 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, -10.0f, -10.0f);
-        //m_camera->SetRotationX(45.0f);
-        m_camera->LookAt(0.0f, 1.0f, 0.0f);
-		//m_camera->SetRotationX(26.0f);
+		m_camera->SetPosition(0.0f, 2.0f, 10.0f);
+        m_camera->LookAt(0.0f, 0.0f, 0.0f);
 
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/nano/nano.model"));
-//        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));
+        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));
         //m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/laddy/laddy.model"));
-        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dva/dav.model"));
+//        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dva/dav.model"));
 		//m_testModel = new Liar::Model();
 		//m_testModel->AddMesh("C:/Users/Administrator/Desktop/test/test_box001.mesh", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
 		//m_testModel->AddMeshByObj("C:/Users/Administrator/Desktop/test/ttt.obj", "E:/c++/VSOpenGL/OpenGL/Assets/Images/awesomeface.png");
 
 		//m_testModel = Liar::AssimpMgr::LoadModel("C:/Users/Administrator/Desktop/nanosuit/nanosuit.obj");
 		m_testModel->SetZ(30.0f);
-        m_testModel->SetScale(0.05);
+        m_testModel->SetScale(0.5);
 
 		//std::cout << *m_testModel << std::endl;
 		m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
@@ -59,7 +57,7 @@ namespace Liar
 
     RenderMgr::~RenderMgr()
     {
-
+        delete m_rootNode;
     }
 
 	void RenderMgr::SetSize(unsigned int w, unsigned int h)
@@ -82,9 +80,5 @@ namespace Liar
 		m_testModel->Render(*m_shader);
 
 		//m_testMesh->Render(*m_shader);
-
-		/*glBindVertexArray(m_VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
-		//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
     }
 }

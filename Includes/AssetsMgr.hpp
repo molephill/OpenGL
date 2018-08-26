@@ -84,6 +84,8 @@ namespace Liar
 		Liar::LiarTexContext* GetTexContext(const std::string&);
         
         static std::string GetPath(const char*);
+        
+        static void PrintMat4(const glm::mat4&);
 
 	private:
 		std::vector<Liar::LiarTexContext*>* m_allTexContexts;
