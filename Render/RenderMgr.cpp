@@ -47,9 +47,9 @@ namespace Liar
         dog->SetScale(0.5);
         dog->SetName("dog");
         
-//        Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
-//        nano->SetPosition(-20.0f, 0.0f, 80.0f);
-//        nano->SetName("nano");
+        Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
+        nano->SetPosition(-20.0f, 0.0f, 80.0f);
+        nano->SetName("nano");
 
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/nano/nano.model"));
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));

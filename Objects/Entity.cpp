@@ -302,6 +302,8 @@ namespace Liar
             std::cout << "Add nullptr ERROR!!" << std::endl;
             return nullptr;
         }
+		if (child->m_parent == this) return child;
+		if (child->m_parent) child->m_parent->RemoveChild(child);
         child->m_parent = this;
         if(!m_childrenNode)
         {
@@ -309,9 +311,18 @@ namespace Liar
         }
         else
         {
-            m_nextChildNode->m_nextChildNode = child;
+			Liar::Entity* current = m_childrenNode;
+			while (current)
+			{
+				if (!current->m_nextChildNode)
+				{
+					current->m_nextChildNode = child;
+					break;
+				}
+				current = current->m_nextChildNode;
+			}
         }
-        m_nextChildNode = child;
+ 
         return child;
     }
     
@@ -326,31 +337,27 @@ namespace Liar
         bool find = false;
         if(m_childrenNode)
         {
-            if(child == m_childrenNode)
-            {
-                m_childrenNode = nullptr;
-                m_nextChildNode = nullptr;
-                find = true;
-            }
-            else
-            {
-                Liar::Entity* nextNode = m_childrenNode;
-                while (!find && nextNode)
-                {
-                    if(nextNode == child)
-                    {
-                        if(nextNode->m_nextChildNode)
-                        {
-                            nextNode->m_nextChildNode = nextNode->m_nextChildNode->m_nextChildNode;
-                        }
-                        find = true;
-                    }
-                    else
-                    {
-                        nextNode = nextNode->m_nextChildNode;
-                    }
-                }
-            }
+			Liar::Entity* pre = nullptr;
+			Liar::Entity* current = m_childrenNode;
+			while (current)
+			{
+				if (current == child)
+				{
+					if (pre)
+					{
+						pre->m_nextChildNode = current->m_nextChildNode;
+					}
+					else
+					{
+						m_childrenNode = current->m_nextChildNode;
+					}
+					find = true;
+					break;
+				}
+				current->m_nextChildNode = nullptr;
+				pre = current;
+				current = current->m_nextChildNode;
+			}
         }
         
         if(find)
@@ -369,31 +376,27 @@ namespace Liar
         Liar::Entity* findNode = nullptr;
         if(m_childrenNode)
         {
-            if(m_childrenNode->m_name == name)
-            {
-                findNode = m_childrenNode;
-                m_childrenNode = nullptr;
-                m_nextChildNode = nullptr;
-            }
-            else
-            {
-                Liar::Entity* nextNode = m_childrenNode;
-                while (!findNode && nextNode)
-                {
-                    if(nextNode->m_name == name)
-                    {
-                        findNode = nextNode;
-                        if(nextNode->m_nextChildNode)
-                        {
-                            nextNode->m_nextChildNode = nextNode->m_nextChildNode->m_nextChildNode;
-                        }
-                    }
-                    else
-                    {
-                        nextNode = nextNode->m_nextChildNode;
-                    }
-                }
-            }
+			Liar::Entity* pre = nullptr;
+			Liar::Entity* current = m_childrenNode;
+			while (current)
+			{
+				if (current->m_name == name)
+				{
+					if (pre)
+					{
+						pre->m_nextChildNode = current->m_nextChildNode;
+					}
+					else
+					{
+						m_childrenNode = current->m_nextChildNode;
+					}
+					findNode = current;
+					break;
+				}
+				current->m_nextChildNode = nullptr;
+				pre = current;
+				current = current->m_nextChildNode;
+			}
         }
         
         if(findNode)
@@ -457,9 +460,9 @@ namespace Liar
         Liar::Entity* child = m_childrenNode;
         while (child)
         {
-            char tx[100];
+            /*char tx[100];
             sprintf(tx, "%f %f %f %f %f %f %f %f", m_x, m_y, m_z, m_scaleX, m_scaleY, m_scaleZ, m_rotationX, m_rotationY, m_rotationZ);
-            std::cout << child->m_name << "===" << parentChanged << "==" << tx << std::endl;
+            std::cout << child->m_name << "===" << parentChanged << "==" << tx << std::endl;*/
             if(parentChanged)
             {
                 child->AddPosition(m_x, m_y, m_z);
