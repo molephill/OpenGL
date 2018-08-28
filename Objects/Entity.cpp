@@ -151,7 +151,7 @@ namespace Liar
 
 	void Entity::SetScale(float x, float y, float z)
 	{
-		if (m_scaleX != x || m_scaleY != y || m_scaleZ)
+		if (m_scaleX != x || m_scaleY != y || m_scaleZ != z)
 		{
 			m_scaleX = x;
 			m_scaleY = y;

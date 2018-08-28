@@ -42,14 +42,24 @@ namespace Liar
         m_rootNode->SetRotationX(-45.0f);
         
         // dog
-        Liar::Entity* dog = m_rootNode->AddModel("models/dog/dd.model");
+        /*Liar::Entity* dog = m_rootNode->AddModel("models/dog/dd.model");
         dog->SetPosition(20.0f, 0.0f, 100.0f);
         dog->SetScale(0.5);
         dog->SetName("dog");
         
         Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
         nano->SetPosition(-20.0f, 0.0f, 80.0f);
-        nano->SetName("nano");
+        nano->SetName("nano");*/
+
+		Liar::Entity* laddy = m_rootNode->AddModel("models/laddy/laddy.model");
+		laddy->SetPosition(0, 0, 380.0f);
+		laddy->SetScale(0.01);
+		laddy->SetName("laddy");
+
+		/*Liar::Entity* dva = m_rootNode->AddModel("models/dva/dav.model");
+		dva->SetPosition(0, 0, 880.0f);
+		dva->SetScale(0.01);
+		dva->SetName("dva");*/
 
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/nano/nano.model"));
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));

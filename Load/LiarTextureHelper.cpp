@@ -1,5 +1,10 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <stb_image.h>
+
 #include "LiarTextureHelper.h"
 
+//#define SIMPLEDDS 1 
 
 namespace Liar
 {
@@ -39,10 +44,14 @@ namespace Liar
 		}
 	}
 
+#ifdef SIMPLEDDS
+
+#define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
+#define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
+#define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
 	GLuint LiarTextureHelper::LoadDDS(const char * filename)
 	{
-		/* try to open the file */
 		std::ifstream file(filename, std::ios::in | std::ios::binary);
 		if (!file) {
 			std::cout << "Error::loadDDs, could not open:"
@@ -54,7 +63,8 @@ namespace Liar
 		char filecode[4];
 		file.read(filecode, 4);
 		if (strncmp(filecode, "DDS ", 4) != 0) {
-			std::cout << "Error::loadDDs, format is not dds :" << filename << std::endl;
+			std::cout << "Error::loadDDs, format is not dds :"
+				<< filename << std::endl;
 			file.close();
 			return 0;
 		}
@@ -80,20 +90,17 @@ namespace Liar
 		file.close();
 
 		unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
-		unsigned int format = 0;
+		unsigned int format;
 		switch (fourCC)
 		{
 		case FOURCC_DXT1:
-			//format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-			format = GL_RGB;
+			format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
 			break;
 		case FOURCC_DXT3:
-			//format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-			format = GL_RGBA;
+			format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
 			break;
 		case FOURCC_DXT5:
-			//format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-			format = GL_RGBA;
+			format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
 			break;
 		default:
 			delete[] buffer;
@@ -101,15 +108,14 @@ namespace Liar
 		}
 
 		// Create one OpenGL texture
-		GLuint textureID = 0;
+		GLuint textureID;
 		glGenTextures(1, &textureID);
 
 		// "Bind" the newly created texture : all future texture functions will modify this texture
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-		//unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
-		unsigned int blockSize = (format == GL_RGB) ? 8 : 16;
+		unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
 		unsigned int offset = 0;
 
 		/* load the mipmaps */
@@ -133,92 +139,416 @@ namespace Liar
 
 		return textureID;
 	}
-	
-	GLuint LiarTextureHelper::LoadTGA(const char* fileName)
-	{
-		GLubyte		TGAheader[12] = { 0,0,2,0,0,0,0,0,0,0,0,0 };	// Uncompressed TGA Header
-		GLubyte		TGAcompare[12];								// Used To Compare TGA Header
-		GLubyte		header[6];									// First 6 Useful Bytes From The Header
-		GLuint		bytesPerPixel;								// Holds Number Of Bytes Per Pixel Used In The TGA File
-		GLuint		imageSize;									// Used To Store The Image Size When Setting Aside Ram
-		GLuint		temp;										// Temporary Variable
-		GLuint		type = GL_RGBA;								// Set The Default GL Mode To RBGA (32 BPP)
-
-		FILE* file;												// Open The TGA File
-#ifndef __APPLE__	
-		fopen_s(&file, fileName, "rb+");
 #else
-		file = fopen(fileName, "rb+");
-#endif			
 
-		if (file == NULL ||										// Does File Even Exist?
-			fread(TGAcompare, 1, sizeof(TGAcompare), file) != sizeof(TGAcompare) ||	// Are There 12 Bytes To Read?
-			memcmp(TGAheader, TGAcompare, sizeof(TGAheader)) != 0 ||	// Does The Header Match What We Want?
-			fread(header, 1, sizeof(header), file) != sizeof(header))				// If So Read Next 6 Header Bytes
+GLuint LiarTextureHelper::LoadDDS(const char * filename)
+{
+	FILE    *fp;
+	int     size;
+	void    *pBuffer;
+
+#ifndef __APPLE__	
+	fopen_s(&fp, filename, "rb");
+#else
+	fp = fopen(filename, "rb");
+#endif	
+	if (!fp) {
+		return 0;
+	}
+
+	fseek(fp, 0, SEEK_END);
+	size = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	pBuffer = malloc(size);
+	if (!pBuffer) {
+		fclose(fp);
+		return 0;
+	}
+
+	if (fread(pBuffer, size, 1, fp) != 1) {
+		free(pBuffer);
+		fclose(fp);
+		return 0;
+	}
+
+	fclose(fp);
+
+	DDS_FILEHEADER    *header;
+	DWORD             compressFormat;
+	GLuint            texnum;
+	GLvoid            *data;
+	GLsizei           imageSize;
+
+	header = (DDS_FILEHEADER *)pBuffer;
+
+	if (header->dwMagic != 0x20534444) {
+		printf("bad dds file\n");
+		return 0;
+	}
+
+	if (header->Header.dwSize != 124) {
+		printf("bad header size\n");
+		return 0;
+	}
+
+	if (!(header->Header.dwFlags & DDSD_LINEARSIZE)) {
+		printf("bad file type\n");
+		return 0;
+	}
+
+	if (!(header->Header.ddspf.dwFlags & DDPF_FOURCC)) {
+		printf("bad pixel format\n");
+		return 0;
+	}
+
+	compressFormat = header->Header.ddspf.dwFourCC;
+
+	if (compressFormat != D3DFMT_DXT1 &&
+		compressFormat != D3DFMT_DXT3 &&
+		compressFormat != D3DFMT_DXT5) {
+		printf("bad compress format\n");
+		return 0;
+	}
+
+	data = (GLvoid *)(header + 1);    // header data skipped
+
+	glGenTextures(1, &texnum);
+	glBindTexture(GL_TEXTURE_2D, texnum);
+
+	switch (compressFormat)
+	{
+	case D3DFMT_DXT1:
+		imageSize = SIZE_OF_DXT1(header->Header.dwWidth, header->Header.dwHeight);
+		glCompressedTexImage2DARB(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_S3TC_DXT1_EXT, header->Header.dwWidth, header->Header.dwHeight, 0, imageSize, data);
+		break;
+	case D3DFMT_DXT3:
+		imageSize = SIZE_OF_DXT2(header->Header.dwWidth, header->Header.dwHeight);
+		glCompressedTexImage2DARB(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_S3TC_DXT3_EXT, header->Header.dwWidth, header->Header.dwHeight, 0, imageSize, data);
+		break;
+	case D3DFMT_DXT5:
+		imageSize = SIZE_OF_DXT2(header->Header.dwWidth, header->Header.dwHeight);
+		glCompressedTexImage2DARB(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_S3TC_DXT5_EXT, header->Header.dwWidth, header->Header.dwHeight, 0, imageSize, data);
+		break;
+	}
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	free(pBuffer);
+	return texnum;
+}
+
+#endif // SIMPLEDDS
+
+	GLuint LiarTextureHelper::LoadTGA(const char* filename)
+	{
+		FILE * fTGA;
+
+#ifndef __APPLE__	
+		fopen_s(&fTGA, filename, "rb+");
+#else
+		fTGA = fopen(filename, "rb+");
+#endif	
+
+		if (fTGA == NULL)
 		{
-			if (file == NULL)								// Did The File Even Exist? *Added Jim Strong*
+			return 0;
+		}
+
+
+		TGA_HEADER tgaheader;
+
+		GLubyte uTGAcompare[12] = { 0,0,2, 0,0,0,0,0,0,0,0,0 };
+		GLubyte cTGAcompare[12] = { 0,0,10,0,0,0,0,0,0,0,0,0 };
+
+		if (fread(&tgaheader, sizeof(TGA_HEADER), 1, fTGA) == 0)
+		{
+			if (fTGA != NULL)
 			{
-				return 0;									// Return False
+				fclose(fTGA);
+			}
+			return 0;
+		}
+
+		TGA tga;
+		TGA_PIXELFORMAT* texture = new TGA_PIXELFORMAT();
+		
+		GLuint textureID = 0;
+
+		if (memcmp(uTGAcompare, &tgaheader, sizeof(tgaheader)) == 0)
+		{
+			if (LoadUncompressedTGA(texture, tga, fTGA))
+			{
+				glGenTextures(1, &textureID);
+				glTexImage2D(GL_TEXTURE_2D, 0, texture->bpp / 8, texture->width, texture->height, 0, texture->type, GL_UNSIGNED_BYTE, texture->imageData);
+				glGenerateMipmap(GL_TEXTURE_2D);
+			}
+			delete texture;
+			return textureID;
+		}
+		else if (memcmp(cTGAcompare, &tgaheader, sizeof(tgaheader)) == 0)
+		{
+			if (LoadCompressedTGA(texture, tga, fTGA))
+			{
+				glGenTextures(1, &textureID);
+				glTexImage2D(GL_TEXTURE_2D, 0, texture->bpp / 8, texture->width, texture->height, 0, texture->type, GL_UNSIGNED_BYTE, texture->imageData);
+				glGenerateMipmap(GL_TEXTURE_2D);
+			}
+			if(texture->imageData) free(texture->imageData);
+			delete texture;
+			return textureID;
+		}
+		else
+		{
+			fclose(fTGA);
+			return 0;
+		}
+	}
+
+	bool LiarTextureHelper::LoadUncompressedTGA(TGA_PIXELFORMAT* texture, TGA& tga, FILE * fTGA)
+	{
+		if (fread(tga.header, sizeof(tga.header), 1, fTGA) == 0)
+		{
+			if (fTGA != NULL)
+			{
+				fclose(fTGA);
+			}
+			return false;
+		}
+
+		texture->width = tga.header[1] * 256 + tga.header[0];
+		texture->height = tga.header[3] * 256 + tga.header[2];
+		texture->bpp = tga.header[4];
+		tga.Width = texture->width;
+		tga.Height = texture->height;
+		tga.Bpp = texture->bpp;
+
+		if ((texture->width <= 0) || (texture->height <= 0) || ((texture->bpp != 24) && (texture->bpp != 32)))
+		{
+			if (fTGA != NULL)
+			{
+				fclose(fTGA);
+			}
+			return false;
+		}
+
+		if (texture->bpp == 24)
+			texture->type = GL_RGB;
+		else
+			texture->type = GL_RGBA;
+
+		tga.bytesPerPixel = (tga.Bpp / 8);
+		tga.imageSize = (tga.bytesPerPixel * tga.Width * tga.Height);
+		texture->imageData = (GLubyte *)malloc(tga.imageSize);
+
+		if (texture->imageData == NULL)
+		{
+			fclose(fTGA);
+			return false;
+		}
+
+		if (fread(texture->imageData, 1, tga.imageSize, fTGA) != tga.imageSize)
+		{
+			if (texture->imageData != NULL)
+			{
+				free(texture->imageData);
+			}
+			fclose(fTGA);
+			return false;
+		}
+
+		// Byte Swapping Optimized By Steve Thomas
+		for (GLuint cswap = 0; cswap < (int)tga.imageSize; cswap += tga.bytesPerPixel)
+		{
+			texture->imageData[cswap] ^= texture->imageData[cswap + 2] ^=
+				texture->imageData[cswap] ^= texture->imageData[cswap + 2];
+		}
+
+		fclose(fTGA);
+		return true;
+	}
+
+	bool LiarTextureHelper::LoadCompressedTGA(TGA_PIXELFORMAT* texture, TGA& tga, FILE * fTGA)
+	{
+		if (fread(tga.header, sizeof(tga.header), 1, fTGA) == 0)
+		{
+			if (fTGA != NULL)
+			{
+				fclose(fTGA);
+			}
+			return false;
+		}
+
+		texture->width = tga.header[1] * 256 + tga.header[0];
+		texture->height = tga.header[3] * 256 + tga.header[2];
+		texture->bpp = tga.header[4];
+		tga.Width = texture->width;
+		tga.Height = texture->height;
+		tga.Bpp = texture->bpp;
+
+		if ((texture->width <= 0) || (texture->height <= 0) || ((texture->bpp != 24) && (texture->bpp != 32)))
+		{
+			if (fTGA != NULL)
+			{
+				fclose(fTGA);
+			}
+			return false;
+		}
+
+		if (texture->bpp == 24)
+			texture->type = GL_RGB;
+		else
+			texture->type = GL_RGBA;
+
+		tga.bytesPerPixel = (tga.Bpp / 8);
+		tga.imageSize = (tga.bytesPerPixel * tga.Width * tga.Height);
+		texture->imageData = (GLubyte *)malloc(tga.imageSize);
+
+		if (texture->imageData == NULL)
+		{
+			fclose(fTGA);
+			return false;
+		}
+
+		GLuint pixelcount = tga.Height * tga.Width;
+		GLuint currentpixel = 0;
+		GLuint currentbyte = 0;
+		GLubyte * colorbuffer = (GLubyte *)malloc(tga.bytesPerPixel);
+
+		do
+		{
+			GLubyte chunkheader = 0;
+
+			if (fread(&chunkheader, sizeof(GLubyte), 1, fTGA) == 0)
+			{
+				if (fTGA != NULL)
+				{
+					fclose(fTGA);
+				}
+				if (texture->imageData != NULL)
+				{
+					free(texture->imageData);
+				}
+				return false;
+			}
+
+			if (chunkheader < 128)
+			{
+				chunkheader++;
+				for (short counter = 0; counter < chunkheader; counter++)
+				{
+					if (fread(colorbuffer, 1, tga.bytesPerPixel, fTGA) != tga.bytesPerPixel)
+					{
+						if (fTGA != NULL)
+						{
+							fclose(fTGA);
+						}
+
+						if (colorbuffer != NULL)
+						{
+							free(colorbuffer);
+						}
+
+						if (texture->imageData != NULL)
+						{
+							free(texture->imageData);
+						}
+
+						return false;
+					}
+
+					texture->imageData[currentbyte] = colorbuffer[2];
+					texture->imageData[currentbyte + 1] = colorbuffer[1];
+					texture->imageData[currentbyte + 2] = colorbuffer[0];
+
+					if (tga.bytesPerPixel == 4)
+					{
+						texture->imageData[currentbyte + 3] = colorbuffer[3];
+					}
+
+					currentbyte += tga.bytesPerPixel;
+					currentpixel++;
+
+					if (currentpixel > pixelcount)
+					{
+						if (fTGA != NULL)
+						{
+							fclose(fTGA);
+						}
+
+						if (colorbuffer != NULL)
+						{
+							free(colorbuffer);
+						}
+
+						if (texture->imageData != NULL)
+						{
+							free(texture->imageData);
+						}
+
+						return false;
+					}
+				}
 			}
 			else
 			{
-				fclose(file);									// If Anything Failed, Close The File
-				return 0;									// Return False
+				chunkheader -= 127;
+				if (fread(colorbuffer, 1, tga.bytesPerPixel, fTGA) != tga.bytesPerPixel)
+				{
+					if (fTGA != NULL)
+					{
+						fclose(fTGA);
+					}
+
+					if (colorbuffer != NULL)
+					{
+						free(colorbuffer);
+					}
+
+					if (texture->imageData != NULL)
+					{
+						free(texture->imageData);
+					}
+
+					return false;
+				}
+
+				for (short counter = 0; counter < chunkheader; counter++)
+				{
+					texture->imageData[currentbyte] = colorbuffer[2];
+					texture->imageData[currentbyte + 1] = colorbuffer[1];
+					texture->imageData[currentbyte + 2] = colorbuffer[0];
+
+					if (tga.bytesPerPixel == 4)
+					{
+						texture->imageData[currentbyte + 3] = colorbuffer[3];
+					}
+
+					currentbyte += tga.bytesPerPixel;
+					currentpixel++;
+					if (currentpixel > pixelcount)
+					{
+						if (fTGA != NULL)
+						{
+							fclose(fTGA);
+						}
+
+						if (colorbuffer != NULL)
+						{
+							free(colorbuffer);
+						}
+
+						if (texture->imageData != NULL)
+						{
+							free(texture->imageData);
+						}
+
+						return false;
+					}
+				}
 			}
-		}
-
-		GLuint width = header[1] * 256 + header[0];			// Determine The TGA Width	(highbyte*256+lowbyte)
-		GLuint height = header[3] * 256 + header[2];			// Determine The TGA Height	(highbyte*256+lowbyte)
-
-																//OpenGL中纹理只能使用24位或者32位的TGA图像
-		if (width <= 0 ||								// Is The Width Less Than Or Equal To Zero
-			height <= 0 ||								// Is The Height Less Than Or Equal To Zero
-			(header[4] != 24 && header[4] != 32))					// Is The TGA 24 or 32 Bit?
-		{
-			fclose(file);										// If Anything Failed, Close The File
-			return false;										// Return False
-		}
-
-		GLuint bpp = header[4];							// Grab The TGA's Bits Per Pixel (24 or 32)
-		bytesPerPixel = bpp / 8;						// Divide By 8 To Get The Bytes Per Pixel
-		imageSize =width*height*bytesPerPixel;	// Calculate The Memory Required For The TGA Data
-
-		GLubyte* imageData = (GLubyte *)malloc(imageSize);		// Reserve Memory To Hold The TGA Data
-
-		if (imageData == NULL ||							// Does The Storage Memory Exist?
-			fread(imageData, 1, imageSize, file) != imageSize)	// Does The Image Size Match The Memory Reserved?
-		{
-			if (imageData != NULL)						// Was Image Data Loaded
-				free(imageData);						// If So, Release The Image Data
-
-			fclose(file);										// Close The File
-			return 0;										// Return False
-		}
-
-		//RGB数据格式转换，便于在OpenGL中使用
-		for (GLuint i = 0; i<int(imageSize); i += bytesPerPixel)		// Loop Through The Image Data
-		{														// Swaps The 1st And 3rd Bytes ('R'ed and 'B'lue)
-			temp = imageData[i];							// Temporarily Store The Value At Image Data 'i'
-			imageData[i] = imageData[i + 2];	// Set The 1st Byte To The Value Of The 3rd Byte
-			imageData[i + 2] = temp;					// Set The 3rd Byte To The Value In 'temp' (1st Byte Value)
-		}
-
-		fclose(file);											// Close The File
-
-		GLuint textureID = 0;
-														// Build A Texture From The Data
-		glGenTextures(1, &textureID);					// Generate OpenGL texture IDs
-
-		glBindTexture(GL_TEXTURE_2D, textureID);			// Bind Our Texture
-
-		if (bpp == 24)									// Was The TGA 24 Bits
-		{
-			type = GL_RGB;										// If So Set The 'type' To GL_RGB
-		}
-
-		glTexImage2D(GL_TEXTURE_2D, 0, type, width, height, 0, type, GL_UNSIGNED_BYTE, imageData);
-		free(imageData);
-
-		return textureID;
+		} while (currentpixel < pixelcount);
+		fclose(fTGA);
+		return true;
 	}
+
 }
