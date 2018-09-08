@@ -300,6 +300,8 @@ GLuint LiarTextureHelper::LoadDDS(const char * filename)
 		else
 		{
 			fclose(fTGA);
+			if (texture->imageData) free(texture->imageData);
+			delete texture;
 			return 0;
 		}
 	}
