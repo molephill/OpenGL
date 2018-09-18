@@ -97,7 +97,8 @@ namespace Liar
 #endif
 		m_camera->Render();
 		m_shader->Use();
-		m_shader->SetMat4("projection", *(m_camera->GetMatrix()));
+		m_shader->SetMat4("projection", *(m_camera->GetProjMatrix()));
+		m_shader->SetMat4("viewMatrix", *(m_camera->GetViewMatrix()));
         
 //        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(*m_shader);

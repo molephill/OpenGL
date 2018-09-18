@@ -9,7 +9,8 @@
 
 namespace Liar
 {
-	Camera3D::Camera3D(float nearClipping, float farClipping):Liar::Entity(),
+	Camera3D::Camera3D(float nearClipping, float farClipping):
+		m_x(0.0f),m_y(0.0f),m_z(0.0f), m_transformChanged(true),
         m_viewMatrix(new Liar::Matrix4()),
 		m_nearClipping(nearClipping), m_farClipping(farClipping),
 		m_targetX(0.0f),m_targetY(0.0f),m_targetZ(0.0f),
@@ -24,6 +25,65 @@ namespace Liar
 	{
         delete m_viewMatrix;
         delete m_projection;
+	}
+
+	void Camera3D::AddX(float x)
+	{
+		if (x != 0)
+		{
+			m_x += x;
+			m_transformChanged = true;
+		}
+	}
+
+	void Camera3D::AddY(float y)
+	{
+		if (y != 0)
+		{
+			m_y += y;
+			m_transformChanged = true;
+		}
+	}
+
+	void Camera3D::AddZ(float z)
+	{
+		if (z != 0)
+		{
+			m_z += z;
+			m_transformChanged = true;
+		}
+	}
+
+	void Camera3D::AddPosition(float x, float y, float z)
+	{
+		if (x != 0 || y != 0 || z != 0)
+		{
+			m_x += x;
+			m_y += y;
+			m_z += z;
+			m_transformChanged = true;
+		}
+	}
+
+	void Camera3D::AddPosition(const Liar::Vector3D& v)
+	{
+		AddPosition(v.x, v.y, v.z);
+	}
+
+	void Camera3D::SetPosition(float x, float y, float z)
+	{
+		if (m_x != x || m_y != y || m_z != z)
+		{
+			m_x = x;
+			m_y = y;
+			m_z = z;
+			m_transformChanged = true;
+		}
+	}
+
+	void Camera3D::SetPosition(const Liar::Vector3D& v)
+	{
+		SetPosition(v.x, v.y, v.z);
 	}
 
 	void Camera3D::LookAt(float x, float y, float z)
@@ -114,9 +174,6 @@ namespace Liar
 		if (m_transformChanged)
 		{
 			m_viewMatrix->Identity();
-			m_viewMatrix->RotateX(m_rotationX);
-			m_viewMatrix->RotateY(m_rotationY);
-			m_viewMatrix->RotateZ(m_rotationZ);
 			m_viewMatrix->Translate(m_x, m_y, m_z);
 			m_viewMatrix->LookAt(m_targetX, m_targetY, m_targetZ);
             
@@ -158,9 +215,6 @@ namespace Liar
 			SetFrustum(m_fov, static_cast<float>(m_viewWidth / m_viewHeight), m_nearClipping, m_farClipping);
 
 			std::cout << (*m_projection) << std::endl;
-
-			// projection*viewMatrix
-			(*m_projection) *= (*m_viewMatrix);
 
 			m_transformChanged = false;
 		}
