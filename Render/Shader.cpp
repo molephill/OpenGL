@@ -150,9 +150,9 @@ namespace Liar
         glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
     }
 
-	void Shader::SetMat4(const std::string&name, const Liar::Matrix4& mat) const
+	void Shader::SetMat4(const std::string&name, const Liar::Matrix4& m) const
 	{
-		glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, mat.GetRawData());
+		glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, m.Get());
 	}
     
     // 检测报错

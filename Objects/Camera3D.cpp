@@ -9,9 +9,8 @@
 
 namespace Liar
 {
-	Camera3D::Camera3D(float nearClipping, float farClipping):
-        m_x(0.0f),m_y(0.0f),m_z(0.0),
-        m_transformChanged(true),m_viewMatrix(new Liar::Matrix4()),
+	Camera3D::Camera3D(float nearClipping, float farClipping):Liar::Entity(),
+        m_viewMatrix(new Liar::Matrix4()),
 		m_nearClipping(nearClipping), m_farClipping(farClipping),
 		m_targetX(0.0f),m_targetY(0.0f),m_targetZ(0.0f),
 		m_fov(60.0f),m_viewWidth(WINDOW_W),m_viewHeight(WINDOW_H),
@@ -26,49 +25,6 @@ namespace Liar
         delete m_viewMatrix;
         delete m_projection;
 	}
-    
-    void Camera3D::SetPosition(float x, float y, float z)
-    {
-        if(m_x != x || m_y != y || m_z != z)
-        {
-            m_x = x;
-            m_y = y;
-            m_z = z;
-            m_transformChanged = true;
-        }
-    }
-    
-    void Camera3D::SetPosition(const Liar::Vector3D& v)
-    {
-        SetPosition(v.x, v.y, v.z);
-    }
-    
-    void Camera3D::AddX(float x)
-    {
-        if(x != 0)
-        {
-            m_x += x;
-            m_transformChanged = true;
-        }
-    }
-    
-    void Camera3D::AddY(float y)
-    {
-        if(y != 0)
-        {
-            m_y += y;
-            m_transformChanged = true;
-        }
-    }
-    
-    void Camera3D::AddZ(float z)
-    {
-        if(z != 0)
-        {
-            m_z += z;
-            m_transformChanged = true;
-        }
-    }
 
 	void Camera3D::LookAt(float x, float y, float z)
 	{
@@ -158,7 +114,11 @@ namespace Liar
 		if (m_transformChanged)
 		{
 			m_viewMatrix->Identity();
-            Liar::Matrix4::LookAt(-m_x, -m_y, -m_z, m_targetX, m_targetY, m_targetZ, *m_viewMatrix);
+			m_viewMatrix->RotateX(m_rotationX);
+			m_viewMatrix->RotateY(m_rotationY);
+			m_viewMatrix->RotateZ(m_rotationZ);
+			m_viewMatrix->Translate(m_x, m_y, m_z);
+			m_viewMatrix->LookAt(m_targetX, m_targetY, m_targetZ);
             
             glm::vec3 position = glm::vec3(m_x, m_y, m_z);
             glm::vec3 target = glm::vec3(m_targetX, m_targetY, m_targetZ);

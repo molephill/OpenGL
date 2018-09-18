@@ -45,6 +45,7 @@ namespace Liar
         
     public:
         Camera3D* GetMainCamera() { return m_camera; };
+		Entity* GetRoot() { return m_rootNode; };
 		
     };
 }

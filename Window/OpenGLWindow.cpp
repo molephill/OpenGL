@@ -71,15 +71,15 @@ namespace Liar
         if(!m_renderMgr) return;
         if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
         {
-            m_renderMgr->GetMainCamera()->AddZ(Global::cameraMoveSpeed);
+            m_renderMgr->GetMainCamera()->AddY(Global::cameraMoveSpeed);
         }
         else if(glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
         {
-          m_renderMgr->GetMainCamera()->AddX(-Global::cameraMoveSpeed);
+			m_renderMgr->GetMainCamera()->AddX(-Global::cameraMoveSpeed);
         }
         else if(glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
         {
-           m_renderMgr->GetMainCamera()->AddZ(-Global::cameraMoveSpeed);
+           m_renderMgr->GetMainCamera()->AddY(-Global::cameraMoveSpeed);
         }
         else if(glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
         {
@@ -98,16 +98,14 @@ namespace Liar
                 m_isFirstMouse = false;
             }
             else
-            {
-                //Camera* mainCamera = m_renderMgr->GetCamera();
-                
+            {   
                 double offsetx = x - m_lastMouseX;
 				double offsety = y - m_lastMouseY;
                 
                 offsetx *= Global::mouseSensitivity;
                 offsety *= Global::mouseSensitivity;
 
-               // mainCamera->AddRotation(offsetx, offsety, 0.0f);
+				m_renderMgr->GetRoot()->AddRotation(offsetx, offsety, 0.0f);
             }
             
             m_lastMouseY = y;

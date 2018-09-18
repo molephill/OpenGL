@@ -123,7 +123,7 @@ namespace Liar
 
 	protected:
         void CalcTransform(bool calcInvert = true);
-		virtual void DrawAxis(float);
+		virtual void DrawAxis(float size = 2.5f);
 
 	};
 }

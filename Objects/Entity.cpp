@@ -441,7 +441,9 @@ namespace Liar
 		{
 			m_transform->Identity();
 			m_transform->Scale(m_scaleX, m_scaleY, m_scaleZ);
-			m_transform->Rotate(m_rotationX, m_rotationY, m_rotationZ);
+			m_transform->Rotate(m_rotationX, 1, 0, 0);
+			m_transform->Rotate(m_rotationY, 0, 1, 0);
+			m_transform->Rotate(m_rotationZ, 0, 0, 1);
 			m_transform->Translate(m_x, m_y, m_z);
 			m_transformChanged = false;
 		}
@@ -465,9 +467,9 @@ namespace Liar
             std::cout << child->m_name << "===" << parentChanged << "==" << tx << std::endl;*/
             if(parentChanged)
             {
-                child->AddPosition(m_x, m_y, m_z);
-                child->AddScale(m_scaleX, m_scaleY, m_scaleZ);
-                child->AddRotation(m_rotationX, m_rotationY, m_rotationZ);
+				child->AddScale(m_scaleX, m_scaleY, m_scaleZ);
+				child->AddRotation(m_rotationX, m_rotationY, m_rotationZ);
+				child->AddPosition(m_x, m_y, m_z);
             }
             child->Render(shader);
             child = child->m_nextChildNode;
@@ -487,43 +489,7 @@ namespace Liar
 	///////////////////////////////////////////////////////////////////////////////
 	void Entity::DrawAxis(float size)
 	{
-		//glDepthFunc(GL_ALWAYS);     // to avoid visual artifacts with grid lines
-		//glDisable(GL_LIGHTING);
-		//glPushMatrix();             //NOTE: There is a bug on Mac misbehaviours of
-		//							//      the light position when you draw GL_LINES
-		//							//      and GL_POINTS. remember the matrix.
-
-		//							// draw axis
-		//glLineWidth(3);
-		//glBegin(GL_LINES);
-		//glColor3f(1, 0, 0);
-		//glVertex3f(0, 0, 0);
-		//glVertex3f(size, 0, 0);
-		//glColor3f(0, 1, 0);
-		//glVertex3f(0, 0, 0);
-		//glVertex3f(0, size, 0);
-		//glColor3f(0, 0, 1);
-		//glVertex3f(0, 0, 0);
-		//glVertex3f(0, 0, size);
-		//glEnd();
-		//glLineWidth(1);
-
-		//// draw arrows(actually big square dots)
-		//glPointSize(5);
-		//glBegin(GL_POINTS);
-		//glColor3f(1, 0, 0);
-		//glVertex3f(size, 0, 0);
-		//glColor3f(0, 1, 0);
-		//glVertex3f(0, size, 0);
-		//glColor3f(0, 0, 1);
-		//glVertex3f(0, 0, size);
-		//glEnd();
-		//glPointSize(1);
-
-		//// restore default settings
-		//glPopMatrix();
-		//glEnable(GL_LIGHTING);
-		//glDepthFunc(GL_LEQUAL);
+		
 	}
 
 }

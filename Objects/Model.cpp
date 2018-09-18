@@ -27,7 +27,7 @@ namespace Liar
 	void Model::Render(Liar::Shader& shader)
 	{
 		/*AddRotationY(1.0f);*/
-		AddRotation(0.0f, 1.0f, 0.0f);
+		//AddRotation(0.0f, 1.0f, 0.0f);
         
         Liar::Entity::Render(shader);
         
