@@ -105,9 +105,8 @@ namespace Liar
                 offsetx *= Global::mouseSensitivity;
                 offsety *= Global::mouseSensitivity;
 
-				m_renderMgr->GetRoot()->AddRotation(offsetx, offsety, 0.0f);
-            }
-            
+				m_renderMgr->GetMainCamera()->RotateCamera(offsety, offsetx);
+            }            
             m_lastMouseY = y;
             m_lastMouseX = x;
         }
@@ -118,5 +117,6 @@ namespace Liar
 	{
        // Camera* mainCamera = m_renderMgr->GetCamera();
        // mainCamera->AddFov(-offsety);
+		m_renderMgr->GetMainCamera()->ZoomCamera(-offsety);
 	}
 }

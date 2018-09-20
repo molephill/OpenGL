@@ -9,92 +9,64 @@
 
 namespace Liar
 {
-	Camera3D::Camera3D(float nearClipping, float farClipping):
-		m_x(0.0f),m_y(0.0f),m_z(0.0f), m_transformChanged(true),
-        m_viewMatrix(new Liar::Matrix4()),
+	// ======================= camera controller ==========================
+	Camera3DCtrl::Camera3DCtrl() :
+		m_angleX(0.0f), m_angleY(0.0f),
+		m_distanceZ(0.0f),
+		m_transformChanged(false),
+		m_transform(new Liar::Matrix4())
+	{
+
+	}
+
+	Camera3DCtrl::~Camera3DCtrl()
+	{
+		delete m_transform;
+	}
+
+	void Camera3DCtrl::AddRotation(float x, float y)
+	{
+		m_angleX += x;
+		m_angleY += y;
+		m_transformChanged = true;
+	}
+
+	void Camera3DCtrl::AddZoom(float z)
+	{
+		m_distanceZ += z;
+		m_transformChanged = true;
+	}
+
+	Liar::Matrix4* Camera3DCtrl::GetTransform()
+	{
+		if (m_transformChanged)
+		{
+			m_transform->Identity();
+			m_transform->RotateY(m_angleY);
+			m_transform->RotateX(m_angleX);
+			m_transform->Translate(0, 0, -m_distanceZ);
+			m_transformChanged = false;
+		}
+
+		return m_transform;
+	}
+
+	// ======================= camera controller ==========================
+
+	Camera3D::Camera3D(float nearClipping, float farClipping):Liar::Entity(),
 		m_nearClipping(nearClipping), m_farClipping(farClipping),
-		m_targetX(0.0f),m_targetY(0.0f),m_targetZ(0.0f),
 		m_fov(60.0f),m_viewWidth(WINDOW_W),m_viewHeight(WINDOW_H),
 		m_isPerspective(true),
-		m_projection(new Liar::Matrix4())
+		m_projection(new Liar::Matrix4()),
+		m_controller(new Liar::Camera3DCtrl())
 	{
 	}
 
 
 	Camera3D::~Camera3D()
 	{
-        delete m_viewMatrix;
         delete m_projection;
-	}
-
-	void Camera3D::AddX(float x)
-	{
-		if (x != 0)
-		{
-			m_x += x;
-			m_transformChanged = true;
-		}
-	}
-
-	void Camera3D::AddY(float y)
-	{
-		if (y != 0)
-		{
-			m_y += y;
-			m_transformChanged = true;
-		}
-	}
-
-	void Camera3D::AddZ(float z)
-	{
-		if (z != 0)
-		{
-			m_z += z;
-			m_transformChanged = true;
-		}
-	}
-
-	void Camera3D::AddPosition(float x, float y, float z)
-	{
-		if (x != 0 || y != 0 || z != 0)
-		{
-			m_x += x;
-			m_y += y;
-			m_z += z;
-			m_transformChanged = true;
-		}
-	}
-
-	void Camera3D::AddPosition(const Liar::Vector3D& v)
-	{
-		AddPosition(v.x, v.y, v.z);
-	}
-
-	void Camera3D::SetPosition(float x, float y, float z)
-	{
-		if (m_x != x || m_y != y || m_z != z)
-		{
-			m_x = x;
-			m_y = y;
-			m_z = z;
-			m_transformChanged = true;
-		}
-	}
-
-	void Camera3D::SetPosition(const Liar::Vector3D& v)
-	{
-		SetPosition(v.x, v.y, v.z);
-	}
-
-	void Camera3D::LookAt(float x, float y, float z)
-	{
-		if (m_targetX != x || m_targetY != y || m_targetZ != z)
-		{
-			m_targetX = x;
-			m_targetY = y;
-			m_targetZ = z;
-			m_transformChanged = true;
-		}
+		delete m_controller;
 	}
 
 	void Camera3D::SetViewSize(unsigned int x, unsigned int y, unsigned int w, unsigned int h)
@@ -169,50 +141,30 @@ namespace Liar
 		(*m_projection)[14] = -(f + n) / (f - n);
 	}
 
+	void Camera3D::RotateCamera(float x, float y)
+	{
+		m_controller->AddRotation(x, y);
+	}
+
+	void Camera3D::ZoomCamera(float z)
+	{
+		m_controller->AddZoom(z);
+	}
+
 	void Camera3D::Render()
 	{
 		if (m_transformChanged)
 		{
-			m_viewMatrix->Identity();
-			m_viewMatrix->Translate(m_x, m_y, m_z);
-			m_viewMatrix->LookAt(m_targetX, m_targetY, m_targetZ);
-            
-            glm::vec3 position = glm::vec3(m_x, m_y, m_z);
-            glm::vec3 target = glm::vec3(m_targetX, m_targetY, m_targetZ);
-            glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-            // 1. Position = known
-            // 2. Calculate cameraDirection
-            glm::vec3 zaxis = glm::normalize(position - target);
-            // 3. Get positive right axis vector
-            glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));
-            // 4. Calculate camera up vector
-            glm::vec3 yaxis = glm::cross(zaxis, xaxis);
-            
-            // Create translation and rotation matrix
-            // In glm we access elements as mat[col][row] due to column-major layout
-            glm::mat4 translation(1.0f); // Identity matrix by default
-            translation[3][0] = position.x; // Third column, first row
-            translation[3][1] = position.y;
-            translation[3][2] = position.z;
-            glm::mat4 rotation(1.0f);
-            rotation[0][0] = xaxis.x; // First column, first row
-            rotation[1][0] = xaxis.y;
-            rotation[2][0] = xaxis.z;
-            rotation[0][1] = yaxis.x; // First column, second row
-            rotation[1][1] = yaxis.y;
-            rotation[2][1] = yaxis.z;
-            rotation[0][2] = zaxis.x; // First column, third row
-            rotation[1][2] = zaxis.y;
-            rotation[2][2] = zaxis.z;
-            
-            Liar::AssetsMgr::PrintMat4(rotation*translation);
-            
-            std::cout << "============" << std::endl;
-            
-			std::cout << (*m_viewMatrix) << std::endl;
+			m_transform->Identity();
+			m_transform->Translate(-m_x, -m_y, -m_z);
+			m_transform->RotateZ(m_rotationZ);
+			m_transform->RotateY(m_rotationY);
+			m_transform->RotateX(m_rotationX);
 
 			// projection
 			SetFrustum(m_fov, static_cast<float>(m_viewWidth / m_viewHeight), m_nearClipping, m_farClipping);
+
+			std::cout << (*m_transform) << std::endl;
 
 			std::cout << (*m_projection) << std::endl;
 

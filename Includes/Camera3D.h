@@ -7,7 +7,27 @@
 
 namespace Liar
 {
-	class Camera3D
+	class Camera3DCtrl
+	{
+	public:
+		Camera3DCtrl();
+		~Camera3DCtrl();
+
+	private:
+		float m_angleX;
+		float m_angleY;
+		float m_distanceZ;
+		bool m_transformChanged;
+		Liar::Matrix4* m_transform;
+
+	public:
+		Liar::Matrix4* GetTransform();
+
+		void AddRotation(float, float);
+		void AddZoom(float);
+	};
+
+	class Camera3D:public Entity
 	{
 	public:
 		Camera3D(float nearCliping = 1.0f, float farClipping = 1000.0f);
@@ -22,38 +42,24 @@ namespace Liar
 		unsigned int m_viewWidth;
 		unsigned int m_viewHeight;
 
-        Liar::Matrix4* m_viewMatrix;
-
-		float m_x;
-		float m_y;
-		float m_z;
-		bool m_transformChanged;
-
-		float m_targetX;
-		float m_targetY;
-		float m_targetZ;
-
 		Liar::Matrix4* m_projection;
+
+		Liar::Camera3DCtrl* m_controller;
 
 	public:
 		// =================================================== 
 		void SetViewSize(unsigned int, unsigned int, unsigned int, unsigned int);
-		void LookAt(float, float, float);
 		void ChangeMode(bool);
 
-		void AddX(float);
-		void AddY(float);
-		void AddZ(float);
-		void AddPosition(float, float, float);
-		void AddPosition(const Liar::Vector3D&);
-		void SetPosition(float, float, float);
-		void SetPosition(const Liar::Vector3D&);
+		void RotateCamera(float, float);
+		void ZoomCamera(float);
+
 		// ===================================================
 
 		void Render();
 
 		Liar::Matrix4* GetProjMatrix() const { return m_projection; };
-		Liar::Matrix4* GetViewMatrix() const { return m_viewMatrix;}
+		Liar::Matrix4* GetExtentionMatrix() { return m_controller->GetTransform(); };
 
 	private:
 		void SetFrustum(float, float, float, float);

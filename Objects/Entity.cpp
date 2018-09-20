@@ -441,9 +441,9 @@ namespace Liar
 		{
 			m_transform->Identity();
 			m_transform->Scale(m_scaleX, m_scaleY, m_scaleZ);
-			m_transform->Rotate(m_rotationX, 1, 0, 0);
-			m_transform->Rotate(m_rotationY, 0, 1, 0);
-			m_transform->Rotate(m_rotationZ, 0, 0, 1);
+			m_transform->RotateZ(m_rotationZ);
+			m_transform->RotateY(m_rotationY);
+			m_transform->RotateX(m_rotationX);
 			m_transform->Translate(m_x, m_y, m_z);
 			m_transformChanged = false;
 		}

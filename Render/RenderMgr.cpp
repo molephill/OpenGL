@@ -36,20 +36,25 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 0.0f, 10.0f);
-        m_camera->LookAt(0.0f, 0.0f, 0.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 7.0f);
+		m_camera->SetRotation(0.0f, 0.0f, 0.0f);
         
         //m_rootNode->SetRotationX(-45.0f);
         
         // dog
-        /*Liar::Entity* dog = m_rootNode->AddModel("models/dog/dd.model");
-        dog->SetPosition(20.0f, 0.0f, 100.0f);
-        dog->SetScale(0.5);
-        dog->SetName("dog");*/
+        /*Liar::Entity* anim = m_rootNode->AddModel("models/anim/anim.model");
+		anim->SetPosition(0.0f, 20.0f, 100.0f);
+		anim->SetScale(0.5);
+		anim->SetName("anim");*/
         
         Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
-        nano->SetPosition(0.0f, 0.0f, 80.0f);
+        //nano->SetPosition(0.0f, -50.0f, -80.0f);
         nano->SetName("nano");
+
+		/*Liar::Entity* tb = Liar::LiarPluginRead::ReadModel(
+			"C:/Users/Administrator/Desktop/model/tb/tb.model", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
+		tb->SetPosition(0.0f, 0.0f, 380.0f);
+		m_rootNode->AddChild(tb);*/
 
 		/*Liar::Entity* laddy = m_rootNode->AddModel("models/laddy/laddy.model");
 		laddy->SetPosition(10.0f, 0, 380.0f);
@@ -98,7 +103,8 @@ namespace Liar
 		m_camera->Render();
 		m_shader->Use();
 		m_shader->SetMat4("projection", *(m_camera->GetProjMatrix()));
-		m_shader->SetMat4("viewMatrix", *(m_camera->GetViewMatrix()));
+		m_shader->SetMat4("viewMatrix", *(m_camera->GetTransform()));
+		m_shader->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));
         
 //        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(*m_shader);
