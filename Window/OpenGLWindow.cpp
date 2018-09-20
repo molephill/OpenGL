@@ -91,24 +91,31 @@ namespace Liar
 	{
         bool inWindow = BaseWindow::MouseEvent(x, y);
 		int state = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT);
-        if(inWindow && state == GLFW_PRESS)
+        if(inWindow)
         {
-            if(m_isFirstMouse)
-            {
-                m_isFirstMouse = false;
-            }
-            else
-            {   
-                double offsetx = x - m_lastMouseX;
-				double offsety = y - m_lastMouseY;
-                
-                offsetx *= Global::mouseSensitivity;
-                offsety *= Global::mouseSensitivity;
+			if (state == GLFW_PRESS)
+			{
+				if (m_isFirstMouse)
+				{
+					m_isFirstMouse = false;
+				}
+				else
+				{
+					double offsetx = x - m_lastMouseX;
+					double offsety = y - m_lastMouseY;
 
-				m_renderMgr->GetMainCamera()->RotateCamera(offsety, offsetx);
-            }            
-            m_lastMouseY = y;
-            m_lastMouseX = x;
+					offsetx *= Global::mouseSensitivity;
+					offsety *= Global::mouseSensitivity;
+
+					m_renderMgr->GetMainCamera()->RotateCamera(offsety, offsetx);
+				}
+				m_lastMouseY = y;
+				m_lastMouseX = x;
+			}
+			else
+			{
+				m_isFirstMouse = true;
+			}
         }
         return inWindow;
 	}
