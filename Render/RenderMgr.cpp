@@ -36,20 +36,19 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 0.0f, 7.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 50.0f);
 		m_camera->SetRotation(0.0f, 0.0f, 0.0f);
         
         //m_rootNode->SetRotationX(-45.0f);
         
         // dog
-        /*Liar::Entity* anim = m_rootNode->AddModel("models/anim/anim.model");
-		anim->SetPosition(0.0f, 20.0f, 100.0f);
+        Liar::Entity* anim = m_rootNode->AddModel("models/anim/anim.model");
+		//anim->SetPosition(0.0f, 20.0f, 100.0f);
 		anim->SetScale(0.5);
-		anim->SetName("anim");*/
+		anim->SetName("anim");
         
-        Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
-        //nano->SetPosition(0.0f, -50.0f, -80.0f);
-        nano->SetName("nano");
+        /*Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
+        nano->SetName("nano");*/
 
 		/*Liar::Entity* tb = Liar::LiarPluginRead::ReadModel(
 			"C:/Users/Administrator/Desktop/model/tb/tb.model", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
