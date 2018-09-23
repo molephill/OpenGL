@@ -5,6 +5,11 @@
 
 namespace Liar
 {
+    
+#ifdef __APPLE__
+    typedef unsigned long DWORD;
+#endif
+    
 	// Minimum and maximum macros
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #define min(a,b) (((a) < (b)) ? (a) : (b))
