@@ -42,12 +42,12 @@ namespace Liar
         //m_rootNode->SetRotationX(-45.0f);
         
         // dog
-        /*Liar::Entity* anim = m_rootNode->AddModel("models/anim/anim.model");
-		anim->SetPosition(0.0f, 20.0f, 100.0f);
-		anim->SetScale(0.5);
-		anim->SetName("anim");*/
+        Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"));
+		//anim->SetPosition(0, -200.0f, -300);
+		anim->SetName("anim");
         
-        /*Liar::Entity* nano = m_rootNode->AddModel("models/nano/nano.model");
+        /*Liar::Entity* nano = m_rootNode->AddModel(AssetsMgr::GetPath("models/nano/nano.model"));
+		nano->SetY(-20.0f);
         nano->SetName("nano");*/
 
 		/*Liar::Entity* tb = Liar::LiarPluginRead::ReadModel(
@@ -60,10 +60,10 @@ namespace Liar
 		laddy->SetScale(0.01);
 		laddy->SetName("laddy");*/
 
-		Liar::Entity* dva = m_rootNode->AddModel("models/dva/dav.model");
-		//dva->SetPosition(0, 0, -880.0f);
+		/*Liar::Entity* dva = m_rootNode->AddModel(AssetsMgr::GetPath("models/dva/dav.model"));
+		dva->SetPosition(0, 0, -880.0f);
 		dva->SetScale(0.01);
-		dva->SetName("dva");
+		dva->SetName("dva");*/
 
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/nano/nano.model"));
 //        m_testModel = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath("models/dog/dd.model"));

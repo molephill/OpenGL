@@ -328,7 +328,7 @@ namespace Liar
     
     Liar::Entity* Entity::AddModel(const std::string& path)
     {
-        Liar::Model* model = Liar::LiarPluginRead::ReadModel(AssetsMgr::GetPath(path.c_str()));
+        Liar::Model* model = Liar::LiarPluginRead::ReadModel(path);
         return AddChild(model);
     }
     
