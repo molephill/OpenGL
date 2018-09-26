@@ -24,7 +24,7 @@ namespace Liar
 		AddMesh(fileName.c_str(), base);
 	}
 
-	void Model::Render(Liar::Shader& shader)
+	void Model::Render(Liar::LiarShaderProgram& shader)
 	{
 		/*AddRotationY(1.0f);*/
 		//AddRotation(0.0f, 1.0f, 0.0f);

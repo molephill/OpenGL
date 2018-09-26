@@ -449,7 +449,7 @@ namespace Liar
 		}
 	}
     
-    void Entity::Render(Liar::Shader& shader)
+    void Entity::Render(Liar::LiarShaderProgram& shader)
     {
         bool parentChanged = m_transformChanged;
         CalcTransform();
@@ -457,20 +457,11 @@ namespace Liar
         RenderChildren(shader, parentChanged);
     }
     
-    void Entity::RenderChildren(Liar::Shader& shader, bool parentChanged)
+    void Entity::RenderChildren(Liar::LiarShaderProgram& shader, bool parentChanged)
     {
         Liar::Entity* child = m_childrenNode;
         while (child)
         {
-            /*char tx[100];
-            sprintf(tx, "%f %f %f %f %f %f %f %f", m_x, m_y, m_z, m_scaleX, m_scaleY, m_scaleZ, m_rotationX, m_rotationY, m_rotationZ);
-            std::cout << child->m_name << "===" << parentChanged << "==" << tx << std::endl;*/
-            if(parentChanged)
-            {
-				child->AddScale(m_scaleX, m_scaleY, m_scaleZ);
-				child->AddRotation(m_rotationX, m_rotationY, m_rotationZ);
-				child->AddPosition(m_x, m_y, m_z);
-            }
             child->Render(shader);
             child = child->m_nextChildNode;
         }

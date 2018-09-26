@@ -42,13 +42,13 @@ namespace Liar
         //m_rootNode->SetRotationX(-45.0f);
         
         // dog
-        Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"));
-		//anim->SetPosition(0, -200.0f, -300);
-		anim->SetName("anim");
+  //      Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"));
+		////anim->SetPosition(0, -200.0f, -300);
+		//anim->SetName("anim");
         
-        /*Liar::Entity* nano = m_rootNode->AddModel(AssetsMgr::GetPath("models/nano/nano.model"));
-		nano->SetY(-20.0f);
-        nano->SetName("nano");*/
+        Liar::Entity* nano = m_rootNode->AddModel(AssetsMgr::GetPath("models/nano/nano.model"));
+		//nano->SetY(-20.0f);
+        nano->SetName("nano");
 
 		/*Liar::Entity* tb = Liar::LiarPluginRead::ReadModel(
 			"C:/Users/Administrator/Desktop/model/tb/tb.model", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
@@ -78,7 +78,9 @@ namespace Liar
 //        m_testModel->SetScale(0.5);
 
 		//std::cout << *m_testModel << std::endl;
-		m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
+		//m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
+		m_shader = new Liar::LiarShaderProgram();
+		m_shader->LinkProgrom(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
 	}
 
     RenderMgr::~RenderMgr()
@@ -99,6 +101,8 @@ namespace Liar
 #ifdef RENDER_MOD_LINE
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
+		m_rootNode->CalcTransform();
+
 		m_camera->Render();
 		m_shader->Use();
 		m_shader->SetMat4("projection", *(m_camera->GetProjMatrix()));

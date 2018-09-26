@@ -30,7 +30,7 @@ namespace Liar
 		float m_green;
 		float m_blue;
 		Liar::Camera3D* m_camera;
-		Liar::Shader* m_shader;
+		Liar::LiarShaderProgram* m_shader;
         
         Liar::Entity* m_rootNode;
 

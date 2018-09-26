@@ -3,7 +3,7 @@
 #include <Vectors.h>
 #include <Matrices.h>
 
-#include "Shader.hpp"
+#include <LiarShader.h>
 
 namespace Liar
 {
@@ -114,15 +114,15 @@ namespace Liar
         
         Liar::Entity* GetChildNode() { return m_childrenNode; };
         
-        virtual void Render(Liar::Shader&);
-        virtual void RenderChildren(Liar::Shader&, bool);
+        virtual void Render(Liar::LiarShaderProgram&);
+        virtual void RenderChildren(Liar::LiarShaderProgram&, bool);
+		void CalcTransform(bool calcInvert = true);
 
 	public:
         void SetName(std::string name) { m_name = name; };
 		friend std::ostream& operator<<(std::ostream& os, const Liar::Entity&);
 
 	protected:
-        void CalcTransform(bool calcInvert = true);
 		virtual void DrawAxis(float size = 2.5f);
 
 	};

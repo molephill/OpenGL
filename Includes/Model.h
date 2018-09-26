@@ -19,7 +19,7 @@ namespace Liar
 		void AddMesh(const std::string&, const char* base=nullptr);
 		void AddMesh(Liar::LiarMesh* subMesh) { m_subMeshList->push_back(subMesh); };
 
-		virtual void Render(Liar::Shader&);
+		virtual void Render(Liar::LiarShaderProgram&);
 
 		friend std::ostream& operator<<(std::ostream& os, const Liar::Model& m);
 	};
