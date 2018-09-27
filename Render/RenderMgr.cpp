@@ -412,7 +412,6 @@ namespace Liar
 		m_shader->SetMat4("viewMatrix", *(m_camera->GetTransform()));
 		m_shader->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));
 		m_shader->SetVec3("viewPos", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
-		m_shader->SetFloat("material.shininess", 32.0f);
 
 		m_lightsMgr->Render(*m_shader);
 
