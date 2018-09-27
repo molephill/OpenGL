@@ -105,7 +105,7 @@ namespace Liar
 	{
 		char name[128];
 		memset(name, 0, sizeof(name));
-		snprintf(name, sizeof(name), "spotLight[%d].", index);
+		snprintf(name, sizeof(name), "spotLights[%d].", index);
 		std::string base(name);
 		Liar::LiarPointLight::BuildProgram(shader, base + "pointLight.");
 

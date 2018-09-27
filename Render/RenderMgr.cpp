@@ -160,6 +160,128 @@ namespace Liar
 		m_shader->SetInt("material.specular", 1);
 	}
 
+	void RenderMgr::BuildTest()
+	{
+		// directional light
+		//Liar::LiarShaderProgram& lightingShader = *m_shader;
+		//lightingShader.SetInt("numPointLights", 4);
+		//lightingShader.SetInt("numSpotLights", 1);
+		//lightingShader.SetVec3("dirLight.color", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+		//lightingShader.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+		//lightingShader.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+		//lightingShader.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+		//// point light 1
+		//lightingShader.SetVec3("pointLights[0].color", 1.0f, 1.0f,1.0f);
+		//lightingShader.SetVec3("pointLights[0].position", 0.7f, 0.2f, 2.0f);
+		//lightingShader.SetVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+		//lightingShader.SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+		//lightingShader.SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetFloat("pointLights[0].constant", 1.0f);
+		//lightingShader.SetFloat("pointLights[0].linear", 0.09f);
+		//lightingShader.SetFloat("pointLights[0].quadratic", 0.032f);
+		//// point light 2
+		//lightingShader.SetVec3("pointLights[1].color", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetVec3("pointLights[1].position", 2.3f, -3.3f, -4.0f);
+		//lightingShader.SetVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
+		//lightingShader.SetVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+		//lightingShader.SetVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetFloat("pointLights[1].constant", 1.0f);
+		//lightingShader.SetFloat("pointLights[1].linear", 0.09f);
+		//lightingShader.SetFloat("pointLights[1].quadratic", 0.032f);
+		//// point light 3
+		//lightingShader.SetVec3("pointLights[2].color", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetVec3("pointLights[2].position", -4.0f, 2.0f, -12.0f);
+		//lightingShader.SetVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
+		//lightingShader.SetVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+		//lightingShader.SetVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetFloat("pointLights[2].constant", 1.0f);
+		//lightingShader.SetFloat("pointLights[2].linear", 0.09f);
+		//lightingShader.SetFloat("pointLights[2].quadratic", 0.032f);
+		//// point light 4
+		//lightingShader.SetVec3("pointLights[3].color", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetVec3("pointLights[3].position", 0.0f, 0.0f, -3.0f);
+		//lightingShader.SetVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
+		//lightingShader.SetVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+		//lightingShader.SetVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetFloat("pointLights[3].constant", 1.0f);
+		//lightingShader.SetFloat("pointLights[3].linear", 0.09f);
+		//lightingShader.SetFloat("pointLights[3].quadratic", 0.032f);
+		//// spotLight
+		//lightingShader.SetVec3("spotLights[0].color", 1.0f, 1.0f, 0.0f);
+		//lightingShader.SetVec3("spotLights[0].position", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
+		//lightingShader.SetVec3("spotLights[0].direction", 0.0f, 1.0f, 0.0f);
+		//lightingShader.SetVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+		//lightingShader.SetVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
+		//lightingShader.SetFloat("spotLights[0].constant", 1.0f);
+		//lightingShader.SetFloat("spotLights[0].linear", 0.09f);
+		//lightingShader.SetFloat("spotLights[0].quadratic", 0.032f);
+		//lightingShader.SetFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+		//lightingShader.SetFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+
+
+		// ============================================== test2 ==========================================
+
+		// directional light
+		Liar::LiarShaderProgram& lightingShader = *m_shader;
+		lightingShader.SetInt("numPointLights", 4);
+		lightingShader.SetInt("numSpotLights", 1);
+		lightingShader.SetVec3("dirLight.baseLight.color", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+		lightingShader.SetVec3("dirLight.baseLight.ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("dirLight.baseLight.diffuse", 0.4f, 0.4f, 0.4f);
+		lightingShader.SetVec3("dirLight.baseLight.specular", 0.5f, 0.5f, 0.5f);
+		// point light 1
+		lightingShader.SetVec3("pointLights[0].baseLight.color", 1.0f, 1.0f,1.0f);
+		lightingShader.SetVec3("pointLights[0].position", 0.7f, 0.2f, 2.0f);
+		lightingShader.SetVec3("pointLights[0].baseLight.ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[0].baseLight.diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[0].baseLight.specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[0].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[0].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[0].quadratic", 0.032f);
+		// point light 2
+		lightingShader.SetVec3("pointLights[1].baseLight.color", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetVec3("pointLights[1].position", 2.3f, -3.3f, -4.0f);
+		lightingShader.SetVec3("pointLights[1].baseLight.ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[1].baseLight.diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[1].baseLight.specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[1].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[1].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[1].quadratic", 0.032f);
+		// point light 3
+		lightingShader.SetVec3("pointLights[2].baseLight.color", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetVec3("pointLights[2].position", -4.0f, 2.0f, -12.0f);
+		lightingShader.SetVec3("pointLights[2].baseLight.ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[2].baseLight.diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[2].baseLight.specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[2].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[2].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[2].quadratic", 0.032f);
+		// point light 4
+		lightingShader.SetVec3("pointLights[3].baseLight.color", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetVec3("pointLights[3].position", 0.0f, 0.0f, -3.0f);
+		lightingShader.SetVec3("pointLights[3].baseLight.ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[3].baseLight.diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[3].baseLight.specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[3].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[3].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[3].quadratic", 0.032f);
+		// spotLight
+		lightingShader.SetVec3("spotLights[0].pointLight.baseLight.color", 1.0f, 1.0f, 0.0f);
+		lightingShader.SetVec3("spotLights[0].pointLight.position", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
+		lightingShader.SetVec3("spotLights[0].direction", 0.0f, 1.0f, 0.0f);
+		lightingShader.SetVec3("spotLights[0].pointLight.baseLight.ambient", 0.0f, 0.0f, 0.0f);
+		lightingShader.SetVec3("spotLights[0].pointLight.baseLight.diffuse", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetVec3("spotLights[0].pointLight.baseLight.specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("spotLights[0].pointLight.constant", 1.0f);
+		lightingShader.SetFloat("spotLights[0].pointLight.linear", 0.09f);
+		lightingShader.SetFloat("spotLights[0].pointLight.quadratic", 0.032f);
+		lightingShader.SetFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.SetFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+	}
+
 	void RenderMgr::RenderTest()
 	{
 		// positions all containers
@@ -261,9 +383,9 @@ namespace Liar
 		//m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
 		m_shader = new Liar::LiarShaderProgram();
 		//m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
-		m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/use/light/lighting.vs"), AssetsMgr::GetPath("Shaders/use/light/lighting.fs"));
+		m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/use/light/lighting1.vs"), AssetsMgr::GetPath("Shaders/use/light/lighting1.fs"));
 
-		InitTest();
+		//InitTest();
 	}
 
     RenderMgr::~RenderMgr()
@@ -292,72 +414,12 @@ namespace Liar
 		m_shader->SetVec3("viewPos", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
 		m_shader->SetFloat("material.shininess", 32.0f);
 
+		m_lightsMgr->Render(*m_shader);
 
-		// directional light
-		Liar::LiarShaderProgram& lightingShader = *m_shader;
-		lightingShader.SetInt("numPointLights", 4);
-		lightingShader.SetInt("numSpotLights", 1);
-		lightingShader.SetVec3("dirLight.color", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-		lightingShader.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-		lightingShader.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-		lightingShader.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-		// point light 1
-		lightingShader.SetVec3("pointLights[0].color", 1.0f, 1.0f,1.0f);
-		lightingShader.SetVec3("pointLights[0].position", 0.7f, 0.2f, 2.0f);
-		lightingShader.SetVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-		lightingShader.SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-		lightingShader.SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetFloat("pointLights[0].constant", 1.0f);
-		lightingShader.SetFloat("pointLights[0].linear", 0.09f);
-		lightingShader.SetFloat("pointLights[0].quadratic", 0.032f);
-		// point light 2
-		lightingShader.SetVec3("pointLights[1].color", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetVec3("pointLights[1].position", 2.3f, -3.3f, -4.0f);
-		lightingShader.SetVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
-		lightingShader.SetVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
-		lightingShader.SetVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetFloat("pointLights[1].constant", 1.0f);
-		lightingShader.SetFloat("pointLights[1].linear", 0.09f);
-		lightingShader.SetFloat("pointLights[1].quadratic", 0.032f);
-		// point light 3
-		lightingShader.SetVec3("pointLights[2].color", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetVec3("pointLights[2].position", -4.0f, 2.0f, -12.0f);
-		lightingShader.SetVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-		lightingShader.SetVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-		lightingShader.SetVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetFloat("pointLights[2].constant", 1.0f);
-		lightingShader.SetFloat("pointLights[2].linear", 0.09f);
-		lightingShader.SetFloat("pointLights[2].quadratic", 0.032f);
-		// point light 4
-		lightingShader.SetVec3("pointLights[3].color", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetVec3("pointLights[3].position", 0.0f, 0.0f, -3.0f);
-		lightingShader.SetVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-		lightingShader.SetVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-		lightingShader.SetVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetFloat("pointLights[3].constant", 1.0f);
-		lightingShader.SetFloat("pointLights[3].linear", 0.09f);
-		lightingShader.SetFloat("pointLights[3].quadratic", 0.032f);
-		// spotLight
-		lightingShader.SetVec3("spotLights[0].color", 1.0f, 1.0f, 0.0f);
-		lightingShader.SetVec3("spotLights[0].position", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
-		lightingShader.SetVec3("spotLights[0].direction", 0.0f, 1.0f, 0.0f);
-		lightingShader.SetVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
-		lightingShader.SetVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetFloat("spotLights[0].constant", 1.0f);
-		lightingShader.SetFloat("spotLights[0].linear", 0.09f);
-		lightingShader.SetFloat("spotLights[0].quadratic", 0.032f);
-		lightingShader.SetFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
-		lightingShader.SetFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
+		//RenderTest();
 
-		//m_lightsMgr->Render(*m_shader);
-
-		RenderTest();
-
-        
 //        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
-       // m_rootNode->Render(*m_shader);
+        m_rootNode->Render(*m_shader);
 
 //        m_testModel->Render(*m_shader);
 

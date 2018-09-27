@@ -96,8 +96,8 @@ namespace Liar
 
 	void LightsMgr::Render(Liar::LiarShaderProgram& shader)
 	{
-		shader.SetInt("numPointLight", m_pointLights->size());
-		shader.SetInt("numSpotLight", m_spotLights->size());
+		shader.SetInt("numPointLights", m_pointLights->size());
+		shader.SetInt("numSpotLights", m_spotLights->size());
 		m_dirLight->Render(shader, 0);
 		int index = 0;
 		for (std::vector<Liar::LiarPointLight*>::iterator it = m_pointLights->begin(); it < m_pointLights->end(); ++it)

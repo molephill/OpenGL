@@ -53,7 +53,7 @@ namespace Liar
 	private:
 		void InitTest();
 		void RenderTest();
-		
+		void BuildTest();
     };
 }
 

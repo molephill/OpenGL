@@ -22,8 +22,8 @@ struct DirLight {
 
 struct PointLight {
     BaseLight baseLight;
-
     vec3 position;
+    
     float constant;
     float linear;
     float quadratic;
@@ -49,9 +49,8 @@ uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform SpotLight spotLights[NR_SPOT_LIGHTS];
 uniform Material material;
-
-uinform int numPointLight;
-uinform int numSpotLight;
+uniform int numPointLights;
+uniform int numSpotLights;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -73,12 +72,12 @@ void main()
     // phase 1: directional lighting
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
     // phase 2: point lights
-    int lightNum = min(NR_POINT_LIGHTS, numPointLight);
-    for(int i = 0; i < lightNum; i++)
+    int num = min(NR_POINT_LIGHTS, numPointLights);
+    for(int i = 0; i < num; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
     // phase 3: spot light
-    lightNum = min(NR_SPOT_LIGHTS, numSpotLight);
-    for(int i = 0; i < lightNum; i++)
+    num = min(NR_SPOT_LIGHTS, numSpotLights);
+    for(int i = 0; i < num; i++)
         result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);    
     
     FragColor = vec4(result, 1.0);
