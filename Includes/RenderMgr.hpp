@@ -9,8 +9,8 @@
 #ifndef RenderMgr_hpp
 #define RenderMgr_hpp
 
-#include "Entity.h"
 #include "Model.h"
+#include <LiarLight.h>
 
 namespace Liar
 {
@@ -31,6 +31,7 @@ namespace Liar
 		float m_blue;
 		Liar::Camera3D* m_camera;
 		Liar::LiarShaderProgram* m_shader;
+		Liar::LiarBaseLight* m_light;
         
         Liar::Entity* m_rootNode;
 

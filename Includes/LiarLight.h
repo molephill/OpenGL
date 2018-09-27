@@ -1,22 +1,23 @@
 #pragma once
 
 #include <Vectors.h>
+#include <LiarShader.h>
 
 namespace Liar
 {
 	class LiarBaseLight
 	{
 	public:
-		LiarBaseLight() :m_color(new Liar::Vector3D(1.0f, 1.0f, 1.0f)), m_ambient(0.0f), m_diffuse(0.0f) {};
-		~LiarBaseLight() 
-		{
-			delete m_color;
-		};
+		LiarBaseLight() :m_color(new Liar::Vector3D(1.0f, 1.0f, 1.0f)), m_ambient(0.0f), m_diffuse(0.0f), m_shader(nullptr) {};
+		~LiarBaseLight();
 
 	protected:
 		Liar::Vector3D* m_color;
 		float m_ambient;
 		float m_diffuse;
+		Liar::LiarShaderProgram* m_shader;
+
+		virtual void SetProgram(Liar::LiarShaderProgram&, std::string base = "");
 
 	public:
 		void SetColor(float x, float y, float z) { m_color->Set(x, y, z); };
@@ -27,6 +28,14 @@ namespace Liar
 		Liar::Vector3D* GetColor() const { return m_color; };
 		float GetAmbient() const { return m_ambient; };
 		float GetDiffuse() const { return m_diffuse; };
+
+		void SetProgram(const char*, const char*, const char*);
+		void SetProgram(const std::string&, const std::string&, const std::string&);
+
+		Liar::LiarShaderProgram* GetShaderProgram() { return m_shader; };
+
+		virtual void Render(Liar::LiarShaderProgram&, int index = 0);
+		virtual void Render(int index = 0);
 	};
 
 	class LiarDirectionLight :public LiarBaseLight
@@ -36,13 +45,16 @@ namespace Liar
 		~LiarDirectionLight();
 
 	private:
-		Liar::Vector3D* m_direction;
+		Liar::Vector3D* m_position;
+
+	protected:
+		virtual void SetProgram(Liar::LiarShaderProgram&, std::string base = "");
 
 	public:
-		void SetDirection(float x, float y, float z) { m_direction->Set(x, y, z); };
-		void SetDirection(const Liar::Vector3D& rhs) { m_direction->Set(rhs); };
+		void SetDirection(float x, float y, float z) { m_position->Set(x, y, z); };
+		void SetDirection(const Liar::Vector3D& rhs) { m_position->Set(rhs); };
 
-		Liar::Vector3D* GetDirection() const { return m_direction; };
+		Liar::Vector3D* GetDirection() const { return m_position; };
 	};
 
 	class LiarPointLight :public LiarBaseLight
@@ -51,11 +63,13 @@ namespace Liar
 		LiarPointLight();
 		~LiarPointLight();
 
-	private:
+	protected:
 		Liar::Vector3D* m_position;
 		float m_constant;
 		float m_liner;
 		float m_exp;
+
+		virtual void SetProgram(Liar::LiarShaderProgram&, std::string base = "");
 
 	public:
 		void SetPositon(float x, float y, float z) { m_position->Set(x, y, z); };
@@ -68,9 +82,11 @@ namespace Liar
 		float GetConstant() const { return m_constant; };
 		float GetLiner() const { return m_liner; };
 		float GetExp() const { return m_exp; };
+
+		virtual void Render(Liar::LiarShaderProgram&, int index = 0);
 	};
 
-	class LiarSpotLight :public LiarBaseLight
+	class LiarSpotLight :public LiarPointLight
 	{
 	public:
 		LiarSpotLight();
@@ -87,6 +103,8 @@ namespace Liar
 
 		Liar::Vector3D* GetDirection() const { return m_direction; };
 		float GetCutoff() const { return m_cutoff; };
+
+		virtual void Render(Liar::LiarShaderProgram&, int index = 0);
 	};
 }
 

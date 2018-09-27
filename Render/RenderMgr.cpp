@@ -80,7 +80,12 @@ namespace Liar
 		//std::cout << *m_testModel << std::endl;
 		//m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
 		m_shader = new Liar::LiarShaderProgram();
-		m_shader->LinkProgrom(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
+		m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
+
+		/*m_light = new Liar::LiarDirectionLight();
+		m_light->SetAmbient(0.01);
+		m_light->SetDiffuse(0.75);
+		m_light->SetProgram("directLight", AssetsMgr::GetPath("Shaders/use/light/base.vs"), AssetsMgr::GetPath("Shaders/use/light/base.fs"));*/
 	}
 
     RenderMgr::~RenderMgr()
@@ -101,13 +106,16 @@ namespace Liar
 #ifdef RENDER_MOD_LINE
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
-		m_rootNode->CalcTransform();
-
 		m_camera->Render();
 		m_shader->Use();
 		m_shader->SetMat4("projection", *(m_camera->GetProjMatrix()));
 		m_shader->SetMat4("viewMatrix", *(m_camera->GetTransform()));
 		m_shader->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));
+
+		/*m_light->GetShaderProgram()->Use();
+		m_light->GetShaderProgram()->SetMat4("projection", *(m_camera->GetProjMatrix()));
+		m_light->GetShaderProgram()->SetMat4("viewMatrix", *(m_camera->GetTransform()));
+		m_light->GetShaderProgram()->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));*/
         
 //        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(*m_shader);

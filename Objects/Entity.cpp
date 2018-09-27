@@ -1,8 +1,6 @@
 #include <LiarPluginRead.h>
 
 #include "AssetsMgr.hpp"
-
-#include "Entity.h"
 #include "Model.h"
 
 namespace Liar
