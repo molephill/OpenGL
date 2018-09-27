@@ -5,7 +5,7 @@ layout (location = 2) in vec3 aUV;
 layout (location = 3) in vec3 aColor;
 
 out vec3 ourColor;
-out vec2 TextCoords;
+out vec2 TexCoords;
 out vec3 FragPos;
 out vec3 Normal;
 
@@ -23,5 +23,5 @@ void main()
 
 	gl_Position = projection * viewMatrix * vec4(FragPos, 1.0);
 	ourColor = aColor;
-	TextCoords = vec2(aUV.x, aUV.y);
+	TexCoords = vec2(aUV.x, aUV.y);
 }

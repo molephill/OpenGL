@@ -262,6 +262,8 @@ namespace Liar
 		m_shader = new Liar::LiarShaderProgram();
 		//m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
 		m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/use/light/lighting.vs"), AssetsMgr::GetPath("Shaders/use/light/lighting.fs"));
+
+		InitTest();
 	}
 
     RenderMgr::~RenderMgr()
@@ -293,11 +295,15 @@ namespace Liar
 
 		// directional light
 		Liar::LiarShaderProgram& lightingShader = *m_shader;
+		lightingShader.SetInt("numPointLights", 4);
+		lightingShader.SetInt("numSpotLights", 1);
+		lightingShader.SetVec3("dirLight.color", 1.0f, 1.0f, 1.0f);
 		lightingShader.SetVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
 		lightingShader.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
 		lightingShader.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
 		lightingShader.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 		// point light 1
+		lightingShader.SetVec3("pointLights[0].color", 1.0f, 1.0f,1.0f);
 		lightingShader.SetVec3("pointLights[0].position", 0.7f, 0.2f, 2.0f);
 		lightingShader.SetVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
 		lightingShader.SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
@@ -306,6 +312,7 @@ namespace Liar
 		lightingShader.SetFloat("pointLights[0].linear", 0.09f);
 		lightingShader.SetFloat("pointLights[0].quadratic", 0.032f);
 		// point light 2
+		lightingShader.SetVec3("pointLights[1].color", 1.0f, 1.0f, 1.0f);
 		lightingShader.SetVec3("pointLights[1].position", 2.3f, -3.3f, -4.0f);
 		lightingShader.SetVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
 		lightingShader.SetVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
@@ -314,6 +321,7 @@ namespace Liar
 		lightingShader.SetFloat("pointLights[1].linear", 0.09f);
 		lightingShader.SetFloat("pointLights[1].quadratic", 0.032f);
 		// point light 3
+		lightingShader.SetVec3("pointLights[2].color", 1.0f, 1.0f, 1.0f);
 		lightingShader.SetVec3("pointLights[2].position", -4.0f, 2.0f, -12.0f);
 		lightingShader.SetVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
 		lightingShader.SetVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
@@ -322,6 +330,7 @@ namespace Liar
 		lightingShader.SetFloat("pointLights[2].linear", 0.09f);
 		lightingShader.SetFloat("pointLights[2].quadratic", 0.032f);
 		// point light 4
+		lightingShader.SetVec3("pointLights[3].color", 1.0f, 1.0f, 1.0f);
 		lightingShader.SetVec3("pointLights[3].position", 0.0f, 0.0f, -3.0f);
 		lightingShader.SetVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
 		lightingShader.SetVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
@@ -330,22 +339,25 @@ namespace Liar
 		lightingShader.SetFloat("pointLights[3].linear", 0.09f);
 		lightingShader.SetFloat("pointLights[3].quadratic", 0.032f);
 		// spotLight
-		lightingShader.SetVec3("spotLight.position", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
-		lightingShader.SetVec3("spotLight.direction", 0.0f, 1.0f, 0.0f);
-		lightingShader.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-		lightingShader.SetVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-		lightingShader.SetFloat("spotLight.constant", 1.0f);
-		lightingShader.SetFloat("spotLight.linear", 0.09f);
-		lightingShader.SetFloat("spotLight.quadratic", 0.032f);
-		lightingShader.SetFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-		lightingShader.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+		lightingShader.SetVec3("spotLights[0].color", 1.0f, 1.0f, 0.0f);
+		lightingShader.SetVec3("spotLights[0].position", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
+		lightingShader.SetVec3("spotLights[0].direction", 0.0f, 1.0f, 0.0f);
+		lightingShader.SetVec3("spotLights[0].ambient", 0.0f, 0.0f, 0.0f);
+		lightingShader.SetVec3("spotLights[0].diffuse", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("spotLights[0].constant", 1.0f);
+		lightingShader.SetFloat("spotLights[0].linear", 0.09f);
+		lightingShader.SetFloat("spotLights[0].quadratic", 0.032f);
+		lightingShader.SetFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.SetFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
 
 		//m_lightsMgr->Render(*m_shader);
 
+		RenderTest();
+
         
 //        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
-        m_rootNode->Render(*m_shader);
+       // m_rootNode->Render(*m_shader);
 
 //        m_testModel->Render(*m_shader);
 
