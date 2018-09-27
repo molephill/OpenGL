@@ -4,6 +4,7 @@
 namespace Liar
 {
 	Model::Model():
+		Liar::Entity(),
 		m_subMeshList(new std::vector<Liar::LiarMesh*>())
 	{
 	}

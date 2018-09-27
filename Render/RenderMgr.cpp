@@ -13,22 +13,202 @@
 
 #include <LiarPluginRead.h>
 #include "Global.hpp"
-#include "AssetsMgr.hpp"
 
+#include <stb_image.h>
+#include <gtc/matrix_transform.hpp>
 
 namespace Liar
 {
 
+	unsigned int loadTexture(char const * path)
+	{
+		unsigned int textureID;
+		glGenTextures(1, &textureID);
+
+		int width, height, nrComponents;
+		unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
+		if (data)
+		{
+			GLenum format;
+			if (nrComponents == 1)
+				format = GL_RED;
+			else if (nrComponents == 3)
+				format = GL_RGB;
+			else if (nrComponents == 4)
+				format = GL_RGBA;
+
+			glBindTexture(GL_TEXTURE_2D, textureID);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+			stbi_image_free(data);
+		}
+		else
+		{
+			std::cout << "Texture failed to load at path: " << path << std::endl;
+			stbi_image_free(data);
+		}
+
+		return textureID;
+	}
+
+	void RenderMgr::InitTest()
+	{
+		float vertices[] = {
+			// positions          // normals           // texture coords
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+			0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+			0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+			0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+			0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+			0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+			0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+			0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+			0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+			0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+			0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+		};
+		// positions all containers
+		glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(2.0f,  5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f,  3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f,  2.0f, -2.5f),
+			glm::vec3(1.5f,  0.2f, -1.5f),
+			glm::vec3(-1.3f,  1.0f, -1.5f)
+		};
+		// positions of the point lights
+		glm::vec3 pointLightPositions[] = {
+			glm::vec3(0.7f,  0.2f,  2.0f),
+			glm::vec3(2.3f, -3.3f, -4.0f),
+			glm::vec3(-4.0f,  2.0f, -12.0f),
+			glm::vec3(0.0f,  0.0f, -3.0f)
+		};
+		// first, configure the cube's VAO (and VBO)
+		glGenVertexArrays(1, &cubeVAO);
+		glGenBuffers(1, &VBO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glBindVertexArray(cubeVAO);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(2);
+
+		// second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+		unsigned int lightVAO;
+		glGenVertexArrays(1, &lightVAO);
+		glBindVertexArray(lightVAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		// note that we update the lamp's position attribute's stride to reflect the updated buffer data
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
+		// load textures (we now use a utility function to keep the code more organized)
+		// -----------------------------------------------------------------------------
+		diffuseMap = loadTexture(AssetsMgr::GetPath("Images/container2.png").c_str());
+		specularMap = loadTexture(AssetsMgr::GetPath("Images/container2_specular.png").c_str());
+
+		// shader configuration
+		// --------------------
+		m_shader->Use();
+		m_shader->SetInt("material.diffuse", 0);
+		m_shader->SetInt("material.specular", 1);
+	}
+
+	void RenderMgr::RenderTest()
+	{
+		// positions all containers
+		glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(2.0f,  5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f,  3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f,  2.0f, -2.5f),
+			glm::vec3(1.5f,  0.2f, -1.5f),
+			glm::vec3(-1.3f,  1.0f, -1.5f)
+		};
+		// bind diffuse map
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		// bind specular map
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
+
+		// render containers
+		glBindVertexArray(cubeVAO);
+		for (unsigned int i = 0; i < 10; i++)
+		{
+			// calculate the model matrix for each object and pass it to shader before drawing
+			Liar::Matrix4 model;
+			model.Translate(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
+			/*model = glm::translate(model, cubePositions[i]);
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));*/
+			m_shader->SetMat4("model", model);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+	}
+
 	RenderMgr::RenderMgr():
         m_red(0.2f),m_green(0.3f),m_blue(0.3f),
-        m_rootNode(new Liar::Entity())
+        m_rootNode(new Liar::Entity()),
+		m_lightsMgr(new Liar::LightsMgr())
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		glCullFace(GL_BACK);
-		glEnable(GL_CULL_FACE);
+		/*glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);*/
 		glEnable(GL_DEPTH_TEST);
         
 #ifdef __APPLE__
@@ -36,7 +216,7 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 0.0f, 50.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 3.0f);
 		m_camera->SetRotation(0.0f, 0.0f, 0.0f);
         
         //m_rootNode->SetRotationX(-45.0f);
@@ -80,12 +260,8 @@ namespace Liar
 		//std::cout << *m_testModel << std::endl;
 		//m_shader = new Shader(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
 		m_shader = new Liar::LiarShaderProgram();
-		m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
-
-		/*m_light = new Liar::LiarDirectionLight();
-		m_light->SetAmbient(0.01);
-		m_light->SetDiffuse(0.75);
-		m_light->SetProgram("directLight", AssetsMgr::GetPath("Shaders/use/light/base.vs"), AssetsMgr::GetPath("Shaders/use/light/base.fs"));*/
+		//m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
+		m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/use/light/lighting.vs"), AssetsMgr::GetPath("Shaders/use/light/lighting.fs"));
 	}
 
     RenderMgr::~RenderMgr()
@@ -111,11 +287,62 @@ namespace Liar
 		m_shader->SetMat4("projection", *(m_camera->GetProjMatrix()));
 		m_shader->SetMat4("viewMatrix", *(m_camera->GetTransform()));
 		m_shader->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));
+		m_shader->SetVec3("viewPos", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
+		m_shader->SetFloat("material.shininess", 32.0f);
 
-		/*m_light->GetShaderProgram()->Use();
-		m_light->GetShaderProgram()->SetMat4("projection", *(m_camera->GetProjMatrix()));
-		m_light->GetShaderProgram()->SetMat4("viewMatrix", *(m_camera->GetTransform()));
-		m_light->GetShaderProgram()->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));*/
+
+		// directional light
+		Liar::LiarShaderProgram& lightingShader = *m_shader;
+		lightingShader.SetVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+		lightingShader.SetVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+		lightingShader.SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+		// point light 1
+		lightingShader.SetVec3("pointLights[0].position", 0.7f, 0.2f, 2.0f);
+		lightingShader.SetVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[0].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[0].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[0].quadratic", 0.032f);
+		// point light 2
+		lightingShader.SetVec3("pointLights[1].position", 2.3f, -3.3f, -4.0f);
+		lightingShader.SetVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[1].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[1].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[1].quadratic", 0.032f);
+		// point light 3
+		lightingShader.SetVec3("pointLights[2].position", -4.0f, 2.0f, -12.0f);
+		lightingShader.SetVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[2].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[2].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[2].quadratic", 0.032f);
+		// point light 4
+		lightingShader.SetVec3("pointLights[3].position", 0.0f, 0.0f, -3.0f);
+		lightingShader.SetVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.SetVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+		lightingShader.SetVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("pointLights[3].constant", 1.0f);
+		lightingShader.SetFloat("pointLights[3].linear", 0.09f);
+		lightingShader.SetFloat("pointLights[3].quadratic", 0.032f);
+		// spotLight
+		lightingShader.SetVec3("spotLight.position", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
+		lightingShader.SetVec3("spotLight.direction", 0.0f, 1.0f, 0.0f);
+		lightingShader.SetVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+		lightingShader.SetVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.SetFloat("spotLight.constant", 1.0f);
+		lightingShader.SetFloat("spotLight.linear", 0.09f);
+		lightingShader.SetFloat("spotLight.quadratic", 0.032f);
+		lightingShader.SetFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.SetFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+
+		//m_lightsMgr->Render(*m_shader);
+
         
 //        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(*m_shader);

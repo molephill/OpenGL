@@ -449,13 +449,12 @@ namespace Liar
     
     void Entity::Render(Liar::LiarShaderProgram& shader)
     {
-        bool parentChanged = m_transformChanged;
         CalcTransform();
         shader.SetMat4("model", *m_transform);
-        RenderChildren(shader, parentChanged);
+        RenderChildren(shader);
     }
     
-    void Entity::RenderChildren(Liar::LiarShaderProgram& shader, bool parentChanged)
+    void Entity::RenderChildren(Liar::LiarShaderProgram& shader)
     {
         Liar::Entity* child = m_childrenNode;
         while (child)

@@ -115,7 +115,7 @@ namespace Liar
         Liar::Entity* GetChildNode() { return m_childrenNode; };
         
         virtual void Render(Liar::LiarShaderProgram&);
-        virtual void RenderChildren(Liar::LiarShaderProgram&, bool);
+        virtual void RenderChildren(Liar::LiarShaderProgram&);
 		void CalcTransform(bool calcInvert = true);
 
 	public:

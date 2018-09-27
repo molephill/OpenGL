@@ -10,7 +10,7 @@
 #define RenderMgr_hpp
 
 #include "Model.h"
-#include <LiarLight.h>
+#include "LightsMgr.h"
 
 namespace Liar
 {
@@ -31,9 +31,9 @@ namespace Liar
 		float m_blue;
 		Liar::Camera3D* m_camera;
 		Liar::LiarShaderProgram* m_shader;
-		Liar::LiarBaseLight* m_light;
         
         Liar::Entity* m_rootNode;
+		Liar::LightsMgr* m_lightsMgr;
 
 		unsigned int m_VAO;
 		unsigned int m_VBO;
@@ -42,11 +42,17 @@ namespace Liar
 		Liar::LiarMesh* m_testMesh;
 		Liar::Model* m_testModel;
 
-		unsigned int VAO, VBO, EBO;
+		unsigned int VAO, VBO, EBO, cubeVAO;
+		unsigned int diffuseMap;
+		unsigned int specularMap;
         
     public:
         Camera3D* GetMainCamera() { return m_camera; };
 		Entity* GetRoot() { return m_rootNode; };
+
+	private:
+		void InitTest();
+		void RenderTest();
 		
     };
 }
