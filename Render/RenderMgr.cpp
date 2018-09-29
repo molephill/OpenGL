@@ -344,7 +344,7 @@ namespace Liar
         //m_rootNode->SetRotationX(-45.0f);
         
         // dog
-        Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"));
+        Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"), AssetsMgr::GetPath("models/anim/bird.skeleton").c_str());
 		//anim->SetPosition(0, -200.0f, -300);
 		anim->SetName("anim");
         

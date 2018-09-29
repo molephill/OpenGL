@@ -104,7 +104,7 @@ namespace Liar
         
     public:
         Liar::Entity* AddChild(Liar::Entity*);
-        Liar::Entity* AddModel(const std::string&);
+		Liar::Entity* AddModel(const std::string&, const char* skeleton = nullptr);
         
         Liar::Entity* RemoveChild(Liar::Entity*);
         Liar::Entity* RemoveChild(const std::string&);

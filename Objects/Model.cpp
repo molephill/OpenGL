@@ -5,7 +5,8 @@ namespace Liar
 {
 	Model::Model():
 		Liar::Entity(),
-		m_subMeshList(new std::vector<Liar::LiarMesh*>())
+		m_subMeshList(new std::vector<Liar::LiarMesh*>()),
+		m_skeleton(nullptr)
 	{
 	}
 
@@ -23,6 +24,16 @@ namespace Liar
 	void Model::AddMesh(const std::string& fileName, const char* base)
 	{
 		AddMesh(fileName.c_str(), base);
+	}
+
+	void Model::SetSkeleton(const char* path)
+	{
+		m_skeleton = Liar::AssetsMgr::GetInstance().GetSkeleton(path);
+	}
+
+	void Model::SetSkeleton(const std::string& path)
+	{
+		SetSkeleton(path.c_str());
 	}
 
 	void Model::Render(Liar::LiarShaderProgram& shader)
