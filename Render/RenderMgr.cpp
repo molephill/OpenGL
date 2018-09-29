@@ -344,13 +344,13 @@ namespace Liar
         //m_rootNode->SetRotationX(-45.0f);
         
         // dog
-  //      Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"));
-		////anim->SetPosition(0, -200.0f, -300);
-		//anim->SetName("anim");
+        Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"));
+		//anim->SetPosition(0, -200.0f, -300);
+		anim->SetName("anim");
         
-        Liar::Entity* nano = m_rootNode->AddModel(AssetsMgr::GetPath("models/nano/nano.model"));
+        //Liar::Entity* nano = m_rootNode->AddModel(AssetsMgr::GetPath("models/nano/nano.model"));
 		//nano->SetY(-20.0f);
-        nano->SetName("nano");
+        //nano->SetName("nano");
 
 		/*Liar::Entity* tb = Liar::LiarPluginRead::ReadModel(
 			"C:/Users/Administrator/Desktop/model/tb/tb.model", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
