@@ -53,7 +53,8 @@ namespace Liar
 
 	// ======================= camera controller ==========================
 
-	Camera3D::Camera3D(float nearClipping, float farClipping):Liar::Entity(),
+	Camera3D::Camera3D(float nearClipping, float farClipping)
+        :Liar::LiarDisplayObject(),
 		m_nearClipping(nearClipping), m_farClipping(farClipping),
 		m_fov(60.0f),m_viewWidth(WINDOW_W),m_viewHeight(WINDOW_H),
 		m_isPerspective(true),
@@ -156,10 +157,8 @@ namespace Liar
 		if (m_transformChanged)
 		{
 			m_transform->Identity();
-			m_transform->Translate(-m_x, -m_y, -m_z);
-			m_transform->RotateZ(m_rotationZ);
-			m_transform->RotateY(m_rotationY);
-			m_transform->RotateX(m_rotationX);
+			m_transform->Translate(-m_position->x, -m_position->y, -m_position->z);
+            m_transform->Rotate(*m_rotation);
 
 			// projection
 			SetFrustum(m_fov, static_cast<float>(m_viewWidth / m_viewHeight), m_nearClipping, m_farClipping);

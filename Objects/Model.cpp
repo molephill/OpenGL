@@ -4,7 +4,7 @@
 namespace Liar
 {
 	Model::Model():
-		Liar::Entity(),
+		Liar::LiarContainerObject(),
 		m_subMeshList(new std::vector<Liar::LiarMesh*>()),
 		m_skeleton(nullptr)
 	{
@@ -41,7 +41,7 @@ namespace Liar
 		/*AddRotationY(1.0f);*/
 		//AddRotation(0.0f, 1.0f, 0.0f);
         
-        Liar::Entity::Render(shader);
+        Liar::LiarContainerObject::Render(shader);
         
 		size_t len = m_subMeshList->size();
 		for (size_t i = 0; i < len; ++i)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <LiarLight.h>
+#include "LiarLight.h"
 #include <LiarShader.h>
 #include <vector>
 
@@ -18,7 +18,7 @@ namespace Liar
 		std::vector<Liar::LiarSpotLight*>* m_spotLights;
 
 	public:
-		void Render(Liar::LiarShaderProgram&);
+		void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&);
 
 		LiarPointLight* GetPointLight(size_t);
 		LiarSpotLight* GetSpotLight(size_t);

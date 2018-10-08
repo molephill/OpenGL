@@ -322,7 +322,7 @@ namespace Liar
 
 	RenderMgr::RenderMgr():
         m_red(0.2f),m_green(0.3f),m_blue(0.3f),
-        m_rootNode(new Liar::Entity()),
+        m_rootNode(new Liar::LiarContainerObject()),
 		m_lightsMgr(new Liar::LightsMgr())
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -338,19 +338,19 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 0.0f, 3.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 50.0f);
 		m_camera->SetRotation(0.0f, 0.0f, 0.0f);
         
         //m_rootNode->SetRotationX(-45.0f);
         
         // dog
-        Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"), AssetsMgr::GetPath("models/anim/bird.skeleton").c_str());
-		//anim->SetPosition(0, -200.0f, -300);
-		anim->SetName("anim");
+//        Liar::Entity* anim = m_rootNode->AddModel(AssetsMgr::GetPath("models/anim/anim.model"), AssetsMgr::GetPath("models/anim/bird.skeleton").c_str());
+//        //anim->SetPosition(0, -200.0f, -300);
+//        anim->SetName("anim");
         
-        //Liar::Entity* nano = m_rootNode->AddModel(AssetsMgr::GetPath("models/nano/nano.model"));
-		//nano->SetY(-20.0f);
-        //nano->SetName("nano");
+        Liar::LiarDisplayObject* nano = m_rootNode->AddModel(AssetsMgr::GetPath("models/nano/nano.model"));
+        //nano->SetY(-20.0f);
+        nano->SetName("nano");
 
 		/*Liar::Entity* tb = Liar::LiarPluginRead::ReadModel(
 			"C:/Users/Administrator/Desktop/model/tb/tb.model", "E:/c++/VSOpenGL/OpenGL/Assets/Images/");
@@ -413,7 +413,7 @@ namespace Liar
 		m_shader->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));
 		m_shader->SetVec3("viewPos", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
 
-		m_lightsMgr->Render(*m_shader);
+		m_lightsMgr->Render(*m_camera, *m_shader);
 
 		//RenderTest();
 

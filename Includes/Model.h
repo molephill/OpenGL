@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Entity.h"
+#include "LiarContainerObject.h"
 #include <LiarMesh.h>
 #include <LiarSkeleton.h>
 
 namespace Liar
 {
-	class Model:public Entity
+	class Model:public LiarContainerObject
 	{
 	public:
 		Model();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity.h"
+#include "LiarContainerObject.h"
 
 #include <LiarVertexBuffer.h>
 #include "Define.h"
@@ -27,7 +27,7 @@ namespace Liar
 		void AddZoom(float);
 	};
 
-	class Camera3D:public Entity
+	class Camera3D:public LiarDisplayObject
 	{
 	public:
 		Camera3D(float nearCliping = 1.0f, float farClipping = 1000.0f);
@@ -59,7 +59,7 @@ namespace Liar
 		void Render();
 
 		Liar::Matrix4* GetProjMatrix() const { return m_projection; };
-		Liar::Matrix4* GetExtentionMatrix() { return m_controller->GetTransform(); };
+		Liar::Matrix4* GetExtentionMatrix() const { return m_controller->GetTransform(); };
 
 	private:
 		void SetFrustum(float, float, float, float);

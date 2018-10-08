@@ -32,7 +32,7 @@ namespace Liar
 		Liar::Camera3D* m_camera;
 		Liar::LiarShaderProgram* m_shader;
         
-        Liar::Entity* m_rootNode;
+        Liar::LiarContainerObject* m_rootNode;
 		Liar::LightsMgr* m_lightsMgr;
 
 		unsigned int m_VAO;
@@ -48,7 +48,7 @@ namespace Liar
         
     public:
         Camera3D* GetMainCamera() { return m_camera; };
-		Entity* GetRoot() { return m_rootNode; };
+		LiarContainerObject* GetRoot() { return m_rootNode; };
 
 	private:
 		void InitTest();

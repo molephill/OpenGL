@@ -2,18 +2,14 @@
 
 #include <Vectors.h>
 #include <LiarShader.h>
+#include "Camera3D.h"
 
 namespace Liar
 {
-	class LiarBaseLight
+    class LiarBaseLight:public LiarDisplayObject
 	{
 	public:
-		LiarBaseLight() :
-			m_color(new Liar::Vector3D(1.0f, 1.0f, 1.0f)), 
-			m_ambient(new Liar::Vector3D()), 
-			m_diffuse(new Liar::Vector3D()),
-			m_specular(new Liar::Vector3D()),
-			m_shader(nullptr) {};
+		LiarBaseLight();
 		~LiarBaseLight();
 
 	protected:
@@ -45,8 +41,7 @@ namespace Liar
 
 		Liar::LiarShaderProgram* GetShaderProgram() { return m_shader; };
 
-		virtual void Render(Liar::LiarShaderProgram&, int index = 0);
-		virtual void Render(int index = 0);
+        virtual void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&, int index = 0);
 	};
 
 	class LiarDirectionLight :public LiarBaseLight
@@ -75,7 +70,6 @@ namespace Liar
 		~LiarPointLight();
 
 	protected:
-		Liar::Vector3D* m_position;
 		float m_constant;
 		float m_linear;
 		float m_quadratic;
@@ -83,8 +77,6 @@ namespace Liar
 		virtual void BuildProgram(Liar::LiarShaderProgram&, std::string base = "");
 
 	public:
-		void SetPositon(float x, float y, float z) { m_position->Set(x, y, z); };
-		void SetPositon(const Liar::Vector3D& rhs) { m_position->Set(rhs); };
 		void SetConstant(float v) { m_constant = v; };
 		void SetLinear(float v) { m_linear = v; };
 		void SetQuadratic(float v) { m_quadratic = v; };
@@ -94,7 +86,7 @@ namespace Liar
 		float GetLiner() const { return m_linear; };
 		float GetQuadratic() const { return m_quadratic; };
 
-		virtual void Render(Liar::LiarShaderProgram&, int index = 0);
+		virtual void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&, int index = 0);
 	};
 
 	class LiarSpotLight :public LiarPointLight
@@ -118,7 +110,7 @@ namespace Liar
 		float GetCutoff() const { return m_cutOff; };
 		float GetOuterCutOff() const { return m_outerCutOff; };
 
-		virtual void Render(Liar::LiarShaderProgram&, int index = 0);
+		virtual void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&, int index = 0);
 	};
 }
 
