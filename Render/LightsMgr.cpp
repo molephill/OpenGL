@@ -45,7 +45,8 @@ namespace Liar
 		m_pointLights->push_back(new Liar::LiarPointLight());
 
 		Liar::LiarPointLight* pointLight = m_pointLights->at(0);
-		pointLight->SetPosition(0.7f, 0.2f, 2.0f);
+		pointLight->SetName("pointLight0");
+		pointLight->SetPosition(25.7f, 0.2f, 2.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
 		pointLight->SetSpecular(1.0f, 1.0f, 1.0f);
@@ -54,6 +55,7 @@ namespace Liar
 		pointLight->SetQuadratic(0.032f);
 
 		pointLight = m_pointLights->at(1);
+		pointLight->SetName("pointLight1");
 		pointLight->SetPosition(2.3f, -3.3f, -4.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
@@ -63,6 +65,7 @@ namespace Liar
 		pointLight->SetQuadratic(0.032f);
 
 		pointLight = m_pointLights->at(2);
+		pointLight->SetName("pointLight2");
 		pointLight->SetPosition(-4.0f, 2.0f, -12.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
@@ -72,6 +75,7 @@ namespace Liar
 		pointLight->SetQuadratic(0.032f);
 
 		pointLight = m_pointLights->at(3);
+		pointLight->SetName("pointLight3");
 		pointLight->SetPosition(0.0f, 0.0f, -3.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
@@ -82,7 +86,7 @@ namespace Liar
 
 		m_spotLights->push_back(new Liar::LiarSpotLight());
 		Liar::LiarSpotLight* spotLight = m_spotLights->at(0);
-
+		spotLight->SetName("spotLight0");
 		spotLight->SetDirection(0, 1, 0);
 		spotLight->SetAmbient(0.0f, 0.0f, 0.0f);
 		spotLight->SetDiffuse(1.0f, 1.0f, 1.0f);
@@ -94,21 +98,34 @@ namespace Liar
 		spotLight->SetOuterCutOff(0.23f);
 	}
 
-	void LightsMgr::Render(const Liar::Camera3D& camera, Liar::LiarShaderProgram& shader)
+	void LightsMgr::LightEffect(Liar::LiarShaderProgram& shader)
 	{
 		shader.SetInt("numPointLights", static_cast<int>(m_pointLights->size()));
 		shader.SetInt("numSpotLights", static_cast<int>(m_spotLights->size()));
-		m_dirLight->Render(camera, shader, 0);
+		m_dirLight->LightEffect(shader, 0);
 		int index = 0;
 		for (std::vector<Liar::LiarPointLight*>::iterator it = m_pointLights->begin(); it < m_pointLights->end(); ++it)
 		{
-			(*it)->Render(camera, shader, index++);
+			(*it)->LightEffect(shader, index++);
 		}
 
 		index = 0;
 		for (std::vector<Liar::LiarSpotLight*>::iterator it = m_spotLights->begin(); it < m_spotLights->end(); ++it)
 		{
-			(*it)->Render(camera, shader, index++);
+			(*it)->LightEffect(shader, index++);
+		}
+	}
+
+	void LightsMgr::Render(const Liar::Camera3D& camera)
+	{
+		for (std::vector<Liar::LiarPointLight*>::iterator it = m_pointLights->begin(); it < m_pointLights->end(); ++it)
+		{
+			(*it)->Render(camera);
+		}
+
+		for (std::vector<Liar::LiarSpotLight*>::iterator it = m_spotLights->begin(); it < m_spotLights->end(); ++it)
+		{
+			(*it)->Render(camera);
 		}
 	}
 

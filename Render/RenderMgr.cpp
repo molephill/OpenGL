@@ -17,6 +17,8 @@
 #include <stb_image.h>
 #include <gtc/matrix_transform.hpp>
 
+#include <LiarPolygon.h>
+
 namespace Liar
 {
 
@@ -158,6 +160,7 @@ namespace Liar
 		m_shader->Use();
 		m_shader->SetInt("material.diffuse", 0);
 		m_shader->SetInt("material.specular", 1);
+
 	}
 
 	void RenderMgr::BuildTest()
@@ -318,6 +321,7 @@ namespace Liar
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
+
 	}
 
 	RenderMgr::RenderMgr():
@@ -338,8 +342,9 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 0.0f, 50.0f);
-		m_camera->SetRotation(0.0f, 0.0f, 0.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 3.0f);
+		m_camera->SetName("mainCamera");
+		m_rootNode->SetName("root");
         
         //m_rootNode->SetRotationX(-45.0f);
         
@@ -384,7 +389,6 @@ namespace Liar
 		m_shader = new Liar::LiarShaderProgram();
 		//m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/test1.vs"), AssetsMgr::GetPath("Shaders/test1.fs"));
 		m_shader->LinkProgram(AssetsMgr::GetPath("Shaders/use/light/lighting1.vs"), AssetsMgr::GetPath("Shaders/use/light/lighting1.fs"));
-
 		//InitTest();
 	}
 
@@ -413,12 +417,14 @@ namespace Liar
 		m_shader->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));
 		m_shader->SetVec3("viewPos", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
 
-		m_lightsMgr->Render(*m_camera, *m_shader);
+		m_lightsMgr->LightEffect(*m_shader);
 
 		//RenderTest();
 
 //        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(*m_shader);
+
+		m_lightsMgr->Render(*m_camera);
 
 //        m_testModel->Render(*m_shader);
 

@@ -2,6 +2,7 @@
 
 #include <Vectors.h>
 #include <LiarShader.h>
+#include <LiarPolygon.h>
 #include "Camera3D.h"
 
 namespace Liar
@@ -18,8 +19,9 @@ namespace Liar
 		Liar::Vector3D* m_diffuse;
 		Liar::Vector3D* m_specular;
 		Liar::LiarShaderProgram* m_shader;
+		Liar::LiarSphereGeometry* m_renderGeo;
 
-		virtual void BuildProgram(Liar::LiarShaderProgram&, std::string base = "");
+		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
 
 	public:
 		void SetColor(float x, float y, float z) { m_color->Set(x, y, z); };
@@ -41,10 +43,11 @@ namespace Liar
 
 		Liar::LiarShaderProgram* GetShaderProgram() { return m_shader; };
 
-        virtual void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&, int index = 0);
+        virtual void LightEffect(Liar::LiarShaderProgram&, int index = 0);
+		virtual void Render(const Liar::Camera3D&);
 	};
 
-	class LiarDirectionLight :public LiarBaseLight
+	class LiarDirectionLight :public Liar::LiarBaseLight
 	{
 	public:
 		LiarDirectionLight();
@@ -54,7 +57,7 @@ namespace Liar
 		Liar::Vector3D* m_direction;
 
 	protected:
-		virtual void BuildProgram(Liar::LiarShaderProgram&, std::string base = "");
+		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
 
 	public:
 		void SetDirection(float x, float y, float z) { m_direction->Set(x, y, z); };
@@ -74,7 +77,7 @@ namespace Liar
 		float m_linear;
 		float m_quadratic;
 
-		virtual void BuildProgram(Liar::LiarShaderProgram&, std::string base = "");
+		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
 
 	public:
 		void SetConstant(float v) { m_constant = v; };
@@ -86,7 +89,7 @@ namespace Liar
 		float GetLiner() const { return m_linear; };
 		float GetQuadratic() const { return m_quadratic; };
 
-		virtual void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&, int index = 0);
+		virtual void LightEffect(Liar::LiarShaderProgram&, int index = 0);
 	};
 
 	class LiarSpotLight :public LiarPointLight
@@ -110,7 +113,7 @@ namespace Liar
 		float GetCutoff() const { return m_cutOff; };
 		float GetOuterCutOff() const { return m_outerCutOff; };
 
-		virtual void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&, int index = 0);
+		virtual void LightEffect(Liar::LiarShaderProgram&, int index = 0);
 	};
 }
 

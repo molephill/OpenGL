@@ -18,8 +18,8 @@ namespace Liar
 		std::vector<Liar::LiarSpotLight*>* m_spotLights;
 
 	public:
-		void Render(const Liar::Camera3D&, Liar::LiarShaderProgram&);
-
+		void LightEffect(Liar::LiarShaderProgram&);
+		void Render(const Liar::Camera3D&);
 		LiarPointLight* GetPointLight(size_t);
 		LiarSpotLight* GetSpotLight(size_t);
 		Liar::LiarDirectionLight* GetDirLight() { return m_dirLight; };

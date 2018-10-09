@@ -38,9 +38,7 @@ namespace Liar
 
 	void Model::Render(Liar::LiarShaderProgram& shader)
 	{
-		/*AddRotationY(1.0f);*/
-		//AddRotation(0.0f, 1.0f, 0.0f);
-        
+       
         Liar::LiarContainerObject::Render(shader);
         
 		size_t len = m_subMeshList->size();

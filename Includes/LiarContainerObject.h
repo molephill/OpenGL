@@ -13,7 +13,7 @@ namespace Liar
     {
     public:
         LiarDisplayObject();
-        ~LiarDisplayObject();
+        virtual ~LiarDisplayObject();
         
     protected:
         Liar::Vector3D* m_position;
