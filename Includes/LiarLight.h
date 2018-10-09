@@ -19,7 +19,7 @@ namespace Liar
 		Liar::Vector3D* m_diffuse;
 		Liar::Vector3D* m_specular;
 		Liar::LiarShaderProgram* m_shader;
-		Liar::LiarSphereGeometry* m_renderGeo;
+		Liar::LiarBaseGeometry* m_renderGeo;
 
 		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
 

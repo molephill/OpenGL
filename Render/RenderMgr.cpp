@@ -400,6 +400,7 @@ namespace Liar
 	void RenderMgr::SetSize(unsigned int w, unsigned int h)
 	{
 		glViewport(0, 0, w, h);
+		glScissor(0, 0, w, h);
 	}
     
     void RenderMgr::Render()

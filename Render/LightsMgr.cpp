@@ -34,7 +34,7 @@ namespace Liar
 
 	void LightsMgr::Init()
 	{
-		m_dirLight->SetDirection(-0.2f, -1.0f, -0.3f);
+		m_dirLight->SetDirection(0.2f, 1.0f, 0.3f);
 		m_dirLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		m_dirLight->SetDiffuse(0.4f, 0.4f, 0.4f);
 		m_dirLight->SetSpecular(0.5f, 0.5f, 0.5f);
@@ -46,7 +46,7 @@ namespace Liar
 
 		Liar::LiarPointLight* pointLight = m_pointLights->at(0);
 		pointLight->SetName("pointLight0");
-		pointLight->SetPosition(25.7f, 0.2f, 2.0f);
+		pointLight->SetPosition(2.7f, 0.2f, 2.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
 		pointLight->SetSpecular(1.0f, 1.0f, 1.0f);
@@ -56,7 +56,7 @@ namespace Liar
 
 		pointLight = m_pointLights->at(1);
 		pointLight->SetName("pointLight1");
-		pointLight->SetPosition(2.3f, -3.3f, -4.0f);
+		pointLight->SetPosition(2.3f, -6.3f, -4.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
 		pointLight->SetSpecular(1.0f, 1.0f, 1.0f);
@@ -66,7 +66,7 @@ namespace Liar
 
 		pointLight = m_pointLights->at(2);
 		pointLight->SetName("pointLight2");
-		pointLight->SetPosition(-4.0f, 2.0f, -12.0f);
+		pointLight->SetPosition(-4.0f, 12.0f, -12.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
 		pointLight->SetSpecular(1.0f, 1.0f, 1.0f);
@@ -76,7 +76,7 @@ namespace Liar
 
 		pointLight = m_pointLights->at(3);
 		pointLight->SetName("pointLight3");
-		pointLight->SetPosition(0.0f, 0.0f, -3.0f);
+		pointLight->SetPosition(0.0f, 10.0f, -3.0f);
 		pointLight->SetAmbient(0.05f, 0.05f, 0.05f);
 		pointLight->SetDiffuse(0.8f, 0.8f, 0.8f);
 		pointLight->SetSpecular(1.0f, 1.0f, 1.0f);
@@ -86,6 +86,7 @@ namespace Liar
 
 		m_spotLights->push_back(new Liar::LiarSpotLight());
 		Liar::LiarSpotLight* spotLight = m_spotLights->at(0);
+		spotLight->SetPosition(0, 10, 5);
 		spotLight->SetName("spotLight0");
 		spotLight->SetDirection(0, 1, 0);
 		spotLight->SetAmbient(0.0f, 0.0f, 0.0f);

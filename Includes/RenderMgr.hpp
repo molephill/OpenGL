@@ -35,10 +35,9 @@ namespace Liar
         Liar::LiarContainerObject* m_rootNode;
 		Liar::LightsMgr* m_lightsMgr;
 
-		unsigned int m_VAO;
-		unsigned int m_VBO;
-		unsigned int m_EBO;
+		
 
+	private:
 		Liar::LiarMesh* m_testMesh;
 		Liar::Model* m_testModel;
 

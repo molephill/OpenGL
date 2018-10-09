@@ -73,13 +73,13 @@ namespace Liar
 	LiarCube::LiarCube() :
 		Liar::LiarDisplayObject()
 	{
-		m_geometry = LiarPolygonGeoMgr::GetCubeGeo();
+		m_geometry = Liar::LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Cube);
 		m_geometry->Upload();
 	}
 
 	LiarCube::~LiarCube()
 	{
-		LiarPolygonGeoMgr::ReleaseCubeGeo();
+		Liar::LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType::GeometryType_Cube);
 		m_geometry = nullptr;
 	}
 
@@ -174,16 +174,42 @@ namespace Liar
 		glEnableVertexAttribArray(0);
 	}
 
+	// ====================== rectSprit =======================
+	void LiarRectSpriteGeometry::UploadSub()
+	{
+		float vertices[] = {
+			-0.5,0,-0.5,0,1,
+			-0.5,0, 0.5,0,0,
+			0.5,0, 0.5,1,0,
+			0.5,0,-0.5,1,1
+		};
+
+		m_indices->push_back(0);
+		m_indices->push_back(1);
+		m_indices->push_back(3);
+		m_indices->push_back(2);
+		m_indices->push_back(3);
+		m_indices->push_back(1);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		// 3. 设定顶点属性指针
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)5);
+		glEnableVertexAttribArray(1);
+	}
+
 	LiarSphere::LiarSphere() :
 		Liar::LiarDisplayObject()
 	{
-		m_geometry = LiarPolygonGeoMgr::GetSphereGeo();
+		m_geometry = LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
 		m_geometry->Upload();
 	}
 
 	LiarSphere::~LiarSphere()
 	{
-		LiarPolygonGeoMgr::ReleaseSphereGeo();
+		LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
 		m_geometry = nullptr;
 	}
 
@@ -194,53 +220,74 @@ namespace Liar
 	}
 
 	// ======================== geom_mgr ===================
-	LiarCubeGeometry* LiarPolygonGeoMgr::GetCubeGeo()
+	LiarBaseGeometry* LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType type)
 	{
-		if (!m_cubeGeo)
+		switch (type)
 		{
-			m_cubeGeo = new Liar::LiarCubeGeometry();
-			m_cubeGeo->Upload();
-		}
-		m_cubeGeo->IncRefCount();
-		return m_cubeGeo;
-	}
-
-	LiarSphereGeometry* LiarPolygonGeoMgr::GetSphereGeo()
-	{
-		if (!m_sphereGeo)
+		case Liar::LiarPolygonGeometryType::GeometryType_Cube:
 		{
-			m_sphereGeo = new Liar::LiarSphereGeometry();
-			m_sphereGeo->Upload();
-		}
-
-		m_sphereGeo->IncRefCount();
-		return m_sphereGeo;
-	}
-
-	void LiarPolygonGeoMgr::ReleaseCubeGeo()
-	{
-		if (m_cubeGeo)
-		{
-			if (m_cubeGeo->DesRefCount() <= 0)
+			if (!m_cubeGeo)
 			{
-				delete m_cubeGeo;
-				m_cubeGeo = nullptr;
+				m_cubeGeo = new Liar::LiarCubeGeometry();
+				m_cubeGeo->Upload();
 			}
+			m_cubeGeo->IncRefCount();
+		}
+		case Liar::LiarPolygonGeometryType::GeometryType_Sphere:
+		{
+			if (!m_sphereGeo)
+			{
+				m_sphereGeo = new Liar::LiarSphereGeometry();
+				m_sphereGeo->Upload();
+			}
+
+			m_sphereGeo->IncRefCount();
+			return m_sphereGeo;
+		}
+		case Liar::LiarPolygonGeometryType::GeometryType_RectSprite:
+		{
+			if (!m_rectSpriteGeo)
+			{
+				m_rectSpriteGeo = new Liar::LiarRectSpriteGeometry();
+				m_rectSpriteGeo->Upload();
+			}
+			m_rectSpriteGeo->IncRefCount();
+			return m_rectSpriteGeo;
+		}
+		default:
+			return nullptr;
 		}
 	}
 
-	void LiarPolygonGeoMgr::ReleaseSphereGeo()
+	void LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType type)
 	{
-		if (m_sphereGeo)
+		Liar::LiarBaseGeometry* ret = nullptr;
+		switch (type)
 		{
-			if (m_sphereGeo->DesRefCount() <= 0)
+		case Liar::LiarPolygonGeometryType::GeometryType_Cube:
+			ret = m_cubeGeo;
+			break;
+		case Liar::LiarPolygonGeometryType::GeometryType_Sphere:
+			ret = m_sphereGeo;
+			break;
+		case Liar::LiarPolygonGeometryType::GeometryType_RectSprite:
+			ret = m_rectSpriteGeo;
+			break;
+		default:
+			break;
+		}
+
+		if (ret)
+		{
+			if (ret->DesRefCount() <= 0)
 			{
-				delete m_sphereGeo;
-				m_sphereGeo = nullptr;
+				delete ret;
+				ret = nullptr;
 			}
 		}
 	}
 
 	Liar::LiarCubeGeometry* LiarPolygonGeoMgr::m_cubeGeo = nullptr;
 	Liar::LiarSphereGeometry* LiarPolygonGeoMgr::m_sphereGeo = nullptr;
+	Liar::LiarRectSpriteGeometry* LiarPolygonGeoMgr::m_rectSpriteGeo = nullptr;
 }

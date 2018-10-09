@@ -13,7 +13,7 @@ namespace Liar
     {
         m_shader = AssetsMgr::GetInstance().GetShaderProgrom("base",
                                                              AssetsMgr::GetPath("Shaders/base/base.vs"), AssetsMgr::GetPath("Shaders/base/base.fs"));
-		m_renderGeo = Liar::LiarPolygonGeoMgr::GetSphereGeo();
+		m_renderGeo = Liar::LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
     }
     
 	LiarBaseLight::~LiarBaseLight()
@@ -22,7 +22,7 @@ namespace Liar
 		if (m_shader)
 		{
 			AssetsMgr::GetInstance().ReleaseShaderProgram(m_shader);
-			Liar::LiarPolygonGeoMgr::ReleaseSphereGeo();
+			Liar::LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
 			m_renderGeo = nullptr;
 		}
 	}

@@ -3,15 +3,40 @@
 
 namespace Liar
 {
-	class LiarCubeGeometry :public Liar::LiarBaseGeometry, public Liar::ILiarRef
+	enum LiarPolygonGeometryType
 	{
+		GeometryType_Cube = 0x0,
+		GeometryType_Sphere = 0x1,
+		GeometryType_RectSprite = 0x2,
+	};
+
+	class LiarCubeGeometry :public Liar::LiarBaseGeometry
+	{
+	public:
+		LiarCubeGeometry() :Liar::LiarBaseGeometry() {};
+		virtual ~LiarCubeGeometry() {};
+
 	protected:
 		virtual void UploadSub();
 	};
 
 	// ==================== sphere ===================
-	class LiarSphereGeometry :public Liar::LiarBaseGeometry, public Liar::ILiarRef
+	class LiarSphereGeometry :public Liar::LiarBaseGeometry
 	{
+	public:
+		LiarSphereGeometry() :Liar::LiarBaseGeometry() {};
+		virtual ~LiarSphereGeometry() {};
+
+	protected:
+		virtual void UploadSub();
+	};
+
+	class LiarRectSpriteGeometry :public Liar::LiarBaseGeometry
+	{
+	public:
+		LiarRectSpriteGeometry() :Liar::LiarBaseGeometry() {};
+		virtual ~LiarRectSpriteGeometry() {};
+
 	protected:
 		virtual void UploadSub();
 	};
@@ -21,12 +46,11 @@ namespace Liar
 	private:
 		static Liar::LiarCubeGeometry* m_cubeGeo;
 		static Liar::LiarSphereGeometry* m_sphereGeo;
+		static Liar::LiarRectSpriteGeometry* m_rectSpriteGeo;
 
 	public:
-		static LiarCubeGeometry* GetCubeGeo();
-		static LiarSphereGeometry* GetSphereGeo();
-		static void ReleaseCubeGeo();
-		static void ReleaseSphereGeo();
+		static LiarBaseGeometry* GetGeo(Liar::LiarPolygonGeometryType);
+		static void ReleaseGeo(Liar::LiarPolygonGeometryType);
 	};
 
 	class LiarCube:public Liar::LiarDisplayObject
@@ -36,7 +60,7 @@ namespace Liar
 		~LiarCube();
 
 	protected:
-		Liar::LiarCubeGeometry* m_geometry;
+		Liar::LiarBaseGeometry* m_geometry;
 
 	public:
 		virtual void Render(Liar::LiarShaderProgram&);
@@ -49,7 +73,7 @@ namespace Liar
 		~LiarSphere();
 
 	protected:
-		Liar::LiarSphereGeometry* m_geometry;
+		Liar::LiarBaseGeometry* m_geometry;
 
 	public:
 		virtual void Render(Liar::LiarShaderProgram&);
