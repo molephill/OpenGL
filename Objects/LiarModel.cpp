@@ -1,4 +1,4 @@
-#include "Model.h"
+#include "LiarModel.h"
 #include "AssetsMgr.hpp"
 
 namespace Liar

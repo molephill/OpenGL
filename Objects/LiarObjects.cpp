@@ -1,7 +1,7 @@
 #include <LiarPluginRead.h>
 
 #include "AssetsMgr.hpp"
-#include "Model.h"
+#include "LiarModel.h"
 
 namespace Liar
 {

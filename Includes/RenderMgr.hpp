@@ -9,7 +9,7 @@
 #ifndef RenderMgr_hpp
 #define RenderMgr_hpp
 
-#include "Model.h"
+#include "LiarModel.h"
 #include "LightsMgr.h"
 
 namespace Liar

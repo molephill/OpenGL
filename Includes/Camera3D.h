@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LiarContainerObject.h"
+#include "LiarObjects.h"
 
 #include <LiarVertexBuffer.h>
 #include "Define.h"
