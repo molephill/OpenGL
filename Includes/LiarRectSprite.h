@@ -8,7 +8,7 @@ namespace Liar
 	
 
 	class LiarRectSprite:
-		public Liar::LiarContainerObject
+		public Liar::LiarMesh
 	{
 	public:
 		LiarRectSprite();

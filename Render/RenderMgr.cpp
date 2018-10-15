@@ -416,6 +416,7 @@ namespace Liar
 		//InitTest();
 
 		Liar::Model* model = new Liar::Model();
+		model->SetName("anim");
 		model->Load(AssetsMgr::GetPath("models/anim/anim.model").c_str());
 		model->SetY(-20);
 		model->SetScale(0.2);
@@ -453,7 +454,7 @@ namespace Liar
 		//BuildTest();
 		//RenderTest();
 
-//        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
+        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(*m_shader);
 
 		m_lightsMgr->Render(*m_camera);

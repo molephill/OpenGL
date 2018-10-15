@@ -13,7 +13,6 @@ namespace Liar
 		~Model();
 
 	private:
-		std::vector<Liar::LiarMesh*>* m_subMeshList;
 		Liar::LiarSkeleton* m_skeleton;
 
 	private:
@@ -21,9 +20,6 @@ namespace Liar
 
 	public:
 		void Load(const char*);
-		virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
-
-		friend std::ostream& operator<<(std::ostream& os, const Liar::Model& m);
 	};
 }
 

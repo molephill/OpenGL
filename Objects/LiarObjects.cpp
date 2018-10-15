@@ -409,26 +409,21 @@ namespace Liar
     
     bool LiarDisplayObject::CalcTransform(bool combineParent, bool calcInvert)
     {
-		bool calcResult = false;
+		if(m_transformChanged || combineParent) std::cout << "name: " << m_name << "---combineParent: " << combineParent << "--self: " << m_transformChanged << std::endl;
 
-        if (m_transformChanged)
+        if (m_transformChanged || (combineParent && m_parent))
         {
             m_transform->Identity();
             m_transform->Scale(*m_scale);
             m_transform->Rotate(*m_rotation);
             m_transform->Translate(*m_position);
-            m_transformChanged = false;
 
-			calcResult = true;
+			if(m_parent) (*m_transform) *= (*(m_parent->GetTransform()));
+
+            m_transformChanged = false;
         }
 
-		if (combineParent && m_parent)
-		{
-			(*m_transform) *= (*(m_parent->GetTransform()));
-			calcResult = true;
-		}
-
-		return calcResult;
+		return true;
     }
     
     bool LiarDisplayObject::Render(Liar::LiarShaderProgram& shader, bool combineParent)
