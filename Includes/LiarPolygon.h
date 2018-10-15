@@ -28,6 +28,11 @@ namespace Liar
 		{
 			return m_indices;
 		};
+
+		virtual void ReleaseSourceData()
+		{
+			delete m_indices;
+		}
 	};
 
 	class LiarCubeGeometry :public Liar::LiarPolygonGeometry
