@@ -333,13 +333,6 @@ namespace Liar
         return child;
     }
     
-    Liar::LiarDisplayObject* LiarContainerObject::AddModel(const std::string& path, const char* skeleton)
-    {
-        Liar::Model* model = Liar::LiarPluginRead::ReadModel(path);
-		if (model) model->SetSkeleton(skeleton);
-        return AddChild(model);
-    }
-    
     Liar::LiarDisplayObject* LiarContainerObject::RemoveChild(Liar::LiarDisplayObject* child)
     {
         bool find = false;

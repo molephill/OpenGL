@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 
+#include <glad/glad.h>
+
 namespace Liar
 {
     

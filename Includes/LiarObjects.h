@@ -114,7 +114,6 @@ namespace Liar
         
     public:
         virtual Liar::LiarDisplayObject* AddChild(Liar::LiarDisplayObject*);
-		virtual Liar::LiarDisplayObject* AddModel(const std::string&, const char* skeleton = nullptr);
         
         virtual Liar::LiarDisplayObject* RemoveChild(Liar::LiarDisplayObject*);
         virtual Liar::LiarDisplayObject* RemoveChild(const std::string&);

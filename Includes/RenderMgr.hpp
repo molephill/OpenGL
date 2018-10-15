@@ -44,6 +44,12 @@ namespace Liar
 		unsigned int VAO, VBO, EBO, cubeVAO;
 		unsigned int diffuseMap;
 		unsigned int specularMap;
+
+		std::vector<int>* m_indices;
+		size_t m_indiceSize;
+		unsigned int m_vertexArrayID;
+		unsigned int m_vertexbuffer;
+		unsigned int m_elementbuffer;
         
     public:
         Camera3D* GetMainCamera() { return m_camera; };
@@ -53,6 +59,12 @@ namespace Liar
 		void InitTest();
 		void RenderTest();
 		void BuildTest();
+
+		std::vector<int>* GetIndicesData() const
+		{
+			return m_indices;
+		}
+
     };
 }
 

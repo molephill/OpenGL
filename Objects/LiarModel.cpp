@@ -15,30 +15,36 @@ namespace Liar
 	{
 	}
 
-	void Model::AddMesh(const char* fileName, const char* base)
+	void Model::Load(const char* path, const char* base)
 	{
-		Liar::LiarMesh* ret = Liar::AssetsMgr::GetInstance().GetMesh(fileName, base);
-		m_subMeshList->push_back(ret);
+		Liar::LiarNode* node = new Liar::LiarNode();
+		Liar::LiarPluginRead::ReadNode(path, *node);
+		LoadSub(*node, base);
 	}
 
-	void Model::AddMesh(const std::string& fileName, const char* base)
+	void Model::LoadSub(const Liar::LiarNode& node, const char* base)
 	{
-		AddMesh(fileName.c_str(), base);
-	}
+		std::vector<Liar::LiarNode*>* children = node.GetChildren();
+		if (children)
+		{
+			size_t size = children->size();
+			for (size_t i = 0; i < size; ++i)
+			{
+				Liar::LiarNode* subNode = children->at(i);
+				std::string& nodeName = subNode->GetNodeName();
 
-	void Model::SetSkeleton(const char* path)
-	{
-		m_skeleton = Liar::AssetsMgr::GetInstance().GetSkeleton(path);
-	}
+				Liar::LiarMesh* subMesh = new Liar::LiarMesh();
+				subMesh->Load(nodeName.c_str(), base);
+				m_subMeshList->push_back(subMesh);
 
-	void Model::SetSkeleton(const std::string& path)
-	{
-		SetSkeleton(path.c_str());
+				// add child nodes
+				LoadSub(*subNode);
+			}
+		}
 	}
 
 	void Model::Render(Liar::LiarShaderProgram& shader)
 	{
-       
         Liar::LiarContainerObject::Render(shader);
         
 		size_t len = m_subMeshList->size();

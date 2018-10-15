@@ -4,7 +4,7 @@
 namespace Liar
 {
     LiarBaseLight::LiarBaseLight():
-        Liar::LiarDisplayObject(),
+        Liar::LiarMesh(),
         m_shader(nullptr),
         m_color(new Liar::Vector3D(1.0f, 1.0f, 1.0f)),
         m_ambient(new Liar::Vector3D()),
@@ -13,7 +13,7 @@ namespace Liar
     {
         m_shader = AssetsMgr::GetInstance().GetShaderProgrom("base",
                                                              AssetsMgr::GetPath("Shaders/base/base.vs"), AssetsMgr::GetPath("Shaders/base/base.fs"));
-		m_renderGeo = Liar::LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
+		m_geometry = Liar::LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Cube);
     }
     
 	LiarBaseLight::~LiarBaseLight()
@@ -23,7 +23,7 @@ namespace Liar
 		{
 			AssetsMgr::GetInstance().ReleaseShaderProgram(m_shader);
 			Liar::LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
-			m_renderGeo = nullptr;
+			m_geometry = nullptr;
 		}
 	}
 
@@ -61,8 +61,7 @@ namespace Liar
 			m_shader->SetMat4("viewExtentionMatrix", *(camera.GetExtentionMatrix()));
 			m_shader->SetVec3("color", *m_color);
 
-			Liar::LiarDisplayObject::Render(*m_shader);
-			m_renderGeo->Render();
+			Liar::LiarMesh::Render(*m_shader);
 		}
 	}
 

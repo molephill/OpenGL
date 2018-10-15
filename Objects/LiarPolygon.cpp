@@ -63,6 +63,8 @@ namespace Liar
 		m_indices->push_back(6);
 		m_indices->push_back(2);
 
+		m_indiceSize = m_indices->size();
+
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 		// 3. 设定顶点属性指针
@@ -71,22 +73,15 @@ namespace Liar
 	}
 
 	LiarCube::LiarCube() :
-		Liar::LiarDisplayObject()
+		Liar::LiarMesh()
 	{
 		m_geometry = Liar::LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Cube);
-		m_geometry->Upload();
 	}
 
 	LiarCube::~LiarCube()
 	{
 		Liar::LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType::GeometryType_Cube);
 		m_geometry = nullptr;
-	}
-
-	void LiarCube::Render(Liar::LiarShaderProgram& shader)
-	{
-		Liar::LiarDisplayObject::Render(shader);
-		m_geometry->Render();
 	}
 
 	// =============================== sphere ===============================
@@ -167,6 +162,8 @@ namespace Liar
 			}
 		}
 
+		m_indiceSize = m_indices->size();
+
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
 		// 3. 设定顶点属性指针
@@ -191,6 +188,8 @@ namespace Liar
 		m_indices->push_back(3);
 		m_indices->push_back(1);
 
+		m_indiceSize = m_indices->size();
+
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 		// 3. 设定顶点属性指针
@@ -201,10 +200,9 @@ namespace Liar
 	}
 
 	LiarSphere::LiarSphere() :
-		Liar::LiarDisplayObject()
+		Liar::LiarMesh()
 	{
 		m_geometry = LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
-		m_geometry->Upload();
 	}
 
 	LiarSphere::~LiarSphere()
@@ -213,14 +211,8 @@ namespace Liar
 		m_geometry = nullptr;
 	}
 
-	void LiarSphere::Render(Liar::LiarShaderProgram& shader)
-	{
-		Liar::LiarDisplayObject::Render(shader);
-		m_geometry->Render();
-	}
-
 	// ======================== geom_mgr ===================
-	LiarBaseGeometry* LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType type)
+	LiarGeometry* LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType type)
 	{
 		switch (type)
 		{
@@ -232,6 +224,7 @@ namespace Liar
 				m_cubeGeo->Upload();
 			}
 			m_cubeGeo->IncRefCount();
+			return m_cubeGeo;
 		}
 		case Liar::LiarPolygonGeometryType::GeometryType_Sphere:
 		{
@@ -261,7 +254,7 @@ namespace Liar
 
 	void LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType type)
 	{
-		Liar::LiarBaseGeometry* ret = nullptr;
+		Liar::LiarGeometry* ret = nullptr;
 		switch (type)
 		{
 		case Liar::LiarPolygonGeometryType::GeometryType_Cube:

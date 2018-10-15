@@ -10,10 +10,30 @@ namespace Liar
 		GeometryType_RectSprite = 0x2,
 	};
 
-	class LiarCubeGeometry :public Liar::LiarBaseGeometry
+	class LiarPolygonGeometry :public Liar::LiarGeometry
 	{
 	public:
-		LiarCubeGeometry() :Liar::LiarBaseGeometry() {};
+		LiarPolygonGeometry() :m_indices(new std::vector<int>()) {};
+		~LiarPolygonGeometry() {};
+
+	protected:
+		std::vector<int>* m_indices;
+
+		virtual int GetIndicesSize() const 
+		{
+			return m_indices->size();
+		};
+
+		virtual std::vector<int>* GetIndicesData() const
+		{
+			return m_indices;
+		};
+	};
+
+	class LiarCubeGeometry :public Liar::LiarPolygonGeometry
+	{
+	public:
+		LiarCubeGeometry() :Liar::LiarPolygonGeometry() {};
 		virtual ~LiarCubeGeometry() {};
 
 	protected:
@@ -21,20 +41,20 @@ namespace Liar
 	};
 
 	// ==================== sphere ===================
-	class LiarSphereGeometry :public Liar::LiarBaseGeometry
+	class LiarSphereGeometry :public Liar::LiarPolygonGeometry
 	{
 	public:
-		LiarSphereGeometry() :Liar::LiarBaseGeometry() {};
+		LiarSphereGeometry() :Liar::LiarPolygonGeometry() {};
 		virtual ~LiarSphereGeometry() {};
 
 	protected:
 		virtual void UploadSub();
 	};
 
-	class LiarRectSpriteGeometry :public Liar::LiarBaseGeometry
+	class LiarRectSpriteGeometry :public Liar::LiarPolygonGeometry
 	{
 	public:
-		LiarRectSpriteGeometry() :Liar::LiarBaseGeometry() {};
+		LiarRectSpriteGeometry() :Liar::LiarPolygonGeometry() {};
 		virtual ~LiarRectSpriteGeometry() {};
 
 	protected:
@@ -49,33 +69,21 @@ namespace Liar
 		static Liar::LiarRectSpriteGeometry* m_rectSpriteGeo;
 
 	public:
-		static LiarBaseGeometry* GetGeo(Liar::LiarPolygonGeometryType);
+		static LiarGeometry* GetGeo(Liar::LiarPolygonGeometryType);
 		static void ReleaseGeo(Liar::LiarPolygonGeometryType);
 	};
 
-	class LiarCube:public Liar::LiarDisplayObject
+	class LiarCube:public Liar::LiarMesh
 	{
 	public:
 		LiarCube();
 		~LiarCube();
-
-	protected:
-		Liar::LiarBaseGeometry* m_geometry;
-
-	public:
-		virtual void Render(Liar::LiarShaderProgram&);
 	};
 
-	class LiarSphere :public Liar::LiarDisplayObject
+	class LiarSphere :public Liar::LiarMesh
 	{
 	public:
 		LiarSphere();
 		~LiarSphere();
-
-	protected:
-		Liar::LiarBaseGeometry* m_geometry;
-
-	public:
-		virtual void Render(Liar::LiarShaderProgram&);
 	};
 }

@@ -16,14 +16,11 @@ namespace Liar
 		std::vector<Liar::LiarMesh*>* m_subMeshList;
 		Liar::LiarSkeleton* m_skeleton;
 
+	private:
+		void LoadSub(const Liar::LiarNode&, const char* base = nullptr);
+
 	public:
-		void AddMesh(const char*, const char* base=nullptr);
-		void AddMesh(const std::string&, const char* base=nullptr);
-		void AddMesh(Liar::LiarMesh* subMesh) { m_subMeshList->push_back(subMesh); };
-
-		void SetSkeleton(const char*);
-		void SetSkeleton(const std::string&);
-
+		void Load(const char*, const char* base = nullptr);
 		virtual void Render(Liar::LiarShaderProgram&);
 
 		friend std::ostream& operator<<(std::ostream& os, const Liar::Model& m);

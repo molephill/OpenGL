@@ -7,7 +7,7 @@
 
 namespace Liar
 {
-    class LiarBaseLight:public LiarDisplayObject
+    class LiarBaseLight:public LiarMesh
 	{
 	public:
 		LiarBaseLight();
@@ -19,7 +19,6 @@ namespace Liar
 		Liar::Vector3D* m_diffuse;
 		Liar::Vector3D* m_specular;
 		Liar::LiarShaderProgram* m_shader;
-		Liar::LiarBaseGeometry* m_renderGeo;
 
 		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
 
