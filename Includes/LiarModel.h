@@ -21,7 +21,7 @@ namespace Liar
 
 	public:
 		void Load(const char*);
-		virtual void Render(Liar::LiarShaderProgram&);
+		virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
 
 		friend std::ostream& operator<<(std::ostream& os, const Liar::Model& m);
 	};

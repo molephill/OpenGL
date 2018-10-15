@@ -94,7 +94,8 @@ namespace Liar
 		void ReleaseShaderProgram(const char*);
 		void ReleaseShaderProgram(const std::string&);
 
-		Liar::LiarMeshRawData* GetMeshRawData(const char*);
+		Liar::LiarGeometry* GetGeometryData(const char*);
+		bool ReleaseGeometryData(Liar::LiarGeometry*);
 
 		/*Liar::LiarSkeleton* GetSkeleton(const char*);
 		Liar::LiarSkeleton* GetSkeleton(const std::string&);*/
@@ -108,7 +109,7 @@ namespace Liar
 		std::vector<Liar::LiarBaseShader*>* m_allShaders;
 		std::vector<Liar::LiarShaderProgram*>* m_allPrograms;
 		std::vector<Liar::LiarSkeleton*>* m_allSkeletons;
-		std::map<const char*, Liar::LiarMeshRawData*>* m_mapMeshRawData;
+		std::map<const char*, Liar::LiarGeometry*>* m_mapGeometeries;
     };
 
 	

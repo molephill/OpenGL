@@ -1,4 +1,5 @@
 #include "LiarGeometries.h"
+#include <AssetsMgr.hpp>
 
 namespace Liar
 {
@@ -29,7 +30,6 @@ namespace Liar
 		if (m_rawData)
 		{
 			m_indiceSize = m_rawData->GetIndices()->size();
-			Upload();
 		}
 	}
 
@@ -170,7 +170,7 @@ namespace Liar
 
 	void LiarGeometry::ReleaseSourceData()
 	{
-		
+		delete m_rawData;
 	}
 
 	// =============================== Geometory ===============================

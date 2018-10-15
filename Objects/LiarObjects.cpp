@@ -407,8 +407,10 @@ namespace Liar
         return findNode;
     }
     
-    void LiarDisplayObject::CalcTransform(bool calcInvert)
+    bool LiarDisplayObject::CalcTransform(bool combineParent, bool calcInvert)
     {
+		bool calcResult = false;
+
         if (m_transformChanged)
         {
             m_transform->Identity();
@@ -416,13 +418,24 @@ namespace Liar
             m_transform->Rotate(*m_rotation);
             m_transform->Translate(*m_position);
             m_transformChanged = false;
+
+			calcResult = true;
         }
+
+		if (combineParent && m_parent)
+		{
+			(*m_transform) *= (*(m_parent->GetTransform()));
+			calcResult = true;
+		}
+
+		return calcResult;
     }
     
-    void LiarDisplayObject::Render(Liar::LiarShaderProgram& shader)
+    bool LiarDisplayObject::Render(Liar::LiarShaderProgram& shader, bool combineParent)
     {
-        CalcTransform();
-        shader.SetMat4("model", *m_transform);
+        bool calcResult = CalcTransform(combineParent);
+		shader.SetMat4("model", *m_transform);
+		return calcResult;
     }
     
     // ====================== container =========================== //
@@ -455,18 +468,19 @@ namespace Liar
     }
 
 	// ================== render ==================
-    void LiarContainerObject::Render(Liar::LiarShaderProgram& shader)
+    bool LiarContainerObject::Render(Liar::LiarShaderProgram& shader, bool combineParent)
     {
-        Liar::LiarDisplayObject::Render(shader);
-        RenderChildren(shader);
+        bool calcResult = Liar::LiarDisplayObject::Render(shader, combineParent);
+        RenderChildren(shader, calcResult);
+		return calcResult;
     }
     
-    void LiarContainerObject::RenderChildren(Liar::LiarShaderProgram& shader)
+    void LiarContainerObject::RenderChildren(Liar::LiarShaderProgram& shader, bool combineParent)
     {
         Liar::LiarDisplayObject* child = m_childrenNode;
         while (child)
         {
-            child->Render(shader);
+            child->Render(shader, combineParent);
             child = child->GetNextChildNode();
         }
     }

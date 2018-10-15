@@ -61,7 +61,7 @@ namespace Liar
         float GetScaleZ() const { return m_scale->z; };
         
     protected:
-        virtual void CalcTransform(bool calcInvert = true);
+        virtual bool CalcTransform(bool combineParent = false, bool calcInvert = true);
         
     public:
         virtual void SetX(float);
@@ -102,7 +102,7 @@ namespace Liar
         virtual void AddScale(float, float, float);
         virtual void AddScale(const Liar::Vector3D&);
         
-        virtual void Render(Liar::LiarShaderProgram&);
+        virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
     };
     
     // ====================== container =========================== //
@@ -123,13 +123,13 @@ namespace Liar
         
         Liar::LiarDisplayObject* GetChildNode() { return m_childrenNode; };
         
-        virtual void Render(Liar::LiarShaderProgram&);
-        virtual void RenderChildren(Liar::LiarShaderProgram&);
+		virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
 
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const Liar::LiarContainerObject&);
 
 	protected:
+		virtual void RenderChildren(Liar::LiarShaderProgram&, bool combineParent = false);
 		virtual void DrawAxis(float size = 2.5f);
 
 	};

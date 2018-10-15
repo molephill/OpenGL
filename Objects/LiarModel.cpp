@@ -23,6 +23,7 @@ namespace Liar
 		std::string szPath(path);
 		std::string basePath = Liar::StringUtil::GetHead(szPath, "/") + "/";
 		LoadSub(*node, basePath.c_str());
+		delete node;
 	}
 
 	void Model::LoadSub(const Liar::LiarNode& node, const char* base)
@@ -37,6 +38,7 @@ namespace Liar
 				std::string& nodeName = subNode->GetNodeName();
 
 				Liar::LiarMesh* subMesh = new Liar::LiarMesh();
+				subMesh->SetParent(this);
 				subMesh->Load(nodeName.c_str(), base);
 				m_subMeshList->push_back(subMesh);
 
@@ -46,16 +48,18 @@ namespace Liar
 		}
 	}
 
-	void Model::Render(Liar::LiarShaderProgram& shader)
+	bool Model::Render(Liar::LiarShaderProgram& shader, bool combineParent)
 	{
-        Liar::LiarContainerObject::Render(shader);
+        bool calcResult = Liar::LiarContainerObject::Render(shader, combineParent);
         
 		size_t len = m_subMeshList->size();
 		for (size_t i = 0; i < len; ++i)
 		{
 			Liar::LiarMesh* mesh = m_subMeshList->at(i);
-			mesh->Render(shader);
+			mesh->Render(shader, calcResult);
 		}
+
+		return calcResult;
 	}
 
 	std::ostream& operator<<(std::ostream& os, const Liar::Model& m)

@@ -24,7 +24,7 @@ namespace Liar
 	public:
 		void Load(const char*, const char* base = nullptr);
 
-		void SetGeometry(Liar::LiarGeometry*);
+		bool SetGeometry(Liar::LiarGeometry*);
 		Liar::LiarGeometry* GetGeo() { return m_geometry; };
 
 		std::vector<Liar::LiarMaterial*>* GetMatrials() { return m_materials; };
@@ -38,7 +38,7 @@ namespace Liar
 		friend std::ostream& operator<<(std::ostream& os, const Liar::LiarMesh& m);
 
 	public:
-		void Render(Liar::LiarShaderProgram&);
+		virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
 
 	};
 }

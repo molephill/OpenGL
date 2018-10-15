@@ -12,7 +12,7 @@ namespace Liar
 {
 	AssetsMgr::AssetsMgr() :
 		m_allTextures(new std::vector<Liar::LiarTexture*>()), 
-		m_mapMeshRawData(new std::map<const char*, Liar::LiarMeshRawData*>()),
+		m_mapGeometeries(new std::map<const char*, Liar::LiarGeometry*>()),
 		m_allShaders(new std::vector<Liar::LiarBaseShader*>()),
 		m_allPrograms(new std::vector<Liar::LiarShaderProgram*>()),
 		m_allSkeletons(new std::vector<Liar::LiarSkeleton*>())
@@ -23,20 +23,46 @@ namespace Liar
 	{
 	}
 
-	Liar::LiarMeshRawData* AssetsMgr::GetMeshRawData(const char* fileName)
+	Liar::LiarGeometry* AssetsMgr::GetGeometryData(const char* fileName)
 	{
-		std::map<const char*, LiarMeshRawData*>::iterator iter = m_mapMeshRawData->find(fileName);;
+		std::map<const char*, LiarGeometry*>::iterator iter = m_mapGeometeries->find(fileName);;
 
-		if (iter != m_mapMeshRawData->end())
+		if (iter != m_mapGeometeries->end())
 		{
+			iter->second->IncRefCount();
 			return iter->second;
 		}
 		else
 		{
 			Liar::LiarMeshRawData* rawData = Liar::LiarPluginRead::ReadMeshRawData(fileName);
-			m_mapMeshRawData->insert(std::pair<const char*, Liar::LiarMeshRawData*>(fileName, rawData));
-			return rawData;
+			Liar::LiarGeometry* geo = new Liar::LiarGeometry();
+			geo->SetRawData(rawData);
+			m_mapGeometeries->insert(std::pair<const char*, Liar::LiarGeometry*>(fileName, geo));
+			return geo;
 		}
+	}
+
+	bool AssetsMgr::ReleaseGeometryData(Liar::LiarGeometry* rawData)
+	{
+		if (rawData)
+		{
+			std::map<const char*, LiarGeometry*>::iterator iter = m_mapGeometeries->begin();
+			while (iter != m_mapGeometeries->end())
+			{
+				if (iter->second == rawData)
+				{
+					if (rawData->DesRefCount() <= 0)
+					{
+						delete rawData;
+						m_mapGeometeries->erase(iter->first);
+					}
+					return true;
+				}
+				iter++;
+			}
+		}
+
+		return false;
 	}
 
 	Liar::LiarTexture* AssetsMgr::GetTexture(const char* fileName)

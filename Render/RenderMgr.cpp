@@ -365,7 +365,7 @@ namespace Liar
 #endif
 
 		m_camera = new Liar::Camera3D();
-		m_camera->SetPosition(0.0f, 0.0f, 3.0f);
+		m_camera->SetPosition(0.0f, 0.0f, 50.0f);
 		m_camera->SetName("mainCamera");
 		m_rootNode->SetName("root");
         
@@ -416,7 +416,9 @@ namespace Liar
 		//InitTest();
 
 		Liar::Model* model = new Liar::Model();
-		model->Load(AssetsMgr::GetPath("models/nano/nano.model").c_str());
+		model->Load(AssetsMgr::GetPath("models/anim/anim.model").c_str());
+		model->SetY(-20);
+		model->SetScale(0.2);
 		m_rootNode->AddChild(model);
 	}
 

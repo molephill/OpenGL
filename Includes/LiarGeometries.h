@@ -27,6 +27,7 @@ namespace Liar
 		void Upload();
 		void Render();
 		void SetRawData(Liar::LiarMeshRawData*);
+		Liar::LiarMeshRawData* GetRawData() { return m_rawData; };
 		friend std::ostream& operator<<(std::ostream& os, const Liar::LiarGeometry& m);
 
 	protected:
