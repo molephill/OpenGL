@@ -416,7 +416,7 @@ namespace Liar
 		//InitTest();
 
 		Liar::Model* model = new Liar::Model();
-		model->Load(AssetsMgr::GetPath("models/nano/nano.model").c_str(), (BASE_PATH+"models/nano/").c_str());
+		model->Load(AssetsMgr::GetPath("models/nano/nano.model").c_str());
 		m_rootNode->AddChild(model);
 	}
 

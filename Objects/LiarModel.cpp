@@ -1,5 +1,6 @@
 #include "LiarModel.h"
 #include "AssetsMgr.hpp"
+#include <LiarStringUtil.h>
 
 namespace Liar
 {
@@ -15,11 +16,13 @@ namespace Liar
 	{
 	}
 
-	void Model::Load(const char* path, const char* base)
+	void Model::Load(const char* path)
 	{
 		Liar::LiarNode* node = new Liar::LiarNode();
 		Liar::LiarPluginRead::ReadNode(path, *node);
-		LoadSub(*node, base);
+		std::string szPath(path);
+		std::string basePath = Liar::StringUtil::GetHead(szPath, "/") + "/";
+		LoadSub(*node, basePath.c_str());
 	}
 
 	void Model::LoadSub(const Liar::LiarNode& node, const char* base)

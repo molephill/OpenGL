@@ -20,7 +20,7 @@ namespace Liar
 		void LoadSub(const Liar::LiarNode&, const char* base = nullptr);
 
 	public:
-		void Load(const char*, const char* base = nullptr);
+		void Load(const char*);
 		virtual void Render(Liar::LiarShaderProgram&);
 
 		friend std::ostream& operator<<(std::ostream& os, const Liar::Model& m);
