@@ -20,14 +20,8 @@ namespace Liar
 
 	private:
 		int m_textureType;
-		std::string m_path;
 
 	public:
-		void SetPath(const char* v) { m_path = v; };
-		void SetPath(const std::string& v) { m_path = v; };
-
-		std::string& GetPath() { return m_path; };
-
 		void SetType(int v) { m_textureType = v; };
 		int GetType() const { return m_textureType; };
 

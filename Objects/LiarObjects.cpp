@@ -409,8 +409,6 @@ namespace Liar
     
     bool LiarDisplayObject::CalcTransform(bool combineParent, bool calcInvert)
     {
-		if(m_transformChanged || combineParent) std::cout << "name: " << m_name << "---combineParent: " << combineParent << "--self: " << m_transformChanged << std::endl;
-
         if (m_transformChanged || (combineParent && m_parent))
         {
             m_transform->Identity();

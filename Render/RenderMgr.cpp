@@ -20,6 +20,7 @@
 
 #include <LiarPolygon.h>
 #include <LiarModel.h>
+#include <LiarRectSprite.h>
 
 namespace Liar
 {
@@ -421,6 +422,12 @@ namespace Liar
 		model->SetY(-20);
 		model->SetScale(0.2);
 		m_rootNode->AddChild(model);
+
+		Liar::LiarRectSprite* recSprite = new Liar::LiarRectSprite();
+		recSprite->AddTexture(Liar::AssetsMgr::GetPath("Images/test.png").c_str());
+		recSprite->SetScale(50.0f);
+		recSprite->SetRotationX(-90);
+		m_rootNode->AddChild(recSprite);
 	}
 
     RenderMgr::~RenderMgr()
@@ -454,7 +461,7 @@ namespace Liar
 		//BuildTest();
 		//RenderTest();
 
-        m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
+        //m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(*m_shader);
 
 		m_lightsMgr->Render(*m_camera);

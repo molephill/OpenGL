@@ -92,8 +92,8 @@ namespace Liar
 		int stackCount = 18;
 
 		float x, y, z, xy;                              // vertex position
-		//float nx, ny, nz, lengthInv = 1.0f / radius;    // normal
-		//float s, t;                                     // texCoord
+		float nx, ny, nz, lengthInv = 1.0f / radius;    // normal
+		float s, t;                                     // texCoord
 
 		float sectorStep = 2 * PI / sectorCount;
 		float stackStep = PI / stackCount;
@@ -124,15 +124,15 @@ namespace Liar
 				//nx = x * lengthInv;
 				//ny = y * lengthInv;
 				//nz = z * lengthInv;
-				//normals.push_back(nx);
-				//normals.push_back(ny);
-				//normals.push_back(nz);
+				//vertices.push_back(nx);
+				//vertices.push_back(ny);
+				//vertices.push_back(nz);
 
 				//// vertex tex coord
 				//s = (float)j / sectorCount;
 				//t = (float)i / stackCount;
-				//texCoords.push_back(s);
-				//texCoords.push_back(t);
+				//vertices.push_back(s);
+				//vertices.push_back(t);
 			}
 		}
 
@@ -175,28 +175,33 @@ namespace Liar
 	void LiarRectSpriteGeometry::UploadSub()
 	{
 		float vertices[] = {
-			-0.5,0,-0.5,0,1,
-			-0.5,0, 0.5,0,0,
-			0.5,0, 0.5,1,0,
-			0.5,0,-0.5,1,1
+			// positions          // colors           // texture coords
+			0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+			0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+			-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+			-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
 		};
 
 		m_indices->push_back(0);
 		m_indices->push_back(1);
 		m_indices->push_back(3);
+		m_indices->push_back(1);
 		m_indices->push_back(2);
 		m_indices->push_back(3);
-		m_indices->push_back(1);
 
 		m_indiceSize = m_indices->size();
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		// 3. 设定顶点属性指针
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+		// position attribute
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)5);
+		// color attribute
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
+		// texture coord attribute
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(2);
 	}
 
 	LiarSphere::LiarSphere() :

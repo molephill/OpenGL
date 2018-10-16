@@ -32,7 +32,9 @@ namespace Liar
 
 		void EraseMaterial(int);
 
-		std::string meshName;
+	public:
+		virtual void AddTexture(const char*, Liar::LiarTextureType type = Liar::LiarTextureType::LiarTextureType_DIFFUSE, size_t index = 0);
+		virtual void AddTexture(Liar::LiarTexture*, size_t index = 0);
 
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const Liar::LiarMesh& m);

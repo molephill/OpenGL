@@ -82,7 +82,7 @@ namespace Liar
 
 	public:
 		Liar::LiarTexture* GetTexture(const char*);
-		Liar::LiarTexture* GetTexture(const std::string&);
+		bool ReleaseTexture(Liar::LiarTexture*);
 
 		Liar::LiarBaseShader* GetBaseShader(const char*);
 		Liar::LiarBaseShader* GetBaseShader(const std::string&);
@@ -105,11 +105,11 @@ namespace Liar
         static void PrintMat4(const glm::mat4&);
 
 	private:
-		std::vector<Liar::LiarTexture*>* m_allTextures;
 		std::vector<Liar::LiarBaseShader*>* m_allShaders;
 		std::vector<Liar::LiarShaderProgram*>* m_allPrograms;
 		std::vector<Liar::LiarSkeleton*>* m_allSkeletons;
 		std::map<const char*, Liar::LiarGeometry*>* m_mapGeometeries;
+		std::map<const char*, Liar::LiarTexture*>* m_mapTextures;
     };
 
 	

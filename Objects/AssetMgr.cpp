@@ -11,7 +11,7 @@
 namespace Liar
 {
 	AssetsMgr::AssetsMgr() :
-		m_allTextures(new std::vector<Liar::LiarTexture*>()), 
+		m_mapTextures(new std::map<const char*, Liar::LiarTexture*>()),
 		m_mapGeometeries(new std::map<const char*, Liar::LiarGeometry*>()),
 		m_allShaders(new std::vector<Liar::LiarBaseShader*>()),
 		m_allPrograms(new std::vector<Liar::LiarShaderProgram*>()),
@@ -25,7 +25,7 @@ namespace Liar
 
 	Liar::LiarGeometry* AssetsMgr::GetGeometryData(const char* fileName)
 	{
-		std::map<const char*, LiarGeometry*>::iterator iter = m_mapGeometeries->find(fileName);;
+		std::map<const char*, Liar::LiarGeometry*>::iterator iter = m_mapGeometeries->find(fileName);;
 
 		if (iter != m_mapGeometeries->end())
 		{
@@ -46,7 +46,7 @@ namespace Liar
 	{
 		if (rawData)
 		{
-			std::map<const char*, LiarGeometry*>::iterator iter = m_mapGeometeries->begin();
+			std::map<const char*, Liar::LiarGeometry*>::iterator iter = m_mapGeometeries->begin();
 			while (iter != m_mapGeometeries->end())
 			{
 				if (iter->second == rawData)
@@ -67,33 +67,40 @@ namespace Liar
 
 	Liar::LiarTexture* AssetsMgr::GetTexture(const char* fileName)
 	{
-		size_t len = m_allTextures->size();
-		Liar::LiarTexture* ret = nullptr;
-		for (size_t i = 0; i < len; ++i)
+		std::map<const char*, Liar::LiarTexture*>::iterator iter = m_mapTextures->find(fileName);;
+
+		if (iter != m_mapTextures->end())
 		{
-			Liar::LiarTexture* textContext = m_allTextures->at(i);
-			if (std::strcmp(fileName, textContext->GetPath().data()) == 0)
-			{
-				ret = textContext;
-				break;
-			}
+			iter->second->IncRefCount();
+			return iter->second;
 		}
-
-		if (ret == nullptr)
+		else
 		{
-			ret = new Liar::LiarTexture();
-			ret->Upload(fileName);
-			m_allTextures->push_back(ret);
+			Liar::LiarTexture* tex = new Liar::LiarTexture();
+			tex->Upload(fileName);
+			m_mapTextures->insert(std::pair<const char*, Liar::LiarTexture*>(fileName, tex));
+			return tex;
 		}
-
-		ret->IncRefCount();
-
-		return ret;
 	}
 
-	Liar::LiarTexture* AssetsMgr::GetTexture(const std::string& fileName)
+	bool AssetsMgr::ReleaseTexture(Liar::LiarTexture* tex)
 	{
-		return GetTexture(fileName.data());
+		if (!tex) return false;
+		std::map<const char*, Liar::LiarTexture*>::iterator iter = m_mapTextures->begin();
+		while (iter != m_mapTextures->end())
+		{
+			if (iter->second == tex)
+			{
+				if (tex->DesRefCount() <= 0)
+				{
+					delete tex;
+					m_mapTextures->erase(iter->first);
+				}
+				return true;
+			}
+			iter++;
+		}
+		return false;
 	}
 
 	Liar::LiarBaseShader* AssetsMgr::GetBaseShader(const char* fileName)
