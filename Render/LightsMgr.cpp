@@ -101,8 +101,8 @@ namespace Liar
 
 	void LightsMgr::LightEffect(Liar::ILiarRenderParameter* para)
 	{
-		para->GetRootShaderProgram()->SetInt("numPointLights", static_cast<int>(m_pointLights->size()));
-		para->GetRootShaderProgram()->SetInt("numSpotLights", static_cast<int>(m_spotLights->size()));
+		para->GetRenderShaderProgram()->SetInt("numPointLights", static_cast<int>(m_pointLights->size()));
+		para->GetRenderShaderProgram()->SetInt("numSpotLights", static_cast<int>(m_spotLights->size()));
 		m_dirLight->LightEffect(para, 0);
 		int index = 0;
 		for (std::vector<Liar::LiarPointLight*>::iterator it = m_pointLights->begin(); it < m_pointLights->end(); ++it)

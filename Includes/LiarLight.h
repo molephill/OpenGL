@@ -38,7 +38,6 @@ namespace Liar
 		Liar::Vector3D* GetSpecular() const { return m_specular; };
 
 		void SetProgram(const char*, const char*, const char*);
-		void SetProgram(const std::string&, const std::string&, const std::string&);
 
 		Liar::LiarShaderProgram* GetShaderProgram() { return m_shaderProgram; };
 

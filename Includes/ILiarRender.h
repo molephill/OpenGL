@@ -10,8 +10,9 @@ namespace Liar
 	{
 	public:
 		virtual Liar::Camera3D* GetMainCamera() = 0;
-		virtual Liar::LiarShaderProgram* GetRootShaderProgram() = 0;
+		virtual Liar::LiarShaderProgram* GetRenderShaderProgram() = 0;
 		virtual Liar::LiarBaseShadowMap* GetShadowMap() = 0;
+		virtual void SetRenderShaderProgram(Liar::LiarShaderProgram*) = 0;
 	};
 
 	class ILiarRender

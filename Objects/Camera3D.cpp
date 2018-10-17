@@ -173,10 +173,6 @@ namespace Liar
 			// projection
 			SetFrustum(m_fov, static_cast<float>(m_viewWidth / m_viewHeight), m_nearClipping, m_farClipping);
 
-			/*std::cout << (*m_transform) << std::endl;
-
-			std::cout << (*m_projection) << std::endl;*/
-
 			m_transformChanged = false;
 
 			calcResult = true;
@@ -191,6 +187,9 @@ namespace Liar
 		if (cc || sc)
 		{
 			m_worldViewProjTransfom->Identity();
+			(*m_worldViewProjTransfom) *= (*GetProjMatrix());
+			(*m_worldViewProjTransfom) *= (*GetTransform());
+			(*m_worldViewProjTransfom) *= (*GetExtentionMatrix());
 		}
 	}
 

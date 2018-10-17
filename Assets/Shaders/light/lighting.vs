@@ -9,9 +9,7 @@ out vec2 TexCoords;
 out vec3 FragPos;
 out vec3 Normal;
 
-uniform mat4 projection;
-uniform mat4 viewMatrix;
-uniform mat4 viewExtentionMatrix;
+uniform mat4 mvpTrans;
 uniform mat4 model;
 
 void main()
@@ -19,7 +17,7 @@ void main()
 	FragPos = vec3(model * vec4(aPos, 1.0));
 	Normal = mat3(transpose(inverse(model))) * aNormal;  
 
-	gl_Position = projection * viewMatrix * viewExtentionMatrix * vec4(FragPos, 1.0);
+	gl_Position = mvpTrans * vec4(FragPos, 1.0);
 	ourColor = aColor;
 	TexCoords = vec2(aUV.x, aUV.y);
 }

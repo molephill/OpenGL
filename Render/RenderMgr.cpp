@@ -24,9 +24,10 @@
 
 namespace Liar
 {
-	RenderMgr::RenderMgr():
+	RenderMgr::RenderMgr() :
 		Liar::ILiarRenderParameter(),
-        m_red(0.2f),m_green(0.3f),m_blue(0.3f),
+		m_red(0.2f), m_green(0.3f), m_blue(0.3f),
+		m_renderShader(nullptr),
         m_rootNode(new Liar::LiarContainerObject())
 		,m_lightsMgr(new Liar::LightsMgr())
 	{
@@ -92,14 +93,12 @@ namespace Liar
 		m_shader = Liar::AssetsMgr::GetInstance().GetShaderProgrom("root_shader",
 			AssetsMgr::GetPath("Shaders/use/light/lighting1.vs").c_str(), AssetsMgr::GetPath("Shaders/use/light/lighting1.fs").c_str());
 
-		//InitTest();
-
-		/*Liar::Model* model = new Liar::Model();
+		Liar::Model* model = new Liar::Model();
 		model->SetName("anim");
 		model->Load(AssetsMgr::GetPath("models/anim/anim.model").c_str());
 		model->SetY(-20);
 		model->SetScale(0.2);
-		m_rootNode->AddChild(model);*/
+		m_rootNode->AddChild(model);
 
 		Liar::LiarRectSprite* recSprite = new Liar::LiarRectSprite();
 		recSprite->AddTexture(Liar::AssetsMgr::GetPath("Images/test.png").c_str());
@@ -129,23 +128,11 @@ namespace Liar
 #endif
 		m_camera->Render();
 		m_shader->Use();
-		m_shader->SetMat4("projection", *(m_camera->GetProjMatrix()));
-		m_shader->SetMat4("viewMatrix", *(m_camera->GetTransform()));
-		m_shader->SetMat4("viewExtentionMatrix", *(m_camera->GetExtentionMatrix()));
+		m_shader->SetMat4("mvpTrans", m_camera->GetMVPTrans());
 		m_shader->SetVec3("viewPos", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
 
 		m_lightsMgr->LightEffect(this);
-
-		//BuildTest();
-		//RenderTest();
-
-        //m_rootNode->AddRotation(0.0f, 0.1f, 0.0f);
         m_rootNode->Render(this);
-
 		m_lightsMgr->Render(this);
-
-//        m_testModel->Render(*m_shader);
-
-		//m_testMesh->Render(*m_shader);
     }
 }

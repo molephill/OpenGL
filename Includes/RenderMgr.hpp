@@ -30,6 +30,7 @@ namespace Liar
 		float m_blue;
 		Liar::Camera3D* m_camera;
 		Liar::LiarShaderProgram* m_shader;
+		Liar::LiarShaderProgram* m_renderShader;
         
         Liar::LiarContainerObject* m_rootNode;
 		Liar::LightsMgr* m_lightsMgr;
@@ -40,9 +41,9 @@ namespace Liar
 		LiarContainerObject* GetRoot() { return m_rootNode; };
 
 		virtual Liar::Camera3D* GetMainCamera() { return m_camera; };
-		virtual Liar::LiarShaderProgram* GetRootShaderProgram() { return m_shader;	};
+		virtual Liar::LiarShaderProgram* GetRenderShaderProgram() { return m_renderShader ? m_renderShader : m_shader; };
 		virtual Liar::LiarBaseShadowMap* GetShadowMap() { return m_shadowMap; };
-
+		virtual void SetRenderShaderProgram(Liar::LiarShaderProgram* v) { m_renderShader = v; };
     };
 }
 

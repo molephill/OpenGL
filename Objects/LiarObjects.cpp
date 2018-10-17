@@ -427,7 +427,7 @@ namespace Liar
     bool LiarDisplayObject::Render(Liar::ILiarRenderParameter* para, bool combineParent)
     {
         bool calcResult = CalcTransform(combineParent);
-		para->GetRootShaderProgram()->SetMat4("model", *m_transform);
+		para->GetRenderShaderProgram()->SetMat4("model", *m_transform);
 		return calcResult;
     }
     
