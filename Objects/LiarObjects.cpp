@@ -1,12 +1,12 @@
 #include <LiarPluginRead.h>
 
 #include "AssetsMgr.hpp"
-#include "LiarModel.h"
 
 namespace Liar
 {
-    LiarDisplayObject::LiarDisplayObject()
-        : m_position(new Liar::Vector3D()),
+    LiarDisplayObject::LiarDisplayObject():
+        Liar::ILiarRender(),
+		m_position(new Liar::Vector3D()),
         m_rotation(new Liar::Vector3D()),
         m_scale(new Liar::Vector3D(1.0f, 1.0f, 1.0f)),
         m_transformChanged(true), m_name(""),
@@ -424,10 +424,10 @@ namespace Liar
 		return true;
     }
     
-    bool LiarDisplayObject::Render(Liar::LiarShaderProgram& shader, bool combineParent)
+    bool LiarDisplayObject::Render(Liar::ILiarRenderParameter* para, bool combineParent)
     {
         bool calcResult = CalcTransform(combineParent);
-		shader.SetMat4("model", *m_transform);
+		para->GetRootShaderProgram()->SetMat4("model", *m_transform);
 		return calcResult;
     }
     
@@ -461,19 +461,19 @@ namespace Liar
     }
 
 	// ================== render ==================
-    bool LiarContainerObject::Render(Liar::LiarShaderProgram& shader, bool combineParent)
+    bool LiarContainerObject::Render(Liar::ILiarRenderParameter* para, bool combineParent)
     {
-        bool calcResult = Liar::LiarDisplayObject::Render(shader, combineParent);
-        RenderChildren(shader, calcResult);
+        bool calcResult = Liar::LiarDisplayObject::Render(para, combineParent);
+        RenderChildren(para, calcResult);
 		return calcResult;
     }
     
-    void LiarContainerObject::RenderChildren(Liar::LiarShaderProgram& shader, bool combineParent)
+    void LiarContainerObject::RenderChildren(Liar::ILiarRenderParameter* para, bool combineParent)
     {
         Liar::LiarDisplayObject* child = m_childrenNode;
         while (child)
         {
-            child->Render(shader, combineParent);
+            child->Render(para, combineParent);
             child = child->GetNextChildNode();
         }
     }

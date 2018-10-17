@@ -37,8 +37,9 @@ namespace Liar
 		m_transformChanged = true;
 	}
 
-	Liar::Matrix4* Camera3DCtrl::GetTransform()
+	bool Camera3DCtrl::CalcTransform()
 	{
+		bool calcResult = false;
 		if (m_transformChanged)
 		{
 			m_transform->Identity();
@@ -46,19 +47,26 @@ namespace Liar
 			m_transform->RotateX(m_angleX);
 			m_transform->Translate(0, 0, -m_distanceZ);
 			m_transformChanged = false;
-		}
 
+			calcResult = true;
+		}
+		return calcResult;
+	}
+
+	Liar::Matrix4* Camera3DCtrl::GetTransform()
+	{
 		return m_transform;
 	}
 
 	// ======================= camera controller ==========================
 
 	Camera3D::Camera3D(float nearClipping, float farClipping)
-        :Liar::LiarDisplayObject(),
+		:Liar::LiarDisplayObject(),
 		m_nearClipping(nearClipping), m_farClipping(farClipping),
-		m_fov(60.0f),m_viewWidth(WINDOW_W),m_viewHeight(WINDOW_H),
+		m_fov(60.0f), m_viewWidth(WINDOW_W), m_viewHeight(WINDOW_H),
 		m_isPerspective(true),
 		m_projection(new Liar::Matrix4()),
+		m_worldViewProjTransfom(new Liar::Matrix4()),
 		m_controller(new Liar::Camera3DCtrl())
 	{
 	}
@@ -152,22 +160,37 @@ namespace Liar
 		m_controller->AddZoom(z);
 	}
 
-	void Camera3D::Render()
+	bool Camera3D::CalcTransform()
 	{
+		bool calcResult = false;
+
 		if (m_transformChanged)
 		{
 			m_transform->Identity();
 			m_transform->Translate(-m_position->x, -m_position->y, -m_position->z);
-            m_transform->Rotate(*m_rotation);
+			m_transform->Rotate(*m_rotation);
 
 			// projection
 			SetFrustum(m_fov, static_cast<float>(m_viewWidth / m_viewHeight), m_nearClipping, m_farClipping);
 
-			std::cout << (*m_transform) << std::endl;
+			/*std::cout << (*m_transform) << std::endl;
 
-			std::cout << (*m_projection) << std::endl;
+			std::cout << (*m_projection) << std::endl;*/
 
 			m_transformChanged = false;
+
+			calcResult = true;
+		}
+		return calcResult;
+	}
+
+	void Camera3D::Render()
+	{
+		bool cc = m_controller->CalcTransform();
+		bool sc = CalcTransform();
+		if (cc || sc)
+		{
+			m_worldViewProjTransfom->Identity();
 		}
 	}
 

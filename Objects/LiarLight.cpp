@@ -5,45 +5,45 @@ namespace Liar
 {
     LiarBaseLight::LiarBaseLight():
         Liar::LiarMesh(),
-        m_shader(nullptr),
+        m_shaderProgram(nullptr),
         m_color(new Liar::Vector3D(1.0f, 1.0f, 1.0f)),
         m_ambient(new Liar::Vector3D()),
         m_diffuse(new Liar::Vector3D()),
         m_specular(new Liar::Vector3D())
     {
-        m_shader = AssetsMgr::GetInstance().GetShaderProgrom("base",
-                                                             AssetsMgr::GetPath("Shaders/base/base.vs"), AssetsMgr::GetPath("Shaders/base/base.fs"));
+        m_shaderProgram = AssetsMgr::GetInstance().GetShaderProgrom("light_shape",
+                  AssetsMgr::GetPath("Shaders/base/base.vs").c_str(), AssetsMgr::GetPath("Shaders/base/base.fs").c_str());
 		m_geometry = Liar::LiarPolygonGeoMgr::GetGeo(Liar::LiarPolygonGeometryType::GeometryType_Cube);
     }
     
 	LiarBaseLight::~LiarBaseLight()
 	{
 		delete m_color;
-		if (m_shader)
+		if (m_shaderProgram)
 		{
-			AssetsMgr::GetInstance().ReleaseShaderProgram(m_shader);
-			Liar::LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
-			m_geometry = nullptr;
+			AssetsMgr::GetInstance().ReleaseShaderProgram(m_shaderProgram);
 		}
+		Liar::LiarPolygonGeoMgr::ReleaseGeo(Liar::LiarPolygonGeometryType::GeometryType_Sphere);
+		m_geometry = nullptr;
 	}
 
-	void LiarBaseLight::BuildProgram(Liar::LiarShaderProgram& shader, const char* baseChar)
+	void LiarBaseLight::BuildProgram(Liar::ILiarRenderParameter* para, const char* baseChar)
 	{
 		std::string base = baseChar ? baseChar : "";
-		shader.SetVec3(base + "baseLight.color", *m_color);
-		shader.SetVec3(base + "baseLight.ambient", *m_ambient);
-		shader.SetVec3(base + "baseLight.diffuse", *m_diffuse);
-		shader.SetVec3(base + "baseLight.specular", *m_specular);
+		para->GetRootShaderProgram()->SetVec3(base + "baseLight.color", *m_color);
+		para->GetRootShaderProgram()->SetVec3(base + "baseLight.ambient", *m_ambient);
+		para->GetRootShaderProgram()->SetVec3(base + "baseLight.diffuse", *m_diffuse);
+		para->GetRootShaderProgram()->SetVec3(base + "baseLight.specular", *m_specular);
 	}
 
-	void LiarBaseLight::LightEffect(Liar::LiarShaderProgram& shader, int)
+	void LiarBaseLight::LightEffect(Liar::ILiarRenderParameter* para, int)
 	{
-		BuildProgram(shader);
+		BuildProgram(para);
 	}
 
 	void LiarBaseLight::SetProgram(const char* name, const char* vertexFile, const char* fragmentFile)
 	{
-		m_shader = AssetsMgr::GetInstance().GetShaderProgrom(name, vertexFile, fragmentFile);
+		m_shaderProgram = AssetsMgr::GetInstance().GetShaderProgrom(name, vertexFile, fragmentFile);
 	}
 
 	void LiarBaseLight::SetProgram(const std::string& name, const std::string& vertexFile, const std::string& fragementFile)
@@ -51,18 +51,19 @@ namespace Liar
 		SetProgram(name.c_str(), vertexFile.c_str(), fragementFile.c_str());
 	}
 
-	void LiarBaseLight::Render(const Liar::Camera3D& camera)
+	bool LiarBaseLight::Render(Liar::ILiarRenderParameter* para, bool combineParent)
 	{
-		if (m_shader)
+		if (m_shaderProgram)
 		{
-			m_shader->Use();
-			m_shader->SetMat4("projection", *(camera.GetProjMatrix()));
-			m_shader->SetMat4("viewMatrix", *(camera.GetTransform()));
-			m_shader->SetMat4("viewExtentionMatrix", *(camera.GetExtentionMatrix()));
-			m_shader->SetVec3("color", *m_color);
+			m_shaderProgram->Use();
+			m_shaderProgram->SetMat4("projection", *(para->GetMainCamera()->GetProjMatrix()));
+			m_shaderProgram->SetMat4("viewMatrix", *(para->GetMainCamera()->GetTransform()));
+			m_shaderProgram->SetMat4("viewExtentionMatrix", *(para->GetMainCamera()->GetExtentionMatrix()));
+			m_shaderProgram->SetVec3("color", *m_color);
 
-			Liar::LiarMesh::Render(*m_shader);
+			return Liar::LiarMesh::Render(para, false);
 		}
+		return false;
 	}
 
 	LiarDirectionLight::LiarDirectionLight() :Liar::LiarBaseLight()
@@ -75,12 +76,13 @@ namespace Liar
 		delete m_direction;
 	}
 
-	void LiarDirectionLight::BuildProgram(Liar::LiarShaderProgram& shader, const char*)
+	void LiarDirectionLight::BuildProgram(Liar::ILiarRenderParameter* para, const char*)
 	{
-		Liar::LiarBaseLight::BuildProgram(shader, "dirLight.");
-		shader.SetVec3("dirLight.direction", *m_direction);
+		Liar::LiarBaseLight::BuildProgram(para, "dirLight.");
+		para->GetRootShaderProgram()->SetVec3("dirLight.direction", *m_direction);
 	}
 
+	// =================================== PointLight ====================================
 	LiarPointLight::LiarPointLight() :Liar::LiarBaseLight()
 		, m_constant(1.0f), m_linear(0.0f), m_quadratic(0.0f)
 	{
@@ -91,28 +93,29 @@ namespace Liar
 	{
 	}
 
-	void LiarPointLight::BuildProgram(Liar::LiarShaderProgram& shader, const char* baseChar)
+	void LiarPointLight::BuildProgram(Liar::ILiarRenderParameter* para, const char* baseChar)
 	{
-		Liar::LiarBaseLight::BuildProgram(shader, baseChar);
+		Liar::LiarBaseLight::BuildProgram(para, baseChar);
 
 		std::string base = baseChar ? baseChar : "";
-		shader.SetVec3(base + "position", *m_position);
-		shader.SetFloat(base + "constant", m_constant);
-		shader.SetFloat(base + "linear", m_linear);
-		shader.SetFloat(base + "quadratic", m_quadratic);
+		para->GetRootShaderProgram()->SetVec3(base + "position", *m_position);
+		para->GetRootShaderProgram()->SetFloat(base + "constant", m_constant);
+		para->GetRootShaderProgram()->SetFloat(base + "linear", m_linear);
+		para->GetRootShaderProgram()->SetFloat(base + "quadratic", m_quadratic);
 	}
 
-	void LiarPointLight::LightEffect(Liar::LiarShaderProgram& shader, int index)
+	void LiarPointLight::LightEffect(Liar::ILiarRenderParameter* para, int index)
 	{
 		char name[128];
 		memset(name, 0, sizeof(name));
 		snprintf(name, sizeof(name), "pointLights[%d].", index);
 		std::string base(name);
 
-		BuildProgram(shader, base.c_str());
-        LiarBaseLight::LightEffect(shader, index);
+		BuildProgram(para, base.c_str());
+        LiarBaseLight::LightEffect(para, index);
 	}
 
+	// =================================== SpotLight ====================================
 	LiarSpotLight::LiarSpotLight() :Liar::LiarPointLight()
 		, m_direction(new Liar::Vector3D())
 		, m_cutOff(0.0f)
@@ -125,18 +128,32 @@ namespace Liar
 		delete m_direction;
 	}
 
-	void LiarSpotLight::LightEffect(Liar::LiarShaderProgram& shader, int index)
+	void LiarSpotLight::SetDirection(float x, float y, float z)
+	{
+		if (!m_direction->Equal(x, y, z))
+		{
+			m_direction->Set(x, y, z);
+			m_direction->Normalize();
+		}
+	}
+
+	void LiarSpotLight::SetDirection(const Liar::Vector3D& rhs)
+	{
+		SetDirection(rhs.x, rhs.y, rhs.z);
+	}
+
+	void LiarSpotLight::LightEffect(Liar::ILiarRenderParameter* para, int index)
 	{
 		char name[128];
 		memset(name, 0, sizeof(name));
 		snprintf(name, sizeof(name), "spotLights[%d].", index);
 		std::string base(name);
 		std::string tmpBase = base + "pointLight.";
-		Liar::LiarPointLight::BuildProgram(shader, tmpBase.c_str());
+		Liar::LiarPointLight::BuildProgram(para, tmpBase.c_str());
 
-		shader.SetVec3(base + "direction", *m_direction);
-		shader.SetFloat(base + "cutOff", m_cutOff);
-		shader.SetFloat(base + "outerCutOff", m_outerCutOff);
-        LiarBaseLight::LightEffect(shader, index);
+		para->GetRootShaderProgram()->SetVec3(base + "direction", *m_direction);
+		para->GetRootShaderProgram()->SetFloat(base + "cutOff", m_cutOff);
+		para->GetRootShaderProgram()->SetFloat(base + "outerCutOff", m_outerCutOff);
+        LiarBaseLight::LightEffect(para, index);
 	}
 }

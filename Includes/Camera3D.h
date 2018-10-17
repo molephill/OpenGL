@@ -22,6 +22,7 @@ namespace Liar
 
 	public:
 		Liar::Matrix4* GetTransform();
+		bool CalcTransform();
 
 		void AddRotation(float, float);
 		void AddZoom(float);
@@ -43,6 +44,7 @@ namespace Liar
 		unsigned int m_viewHeight;
 
 		Liar::Matrix4* m_projection;
+		Liar::Matrix4* m_worldViewProjTransfom;
 
 		Liar::Camera3DCtrl* m_controller;
 
@@ -60,8 +62,13 @@ namespace Liar
 
 		Liar::Matrix4* GetProjMatrix() const { return m_projection; };
 		Liar::Matrix4* GetExtentionMatrix() const { return m_controller->GetTransform(); };
+		Liar::Matrix4& GetMVPTrans() const { return *m_worldViewProjTransfom; }
+
 
 	private:
+
+		bool CalcTransform();
+
 		void SetFrustum(float, float, float, float);
 		void SetFrustum(float, float, float, float, float, float);
 

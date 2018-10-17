@@ -4,12 +4,13 @@
 #include <Matrices.h>
 
 #include <LiarShader.h>
+#include <ILiarRender.h>
 
 namespace Liar
 {
     class LiarContainerObject;
     
-    class LiarDisplayObject
+    class LiarDisplayObject:public ILiarRender
     {
     public:
         LiarDisplayObject();
@@ -102,7 +103,7 @@ namespace Liar
         virtual void AddScale(float, float, float);
         virtual void AddScale(const Liar::Vector3D&);
         
-        virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
+        virtual bool Render(Liar::ILiarRenderParameter*, bool combineParent = false);
     };
     
     // ====================== container =========================== //
@@ -123,13 +124,13 @@ namespace Liar
         
         Liar::LiarDisplayObject* GetChildNode() { return m_childrenNode; };
         
-		virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
+		virtual bool Render(Liar::ILiarRenderParameter*, bool combineParent = false);
 
 	public:
 		friend std::ostream& operator<<(std::ostream& os, const Liar::LiarContainerObject&);
 
 	protected:
-		virtual void RenderChildren(Liar::LiarShaderProgram&, bool combineParent = false);
+		virtual void RenderChildren(Liar::ILiarRenderParameter*, bool combineParent = false);
 		virtual void DrawAxis(float size = 2.5f);
 
 	};

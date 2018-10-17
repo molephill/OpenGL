@@ -9,19 +9,18 @@
 #ifndef RenderMgr_hpp
 #define RenderMgr_hpp
 
-#include "LiarModel.h"
 #include "LightsMgr.h"
+#include "ILiarRender.h"
 
 namespace Liar
 {
-    class RenderMgr
+    class RenderMgr:public ILiarRenderParameter
     {
     public:
 		RenderMgr();
         ~RenderMgr();
         
     public:
-
 		void SetSize(unsigned int, unsigned int);
         void Render();
 
@@ -35,35 +34,14 @@ namespace Liar
         Liar::LiarContainerObject* m_rootNode;
 		Liar::LightsMgr* m_lightsMgr;
 
-		
+		Liar::LiarBaseShadowMap* m_shadowMap;
 
-	private:
-		Liar::LiarMesh* m_testMesh;
-		Liar::Model* m_testModel;
-
-		unsigned int VAO, VBO, EBO, cubeVAO;
-		unsigned int diffuseMap;
-		unsigned int specularMap;
-
-		std::vector<int>* m_indices;
-		size_t m_indiceSize;
-		unsigned int m_vertexArrayID;
-		unsigned int m_vertexbuffer;
-		unsigned int m_elementbuffer;
-        
-    public:
-        Camera3D* GetMainCamera() { return m_camera; };
+	public:
 		LiarContainerObject* GetRoot() { return m_rootNode; };
 
-	private:
-		void InitTest();
-		void RenderTest();
-		void BuildTest();
-
-		std::vector<int>* GetIndicesData() const
-		{
-			return m_indices;
-		}
+		virtual Liar::Camera3D* GetMainCamera() { return m_camera; };
+		virtual Liar::LiarShaderProgram* GetRootShaderProgram() { return m_shader;	};
+		virtual Liar::LiarBaseShadowMap* GetShadowMap() { return m_shadowMap; };
 
     };
 }

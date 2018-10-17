@@ -19,22 +19,14 @@ namespace Liar
 		SHADER_TYPE_PROGROM = 2,
 	};
 
-	class LiarBaseShader:public LiarReference
+	class LiarBaseShader
 	{
 	public:
 		LiarBaseShader();
 		~LiarBaseShader();
 
-	private:
-		std::string m_path;
-		std::string m_shaderCode;
-
 	public:
-		std::string& GetPath() { return m_path; };
-		void SetPath(const char*);
-		void SetPath(const std::string&);
-
-		const char* GetShaderCode() const { return m_shaderCode.c_str(); };
+		std::string Load(const char*);
 	};
 
 	class LiarShaderProgram:public LiarReference
@@ -44,18 +36,11 @@ namespace Liar
 		~LiarShaderProgram();
 
 	private:
-		unsigned int m_ID;
-		std::string m_name;
+		unsigned int m_programId;
 
 	public:
-		void LinkProgram(const char*, const char*);
-		void LinkProgram(const std::string&, const std::string&);
-		void LinkProgram(const Liar::LiarBaseShader&, const Liar::LiarBaseShader&);
-
-		void SetName(std::string& name) { m_name = name; };
-		void SetName(const char* name) { m_name = name; };
-		std::string GetName() { return m_name; };
-		unsigned int GetID() { return m_ID; };
+		void Load(const char*, const char*);
+		unsigned int GetProgramId() { return m_programId; };
 
 		void Use();
 		// ------------------------------------------------------------------------
@@ -82,6 +67,7 @@ namespace Liar
 
 	private:
 		void CheckCompileErrors(unsigned int, LiarShaderType);
+		void LinkProgram(const char*, const char*);
 	};
 }
 

@@ -13,8 +13,8 @@ namespace Liar
 	AssetsMgr::AssetsMgr() :
 		m_mapTextures(new std::map<const char*, Liar::LiarTexture*>()),
 		m_mapGeometeries(new std::map<const char*, Liar::LiarGeometry*>()),
-		m_allShaders(new std::vector<Liar::LiarBaseShader*>()),
-		m_allPrograms(new std::vector<Liar::LiarShaderProgram*>()),
+		m_mapShaderCodes(new std::map<const char*, std::string>()),
+		m_mapShaderPrograms(new std::map<const char*, Liar::LiarShaderProgram*>()),
 		m_allSkeletons(new std::vector<Liar::LiarSkeleton*>())
 	{
 	}
@@ -103,114 +103,59 @@ namespace Liar
 		return false;
 	}
 
-	Liar::LiarBaseShader* AssetsMgr::GetBaseShader(const char* fileName)
+	std::string AssetsMgr::GetBaseShaderCode(const char* fileName) const
 	{
-		Liar::LiarBaseShader* ret = nullptr;
-		for (std::vector<Liar::LiarBaseShader*>::iterator it = m_allShaders->begin(); it < m_allShaders->end(); ++it)
+		std::map<const char*, std::string>::iterator iter = m_mapShaderCodes->find(fileName);
+
+		if (iter != m_mapShaderCodes->end())
 		{
-			if (std::strcmp(fileName, (*it)->GetPath().data()) == 0)
-			{
-				ret = *it;
-				break;
-			}
+			return (iter->second);
 		}
-
-		if (!ret)
+		else
 		{
-			ret = new Liar::LiarBaseShader();
-			ret->SetPath(fileName);
-			m_allShaders->push_back(ret);
+			Liar::LiarBaseShader* shader = new Liar::LiarBaseShader();
+			std::string code = shader->Load(fileName);
+			delete shader;
+			m_mapShaderCodes->insert(std::pair<const char*, std::string>(fileName, code));
+			return code;
 		}
-
-		ret->IncRefCount();
-
-		return ret;
-	}
-
-	Liar::LiarBaseShader* AssetsMgr::GetBaseShader(const std::string& fileName)
-	{
-		return GetBaseShader(fileName.c_str());
 	}
 
 	Liar::LiarShaderProgram* AssetsMgr::GetShaderProgrom(const char* name, const char* vertexFile, const char* fragmentFile)
 	{
-		Liar::LiarShaderProgram* ret = nullptr;
-		for (std::vector<Liar::LiarShaderProgram*>::iterator it = m_allPrograms->begin(); it < m_allPrograms->end(); ++it)
+		std::map<const char*, Liar::LiarShaderProgram*>::iterator iter = m_mapShaderPrograms->find(name);
+		if (iter != m_mapShaderPrograms->end())
 		{
-			if (std::strcmp(name, (*it)->GetName().data()) == 0)
-			{
-				ret = *it;
-				break;
-			}
+			iter->second->IncRefCount();
+			return iter->second;
 		}
-
-		if (!ret)
+		else
 		{
-			ret = new Liar::LiarShaderProgram();
-			ret->LinkProgram(vertexFile, fragmentFile);
-			ret->SetName(name);
-			m_allPrograms->push_back(ret);
-		}
-
-		ret->IncRefCount();
-
-		return ret;
-	}
-
-	Liar::LiarShaderProgram* AssetsMgr::GetShaderProgrom(const std::string& name, const std::string& vertexFile, const std::string& fragmentFile)
-	{
-		return GetShaderProgrom(name.c_str(), vertexFile.c_str(), fragmentFile.c_str());
-	}
-
-	void AssetsMgr::ReleaseShaderProgram(Liar::LiarShaderProgram* program)
-	{
-		for (std::vector<Liar::LiarShaderProgram*>::iterator it = m_allPrograms->begin(); it < m_allPrograms->end();)
-		{
-			if (program == *it)
-			{
-				if ((*it)->DesRefCount() <= 0)
-				{
-					delete *it;
-					it = m_allPrograms->erase(it);
-				}
-				else
-				{
-					++it;
-				}
-			}
-			else
-			{
-				++it;
-			}
+			Liar::LiarShaderProgram* program = new Liar::LiarShaderProgram();
+			program->Load(vertexFile, fragmentFile);
+			m_mapShaderPrograms->insert(std::pair<const char*, Liar::LiarShaderProgram*>(name, program));
+			return program;
 		}
 	}
 
-	void AssetsMgr::ReleaseShaderProgram(const char* name)
+	bool AssetsMgr::ReleaseShaderProgram(Liar::LiarShaderProgram* program)
 	{
-		for (std::vector<Liar::LiarShaderProgram*>::iterator it = m_allPrograms->begin(); it < m_allPrograms->end();)
+		if (!program) return false;
+		std::map<const char*, Liar::LiarShaderProgram*>::iterator iter = m_mapShaderPrograms->begin();
+		while (iter != m_mapShaderPrograms->end())
 		{
-			if (std::strcmp(name, (*it)->GetName().data()) == 0)
+			if (iter->second == program)
 			{
-				if ((*it)->DesRefCount() <= 0)
+				if (program->DesRefCount() <= 0)
 				{
-					delete *it;
-					it = m_allPrograms->erase(it);
+					delete program;
+					m_mapShaderPrograms->erase(iter->first);
 				}
-				else
-				{
-					++it;
-				}
+				return true;
 			}
-			else
-			{
-				++it;
-			}
+			iter++;
 		}
-	}
-
-	void AssetsMgr::ReleaseShaderProgram(const std::string& name)
-	{
-		ReleaseShaderProgram(name.c_str());
+		return false;
 	}
 
 
@@ -247,15 +192,15 @@ namespace Liar
 		return "" + BASE_PATH + base;
 	}
 
-	void AssetsMgr::PrintMat4(const glm::mat4 & view)
-	{
-		std::cout << std::fixed << std::setprecision(5);
-		std::cout << "[" << std::setw(10) << view[0][0] << " " << std::setw(10) << view[0][1] << " " << std::setw(10) << view[0][2] << " " << std::setw(10) << view[0][3] << "]\n"
-			<< "[" << std::setw(10) << view[1][0] << " " << std::setw(10) << view[1][1] << " " << std::setw(10) << view[1][2] << " " << std::setw(10) << view[1][3] << "]\n"
-			<< "[" << std::setw(10) << view[2][0] << " " << std::setw(10) << view[2][1] << " " << std::setw(10) << view[2][2] << " " << std::setw(10) << view[2][3] << "]\n"
-			<< "[" << std::setw(10) << view[3][0] << " " << std::setw(10) << view[3][1] << " " << std::setw(10) << view[3][2] << " " << std::setw(10) << view[3][3] << "]\n";
-		std::cout << std::resetiosflags(std::ios_base::fixed | std::ios_base::floatfield);
-	}
+	//void AssetsMgr::PrintMat4(const glm::mat4 & view)
+	//{
+	//	std::cout << std::fixed << std::setprecision(5);
+	//	std::cout << "[" << std::setw(10) << view[0][0] << " " << std::setw(10) << view[0][1] << " " << std::setw(10) << view[0][2] << " " << std::setw(10) << view[0][3] << "]\n"
+	//		<< "[" << std::setw(10) << view[1][0] << " " << std::setw(10) << view[1][1] << " " << std::setw(10) << view[1][2] << " " << std::setw(10) << view[1][3] << "]\n"
+	//		<< "[" << std::setw(10) << view[2][0] << " " << std::setw(10) << view[2][1] << " " << std::setw(10) << view[2][2] << " " << std::setw(10) << view[2][3] << "]\n"
+	//		<< "[" << std::setw(10) << view[3][0] << " " << std::setw(10) << view[3][1] << " " << std::setw(10) << view[3][2] << " " << std::setw(10) << view[3][3] << "]\n";
+	//	std::cout << std::resetiosflags(std::ios_base::fixed | std::ios_base::floatfield);
+	//}
 
 	AssetsMgr* AssetsMgr::m_instance = nullptr;
 }

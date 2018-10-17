@@ -3,9 +3,7 @@
 
 namespace Liar
 {
-	LiarBaseShader::LiarBaseShader() :
-		Liar::LiarReference(),
-		m_path(""), m_shaderCode("")
+	LiarBaseShader::LiarBaseShader()
 	{
 
 	}
@@ -15,65 +13,53 @@ namespace Liar
 
 	}
 
-	void LiarBaseShader::SetPath(const char* path)
+	std::string LiarBaseShader::Load(const char* path)
 	{
-		if (strcmp(path, m_path.c_str()) != 0)
+		std::ifstream shaderFile;
+		shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		try
 		{
-			m_path = path;
-			std::ifstream shaderFile;
-			shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-			try
-			{
-				// open files
-				shaderFile.open(path);
-				std::stringstream shaderStream;
-				// read file's buffer contents into streams
-				shaderStream << shaderFile.rdbuf();
-				// close file handlers
-				shaderFile.close();
-				// convert stream into string
-				m_shaderCode = shaderStream.str();
-			}
-			catch (std::ifstream::failure e)
-			{
-				std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-			}
+			// open files
+			shaderFile.open(path);
+			std::stringstream shaderStream;
+			// read file's buffer contents into streams
+			shaderStream << shaderFile.rdbuf();
+			// close file handlers
+			shaderFile.close();
+			// convert stream into string
+			return shaderStream.str();
 		}
-	}
-
-	void LiarBaseShader::SetPath(const std::string& path)
-	{
-		SetPath(path.c_str());
+		catch (std::ifstream::failure e)
+		{
+			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+			return "";
+		}
 	}
 
 	LiarShaderProgram::LiarShaderProgram():
 		Liar::LiarReference(),
-		m_ID(0),m_name("")
+		m_programId(0)
 	{
 
 	}
 
 	LiarShaderProgram::~LiarShaderProgram()
 	{
-
+		if (m_programId > 0)
+		{
+			glDeleteProgram(m_programId);
+		}
 	}
 
-	void LiarShaderProgram::LinkProgram(const std::string& vertexFile, const std::string& fragmentFile)
+	void LiarShaderProgram::Load(const char* vertexFile, const char* fragmentFile)
 	{
-		LinkProgram(vertexFile.c_str(), fragmentFile.c_str());
+		std::string vertex = AssetsMgr::GetInstance().GetBaseShaderCode(vertexFile);
+		std::string fragment = AssetsMgr::GetInstance().GetBaseShaderCode(fragmentFile);
+		LinkProgram(vertex.c_str(), fragment.c_str());
 	}
 
-	void LiarShaderProgram::LinkProgram(const char* vertexFile, const char* fragmentFile)
+	void LiarShaderProgram::LinkProgram(const char* vShaderCode, const char * fShaderCode)
 	{
-		Liar::LiarBaseShader* vertex = AssetsMgr::GetInstance().GetBaseShader(vertexFile);
-		Liar::LiarBaseShader* fragment = AssetsMgr::GetInstance().GetBaseShader(fragmentFile);
-		LinkProgram(*vertex, *fragment);
-	}
-
-	void LiarShaderProgram::LinkProgram(const Liar::LiarBaseShader& vertexShader, const Liar::LiarBaseShader& fragmentShader)
-	{
-		const char* vShaderCode = vertexShader.GetShaderCode();
-		const char * fShaderCode = fragmentShader.GetShaderCode();
 		// 2. compile shaders
 		unsigned int vertex, fragment;
 
@@ -90,11 +76,11 @@ namespace Liar
 		CheckCompileErrors(fragment, LiarShaderType::SHADER_TYPE_FRAGMENT);
 
 		// shader Program
-		m_ID = glCreateProgram();
-		glAttachShader(m_ID, vertex);
-		glAttachShader(m_ID, fragment);
-		glLinkProgram(m_ID);
-		CheckCompileErrors(m_ID, LiarShaderType::SHADER_TYPE_PROGROM);
+		m_programId = glCreateProgram();
+		glAttachShader(m_programId, vertex);
+		glAttachShader(m_programId, fragment);
+		glLinkProgram(m_programId);
+		CheckCompileErrors(m_programId, LiarShaderType::SHADER_TYPE_PROGROM);
 
 		// delete the shaders as they're linked into our program now and no longer necessary
 		glDeleteShader(vertex);
@@ -128,26 +114,26 @@ namespace Liar
 
 	void LiarShaderProgram::Use()
 	{
-		glUseProgram(m_ID);
+		glUseProgram(m_programId);
 	}
 
 	// utility uniform functions
 	// ------------------------------------------------------------------------
 	void LiarShaderProgram::SetInt(const std::string& name, int value) const
 	{
-		glUniform1i(glGetUniformLocation(m_ID, name.c_str()), value);
+		glUniform1i(glGetUniformLocation(m_programId, name.c_str()), value);
 	}
 
 	// ------------------------------------------------------------------------
 	void LiarShaderProgram::SetBool(const std::string& name, bool value) const
 	{
-		glUniform1i(glGetUniformLocation(m_ID, name.c_str()), static_cast<int>(value));
+		glUniform1i(glGetUniformLocation(m_programId, name.c_str()), static_cast<int>(value));
 	}
 	// ------------------------------------------------------------------------
 
 	void LiarShaderProgram::SetFloat(const std::string& name, float value) const
 	{
-		glUniform1f(glGetUniformLocation(m_ID, name.c_str()), value);
+		glUniform1f(glGetUniformLocation(m_programId, name.c_str()), value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -157,7 +143,7 @@ namespace Liar
 	}
 	void LiarShaderProgram::SetVec2(const std::string& name, float x, float y) const
 	{
-		glUniform2f(glGetUniformLocation(m_ID, name.c_str()), x, y);
+		glUniform2f(glGetUniformLocation(m_programId, name.c_str()), x, y);
 	}
 
 	// ------------------------------------------------------------------------
@@ -167,7 +153,7 @@ namespace Liar
 	}
 	void LiarShaderProgram::SetVec3(const std::string& name, float x, float y, float z) const
 	{
-		glUniform3f(glGetUniformLocation(m_ID, name.c_str()), x, y, z);
+		glUniform3f(glGetUniformLocation(m_programId, name.c_str()), x, y, z);
 	}
 
 	// ------------------------------------------------------------------------
@@ -177,25 +163,25 @@ namespace Liar
 	}
 	void LiarShaderProgram::SetVec4(const std::string& name, float x, float y, float z, float w) const
 	{
-		glUniform4f(glGetUniformLocation(m_ID, name.c_str()), x, y, z, w);
+		glUniform4f(glGetUniformLocation(m_programId, name.c_str()), x, y, z, w);
 	}
 
 	// ------------------------------------------------------------------------
 	void LiarShaderProgram::SetMat2(const std::string& name, const Liar::Matrix2& mat) const
 	{
-		glUniformMatrix2fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, mat.Get());
+		glUniformMatrix2fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, mat.Get());
 	}
 
 	// ------------------------------------------------------------------------
 	void LiarShaderProgram::SetMat3(const std::string& name, const Liar::Matrix3& mat) const
 	{
-		glUniformMatrix3fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, mat.Get());
+		glUniformMatrix3fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, mat.Get());
 	}
 
 	// ------------------------------------------------------------------------
 	void LiarShaderProgram::SetMat4(const std::string&name, const Liar::Matrix4& m) const
 	{
-		glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, m.Get());
+		glUniformMatrix4fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, m.Get());
 	}
 
 }

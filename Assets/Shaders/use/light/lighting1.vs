@@ -16,12 +16,10 @@ uniform mat4 model;
 
 void main()
 {
-	mat4 model1 = viewExtentionMatrix * model;
+	FragPos = vec3(model * vec4(aPos, 1.0));
+	Normal = mat3(transpose(inverse(model))) * aNormal;  
 
-	FragPos = vec3(model1 * vec4(aPos, 1.0));
-	Normal = mat3(transpose(inverse(model1))) * aNormal;  
-
-	gl_Position = projection * viewMatrix * vec4(FragPos, 1.0);
+	gl_Position = projection * viewMatrix * viewExtentionMatrix * vec4(FragPos, 1.0);
 	ourColor = aColor;
 	TexCoords = vec2(aUV.x, aUV.y);
 }

@@ -40,7 +40,7 @@ namespace Liar
 		friend std::ostream& operator<<(std::ostream& os, const Liar::LiarMesh& m);
 
 	public:
-		virtual bool Render(Liar::LiarShaderProgram&, bool combineParent = false);
+		virtual bool Render(Liar::ILiarRenderParameter*, bool combineParent = false);
 
 	};
 }

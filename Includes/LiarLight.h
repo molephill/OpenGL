@@ -18,9 +18,9 @@ namespace Liar
 		Liar::Vector3D* m_ambient;
 		Liar::Vector3D* m_diffuse;
 		Liar::Vector3D* m_specular;
-		Liar::LiarShaderProgram* m_shader;
+		Liar::LiarShaderProgram* m_shaderProgram;
 
-		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
+		virtual void BuildProgram(Liar::ILiarRenderParameter*, const char* base = nullptr);
 
 	public:
 		void SetColor(float x, float y, float z) { m_color->Set(x, y, z); };
@@ -40,10 +40,10 @@ namespace Liar
 		void SetProgram(const char*, const char*, const char*);
 		void SetProgram(const std::string&, const std::string&, const std::string&);
 
-		Liar::LiarShaderProgram* GetShaderProgram() { return m_shader; };
+		Liar::LiarShaderProgram* GetShaderProgram() { return m_shaderProgram; };
 
-        virtual void LightEffect(Liar::LiarShaderProgram&, int index = 0);
-		virtual void Render(const Liar::Camera3D&);
+        virtual void LightEffect(Liar::ILiarRenderParameter*, int index = 0);
+		virtual bool Render(Liar::ILiarRenderParameter*, bool combineParent = false);
 	};
 
 	class LiarDirectionLight :public Liar::LiarBaseLight
@@ -56,7 +56,7 @@ namespace Liar
 		Liar::Vector3D* m_direction;
 
 	protected:
-		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
+		virtual void BuildProgram(Liar::ILiarRenderParameter*, const char* base = nullptr);
 
 	public:
 		void SetDirection(float x, float y, float z) { m_direction->Set(x, y, z); };
@@ -76,7 +76,7 @@ namespace Liar
 		float m_linear;
 		float m_quadratic;
 
-		virtual void BuildProgram(Liar::LiarShaderProgram&, const char* base = nullptr);
+		virtual void BuildProgram(Liar::ILiarRenderParameter*, const char* base = nullptr);
 
 	public:
 		void SetConstant(float v) { m_constant = v; };
@@ -88,7 +88,7 @@ namespace Liar
 		float GetLiner() const { return m_linear; };
 		float GetQuadratic() const { return m_quadratic; };
 
-		virtual void LightEffect(Liar::LiarShaderProgram&, int index = 0);
+		virtual void LightEffect(Liar::ILiarRenderParameter*, int index = 0);
 	};
 
 	class LiarSpotLight :public LiarPointLight
@@ -103,8 +103,8 @@ namespace Liar
 		float m_outerCutOff;
 
 	public:
-		void SetDirection(float x, float y, float z) { m_direction->Set(x, y, z); };
-		void SetDirection(const Liar::Vector3D& rhs) { m_direction->Set(rhs); };
+		void SetDirection(float x, float y, float z);
+		void SetDirection(const Liar::Vector3D& rhs);
 		void SetCutOff(float v) { m_cutOff = v; };
 		void SetOuterCutOff(float v) { m_outerCutOff = v; };
 
@@ -112,7 +112,7 @@ namespace Liar
 		float GetCutoff() const { return m_cutOff; };
 		float GetOuterCutOff() const { return m_outerCutOff; };
 
-		virtual void LightEffect(Liar::LiarShaderProgram&, int index = 0);
+		virtual void LightEffect(Liar::ILiarRenderParameter*, int index = 0);
 	};
 }
 

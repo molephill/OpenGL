@@ -84,15 +84,10 @@ namespace Liar
 		Liar::LiarTexture* GetTexture(const char*);
 		bool ReleaseTexture(Liar::LiarTexture*);
 
-		Liar::LiarBaseShader* GetBaseShader(const char*);
-		Liar::LiarBaseShader* GetBaseShader(const std::string&);
+		std::string GetBaseShaderCode(const char*) const;
 
 		Liar::LiarShaderProgram* GetShaderProgrom(const char*, const char*, const char*);
-		Liar::LiarShaderProgram* GetShaderProgrom(const std::string&, const std::string&, const std::string&);
-
-		void ReleaseShaderProgram(Liar::LiarShaderProgram*);
-		void ReleaseShaderProgram(const char*);
-		void ReleaseShaderProgram(const std::string&);
+		bool ReleaseShaderProgram(Liar::LiarShaderProgram*);
 
 		Liar::LiarGeometry* GetGeometryData(const char*);
 		bool ReleaseGeometryData(Liar::LiarGeometry*);
@@ -102,14 +97,12 @@ namespace Liar
         
         static std::string GetPath(const char*);
 
-        static void PrintMat4(const glm::mat4&);
-
 	private:
-		std::vector<Liar::LiarBaseShader*>* m_allShaders;
-		std::vector<Liar::LiarShaderProgram*>* m_allPrograms;
 		std::vector<Liar::LiarSkeleton*>* m_allSkeletons;
 		std::map<const char*, Liar::LiarGeometry*>* m_mapGeometeries;
 		std::map<const char*, Liar::LiarTexture*>* m_mapTextures;
+		std::map<const char*, std::string>* m_mapShaderCodes;
+		std::map<const char*, Liar::LiarShaderProgram*>* m_mapShaderPrograms;
     };
 
 	

@@ -9,15 +9,19 @@
 #ifndef Define_h
 #define Define_h
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm.hpp>
+namespace Liar
+{
+	//  类型
+	typedef unsigned int uint;
+	typedef unsigned short ushort;
+	typedef unsigned char uchar;
 
-// buffsize
-const static int DEFAULT_BUFF_SIZE = 512;
+	// buffsize
+	const static int DEFAULT_BUFF_SIZE = 512;
 
-// 窗口大小
-const unsigned int WINDOW_W = 960;
-const unsigned int WINDOW_H = 600;
+	// 窗口大小
+	const Liar::uint WINDOW_W = 960;
+	const Liar::uint WINDOW_H = 600;
+}
 
 #endif /* Define_h */

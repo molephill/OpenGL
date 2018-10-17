@@ -3,6 +3,7 @@
 #include "LiarLight.h"
 #include <LiarShader.h>
 #include <vector>
+#include <ILiarRender.h>
 
 namespace Liar
 {
@@ -18,8 +19,8 @@ namespace Liar
 		std::vector<Liar::LiarSpotLight*>* m_spotLights;
 
 	public:
-		void LightEffect(Liar::LiarShaderProgram&);
-		void Render(const Liar::Camera3D&);
+		void LightEffect(Liar::ILiarRenderParameter*);
+		void Render(Liar::ILiarRenderParameter*);
 		LiarPointLight* GetPointLight(size_t);
 		LiarSpotLight* GetSpotLight(size_t);
 		Liar::LiarDirectionLight* GetDirLight() { return m_dirLight; };
