@@ -51,11 +51,6 @@ namespace Liar
 		ReleaseSourceData();
 	}
 
-	int LiarGeometry::GetIndicesSize() const
-	{
-		return m_indiceSize;
-	}
-
 	std::vector<int>* LiarGeometry::GetIndicesData() const
 	{
 		return m_rawData->GetIndices();

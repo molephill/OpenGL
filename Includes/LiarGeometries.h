@@ -6,6 +6,7 @@
 
 #include <LiarVertexBuffer.h>
 #include <LiarRefrence.h>
+#include <Define.h>
 
 namespace Liar
 {
@@ -16,9 +17,9 @@ namespace Liar
 		~LiarGeometry();
 
 	protected:
-		unsigned int m_vertexArrayID;
-		unsigned int m_vertexbuffer;
-		unsigned int m_elementbuffer;
+		Liar::uint m_vertexArrayID;
+		Liar::uint m_vertexbuffer;
+		Liar::uint m_elementbuffer;
 
 		Liar::LiarMeshRawData* m_rawData;
 		int m_indiceSize;
@@ -28,13 +29,16 @@ namespace Liar
 		void Render();
 		void SetRawData(Liar::LiarMeshRawData*);
 		Liar::LiarMeshRawData* GetRawData() { return m_rawData; };
+
+		Liar::uint GetVertexArrayID() const { return m_vertexArrayID; };
+
 		friend std::ostream& operator<<(std::ostream& os, const Liar::LiarGeometry& m);
 
 	protected:
 		virtual void ReleaseSourceData();
 		virtual void UploadSub();
 
-		virtual int GetIndicesSize() const;
+		int GetIndicesSize() const { return m_indiceSize; };
 		virtual std::vector<int>* GetIndicesData() const;
 
 		virtual size_t NumTriangles();

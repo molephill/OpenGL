@@ -11,6 +11,7 @@
 
 #include "LightsMgr.h"
 #include "ILiarRender.h"
+#include "LiarShadowMap.h"
 
 namespace Liar
 {
@@ -35,7 +36,7 @@ namespace Liar
         Liar::LiarContainerObject* m_rootNode;
 		Liar::LightsMgr* m_lightsMgr;
 
-		Liar::LiarBaseShadowMap* m_shadowMap;
+		Liar::LiarShadowMap* m_shadowMap;
 
 	public:
 		LiarContainerObject* GetRoot() { return m_rootNode; };

@@ -60,6 +60,10 @@ namespace Liar
         float GetScaleX() const { return m_scale->x; };
         float GetScaleY() const { return m_scale->y; };
         float GetScaleZ() const { return m_scale->z; };
+
+		Liar::Vector3D& GetPosition() const { return *m_position; };
+		Liar::Vector3D& GetRotation() const { return *m_rotation; };
+		Liar::Vector3D& GetScale() const { return *m_scale; };
         
     protected:
         virtual bool CalcTransform(bool combineParent = false, bool calcInvert = true);

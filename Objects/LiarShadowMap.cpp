@@ -11,7 +11,8 @@ namespace Liar
 		m_lightPosition(new Liar::Vector3D()),
 		m_lightDirection(new Liar::Vector3D()),
 		m_lightTransformChanged(true),
-		m_lightViewTransform(new Liar::Matrix4())
+		m_lightViewTransform(new Liar::Matrix4()),
+		m_shadowObjects(new std::vector<LiarGeometry*>())
 	{
 
 	}
@@ -51,7 +52,7 @@ namespace Liar
 		SetLightDirection(dir.x, dir.y, dir.z);
 	}
 
-	bool LiarBaseShadowMap::Render(const Liar::Camera3D& camera)
+	bool LiarBaseShadowMap::Render(Liar::ILiarRenderParameter* para, bool)
 	{
 		bool calcResult = Liar::LiarDisplayObject::CalcTransform(false, false);
 		if (m_lightTransformChanged)
@@ -64,9 +65,7 @@ namespace Liar
 			calcResult = true;
 		}
 		m_shaderProgram->Use();
-		m_shaderProgram->SetMat4("projection", *(camera.GetProjMatrix()));
-		m_shaderProgram->SetMat4("viewMatrix", *m_lightViewTransform);
-		m_shaderProgram->SetMat4("viewExtentionMatrix", *(camera.GetExtentionMatrix()));
+		m_shaderProgram->SetMat4("mvpTrans", para->GetMainCamera()->GetMVPTrans());
 		m_shaderProgram->SetMat4("model", *(m_transform));
 
 		return calcResult;

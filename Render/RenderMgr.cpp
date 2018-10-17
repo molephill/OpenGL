@@ -28,8 +28,8 @@ namespace Liar
 		Liar::ILiarRenderParameter(),
 		m_red(0.2f), m_green(0.3f), m_blue(0.3f),
 		m_renderShader(nullptr),
-        m_rootNode(new Liar::LiarContainerObject())
-		,m_lightsMgr(new Liar::LightsMgr())
+        m_rootNode(new Liar::LiarContainerObject()),
+		m_lightsMgr(new Liar::LightsMgr())
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -129,7 +129,7 @@ namespace Liar
 		m_camera->Render();
 		m_shader->Use();
 		m_shader->SetMat4("mvpTrans", m_camera->GetMVPTrans());
-		m_shader->SetVec3("viewPos", m_camera->GetX(), m_camera->GetY(), m_camera->GetZ());
+		m_shader->SetVec3("viewPos", m_camera->GetPosition());
 
 		m_lightsMgr->LightEffect(this);
         m_rootNode->Render(this);

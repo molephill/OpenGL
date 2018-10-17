@@ -1,8 +1,9 @@
 #pragma once
 
 #include <Define.h>
-#include <LiarShader.h>
-#include <Camera3D.h>
+#include <LiarObjects.h>
+#include <LiarGeometries.h>
+#include <ILiarRender.h>
 
 #include <glad/glad.h>
 
@@ -25,6 +26,8 @@ namespace Liar
 		bool m_lightTransformChanged;
 		Liar::Matrix4* m_lightViewTransform;
 		Liar::LiarShaderProgram* m_shaderProgram;
+		std::vector<Liar::LiarGeometry*>* m_shadowObjects;
+		
 
 	public:
 		void SetLightPosition(float, float, float);
@@ -32,7 +35,7 @@ namespace Liar
 		void SetLightDirection(float, float, float);
 		void SetLightDirection(const Liar::Vector3D&);
 
-		virtual bool Render(const Liar::Camera3D&);
+		virtual bool Render(Liar::ILiarRenderParameter*, bool combineParent = false);
 	};
 
 	class LiarShadowMap:public Liar::LiarBaseShadowMap
